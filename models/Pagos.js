@@ -14,6 +14,9 @@ const PagosSchema = new Schema({
     default: true,
     required: false
   },
+  numeropago: {
+    type: Number
+  },
   status: {
     type: Boolean,
     default: false

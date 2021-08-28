@@ -168,6 +168,24 @@
       font-weight: bold;
     }
 
+    .firma_cliente{
+      display: flex;
+      flex-direction: column;
+    }
+
+    .firmas__line{
+      height: 1px;
+      margin-top: 50px;
+      background-color: black;
+    }
+
+    .secction__firmas{
+      display: flex;
+      justify-content: space-evenly;
+      width: 55%;
+      font-size: 12px;
+    }
+
 
 
   </style>
@@ -251,7 +269,18 @@
     </span>
   </section>
   <section class="observaciones top_border">
-    <img src="https://firebasestorage.googleapis.com/v0/b/gpo-maya.appspot.com/o/firmas.png?alt=media&token=c1471ce2-be3d-4c58-9727-a36b5de2af47"/>
+    <!-- <img src="https://firebasestorage.googleapis.com/v0/b/gpo-maya.appspot.com/o/firmas.png?alt=media&token=c1471ce2-be3d-4c58-9727-a36b5de2af47"/> -->
+    <div class="secction__firmas">
+      <div class="firma_cliente">
+        <span class="firmas__line"></span>
+        <span>Nombre y Firma de quien aporta</span>
+      </div>
+
+      <div class="firma_cliente">
+        <span class="firmas__line"></span>
+        <span>Nombre y firma de quien Recibe</span>
+      </div>
+    </div>  
     <div class="comentarios">
       <ul>
         <li>

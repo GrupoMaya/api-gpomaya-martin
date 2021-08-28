@@ -168,6 +168,9 @@ module.exports = {
   addPagoToLote: async ({ body }, res) => {
     
     try {
+      const numeroConsecutivo = await MayaService.consecutivoMensualidad(body)
+      console.log({ numeroConsecutivo })
+
       const payload = await MayaService.addPagoToLote(body)  
       if (!payload) throw new Error('no se pudo guardar el pago')
       return res.status(200).json({ message: payload })
@@ -239,7 +242,7 @@ module.exports = {
     }
   },
   createInvoice: async (req, res) => {
-
+    
     const browser = await puppeteer.launch({
       args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu'],
       headless: true
@@ -248,7 +251,10 @@ module.exports = {
     const page = await browser.newPage()
     try {
 
-      const getPDFdata = await MayaService.createInvoice(req.body, req.query)
+      const getSettings = await MayaService.settingsGetData()
+      console.log({ getSettings })
+
+      const getPDFdata = await MayaService.createInvoice(req.body, req.query, getSettings)
       await page.setContent(getPDFdata)
 
       const pdf = await page.pdf({
@@ -283,6 +289,38 @@ module.exports = {
     } catch (error) {
       return res.status(400).json({ message: error })
     }
-  }
+  },
+  settingsAppSave: async ({ body }, res) => {
+    
+    try {
+      const mutation = await MayaService.settingsAppSave(body)
+      if (!mutation) throw new Error('No se puedo guardar tu registro')
 
+      return res.status(200).json({ message: mutation })
+    } catch (error) {
+      return res.status(400).json({ message: error })
+    }
+  },
+  settingsGetData: async ({ body }, res) => {
+    
+    try {
+      const query = await MayaService.settingsGetData(body)
+      if (query.length === 0) throw new Error('Error servidor')
+
+      return res.status(200).json({ message: query })
+    } catch (error) {
+      return res.status(400).json({ message: error })
+    }
+  },
+  settingsAppPatch: async ({ body }, res) => {
+    
+    try {
+      const query = await MayaService.settingsAppPatch(body)
+      if (query.length === 0) throw new Error('Error servidor')
+
+      return res.status(200).json({ message: query })
+    } catch (error) {
+      return res.status(400).json({ message: error })
+    }
+  }
 }

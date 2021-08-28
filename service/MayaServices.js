@@ -1,4 +1,4 @@
-const { Proyecto, Clientes, Lotes, Pagos } = require('../models')
+const { Proyecto, Clientes, Lotes, Pagos, Settings } = require('../models')
 const mongoose = require('mongoose')
 const { NumerosaLetras, dateIntlRef, monyIntlRef } = require('../util/numerosLetas')
 
@@ -379,7 +379,7 @@ module.exports = {
     const query = await Pagos.findByIdAndUpdate(idPago, body)
     return query
   },
-  createInvoice: async (body, query) => {
+  createInvoice: async (body, query, getSettings) => {
 
     const { mensualidad, dataClient, fechaPago, dataLote, mes, ctaBancaria, banco, refBanco, dataProject } = body
 
@@ -415,16 +415,16 @@ module.exports = {
           justify-content: center;
           font-family: Arial, Helvetica, sans-serif;
         }
-    
+
         .logo{
           width: 200px;
           height: auto;
         }
-    
+
         .container{
           width: 800px;
         }
-    
+
         .header{
           padding: 10px;
           width: 100%;
@@ -432,17 +432,17 @@ module.exports = {
           flex-direction: column;
           align-items: center;
         }
-    
+
         .header *{
           margin: 0;
           padding: 0;
           line-height: normal;
         }
-    
+
         .under__line{
           text-decoration: underline;
         }
-    
+
         .header > h2{
           font-weight: normal;
           font-size: 21px;
@@ -457,47 +457,47 @@ module.exports = {
           box-sizing: border-box;
           font-size: 13px;
           line-height: 16px;
-    
+
         }
-    
+
         .datos__cliente span{
           display: flex;
           padding: 12px;
         }
-    
+
         .datos__cliente span:first-child{
           margin: 21px 20% 0 0;
           text-transform: uppercase;
         }
-    
+
         .datos__cliente > div span:first-child{
           margin: 1px;
-    
+
         }
-    
+
         .datos__cliente span p:first-child{
           font-weight: bold;
           margin-right: 10px;
           align-items: flex-start;
         }
-    
+
         .datos__invoice{
           height: fit-content;
           width: 100%;
           margin: 21px 0;
           
         }
-    
+
         .tabla__pagos{
           padding: 0;
           border-collapse: collapse;
         }
-    
+
         .tabla__pagos thead{
           background-color: #5c5c5c;
           font-size: 12px;  
         }
-    
+
         .tabla__pagos thead th{
           width: 160px;
           padding: 2px;
@@ -505,15 +505,15 @@ module.exports = {
           border: 2px solid black;
           
         }
-    
+
         .tabla__pagos tbody td{
           text-align: center;
         }
-    
+
         .tabla__pagos tbody td:nth-child(2){
           text-align: left;
         }
-    
+
         .observaciones{
           font-size: 13px;
           border: 2px solid black;
@@ -521,26 +521,26 @@ module.exports = {
           display: flex;
           justify-content: space-between;
         }
-    
+
         .observaciones p:first-child{
           font-weight: bold;
           margin: 10px;
         }
-    
+
         .top_border{
           border-top: transparent;
           border-bottom: 2px solid black;
           display: flex;
           flex-direction: column;
         }
-    
+
         .linea__total{
           margin-top: 80px;
           margin-right: 2px;
           border-top: 2px solid black;
           width: 240px;
         } 
-    
+
         .total__numeros{
           display: flex;
           justify-content: space-between;
@@ -553,101 +553,141 @@ module.exports = {
           object-fit: contain;
           margin-left: 40px;
         }
-    
+
         .comentarios{
           display: flex;
           flex-direction: column;
         }
-    
+
         .comentarios li{
           margin: 15px;
         }
-    
+
         .font_blue{
           color: blue;
           font-weight: bold;
         }
-    
+
         .font_red{
           color: red;
           font-weight: bold;
         }
-        
+
+        .firma_cliente{
+          display: flex;
+          flex-direction: column;
+        }
+
+        .firmas__line{
+          height: 1px;
+          margin-top: 50px;
+          background-color: black;
+        }
+
+        .secction__firmas{
+          display: flex;
+          justify-content: space-evenly;
+          width: 55%;
+          font-size: 12px;
+        }
+
+
+
       </style>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>RECIBO DE PAGO</title>
     </head>
     <body>
     <div class="container">
-    
+
       <section class="header">
         <img src="https://firebasestorage.googleapis.com/v0/b/gpo-maya.appspot.com/o/logo.png?alt=media&token=31e8e01e-09ff-4d9d-a73b-688b5506743f" alt="logo de la empresa grupo maya es una piramide y el mar" class="logo">    
-          <h2>XAVIER JULIANO NIETO VARGAS</h2>
-            <p>RFC:NIVX7704159Y2</p>
-            <p>Av. Playa Mocambo 768 Bis Mz. 24 Lt. 4</p>
-            <p>Municipio de Solidaridad, Ciudad Playa del Carmen, Quintana Roo</p>
+          <h2>${getSettings[0].razonSocial}</h2>
+            <p>RFC:${getSettings[0].rfc}</p>
+            <p>${getSettings[0].direccion}</p>
+            <p>${getSettings[0].ciudad}</p>
             <h1 class="under__line">RECIBO DE PAGO</h1>
       </section>
-    
+
       <section class="datos__cliente">
+      <span>
+        <p>RECIBI DE:</p>
+        <p>${dataClient[0].nombre}</p>
+      </span>
+      <div>
         <span>
-          <p>RECIBI DE:</p>
-          <p>${dataClient[0].nombre}</p>
+          <p>Fecha:</p>
+          <p>${lafecha}</p>
         </span>
-        <div>
-          <span>
-            <p>Fecha:</p>
-            <p>${lafecha}</p>
-          </span>
-          <span>
-            <p>Folio:</p>
-            <p>4326</p>
-          </span>
-        </div>
-      </section>
-      <section class="datos__invoice">
-        <table class="tabla__pagos">
-          <thead>
-            <th>Cantidad</th>
-            <th>Descripción</th>
-            <th>Descuento</th>
-            <th>Precio unitario</th>
-            <th>Importe</th>
-          </thead>
-          <tbody>
-            <td>
-              <p>1.0</p>
-            </td>
-            <td>
-              <p>
-                ${textoDescription}
-              </p>
-            </td>
-            <td>
-              <p>0.0%</p>
-            </td>
-            <td>
-              <p>${precioMensualidad}</p> 
-            </td>
-            <td>
-              <p>${precioMensualidad}</p> 
-            </td>
-          </tbody>
-        </table>
-    
-      </section>
+        <span>
+          <p>Folio:</p>
+          <p>4326</p>
+        </span>
+      </div>
+    </section>
+    <section class="datos__invoice">
+      <table class="tabla__pagos">
+        <thead>
+          <th>Cantidad</th>
+          <th>Descripción</th>
+          <th>Descuento</th>
+          <th>Precio unitario</th>
+          <th>Importe</th>
+        </thead>
+        <tbody>
+          <td>
+            <p>1.0</p>
+          </td>
+          <td>
+            <p>
+              ${textoDescription}
+            </p>
+          </td>
+          <td>
+            <p>0.0%</p>
+          </td>
+          <td>
+            <p>${precioMensualidad}</p> 
+          </td>
+          <td>
+            <p>${precioMensualidad}</p> 
+          </td>
+        </tbody>
+      </table>
+
+    </section>
+    <section class="observaciones">
+      <p>IMPORTE CON LETRA <br/>${letrasToTexto}</p>
+      <span>
+        <div class="linea__total"/>
+        <span class="total__numeros">
+          <p>TOTAL</p>
+          <p>${precioMensualidad}</p>
+        </span> 
+      </span>
+    </section>
       <section class="observaciones">
-        <p>IMPORTE CON LETRA <br/>${letrasToTexto}</p>
+        <p>IMPORTE CON LETRA <br/> DOS MIL NOVECIENTOS SETENTA PESOS 00/100 M.N.</p>
         <span>
           <div class="linea__total"/>
           <span class="total__numeros">
             <p>TOTAL</p>
-            <p>${precioMensualidad}</p>
+            <p>$2,970.00</p>
           </span> 
         </span>
       </section>
       <section class="observaciones top_border">
-        <img src="https://firebasestorage.googleapis.com/v0/b/gpo-maya.appspot.com/o/firmas.png?alt=media&token=c1471ce2-be3d-4c58-9727-a36b5de2af47"/>
+        <div class="secction__firmas">
+          <div class="firma_cliente">
+            <span class="firmas__line"></span>
+            <span>Nombre y Firma de quien aporta</span>
+          </div>
+
+          <div class="firma_cliente">
+            <span class="firmas__line"></span>
+            <span>Nombre y firma de quien Recibe</span>
+          </div>
+        </div>  
         <div class="comentarios">
           <ul>
             <li>
@@ -661,7 +701,7 @@ module.exports = {
       </section>
       </div>
     </body>
-    </html>    
+    </html>
     `
     return webTemplate
 
@@ -684,5 +724,51 @@ module.exports = {
 
     return responseQuery
 
+  },
+  settingsAppSave: (body) => new Settings(body).save(),
+  settingsGetData: async () => await Settings.find(),
+  consecutivoMensualidad: async (body) => {
+
+    console.log(body.cliente)
+
+    const agg = [
+      {
+        $match: {
+          cliente: mongoose.Types.ObjectId(body.cliente)
+        }
+      }, {
+        $match: {
+          proyecto: mongoose.Types.ObjectId(body.proyecto)
+        }
+      }, {
+        $match: {
+          lote: mongoose.Types.ObjectId(body.lote)
+        }
+      }, {
+        $match: {
+          tipoPago: 'mensualidad'
+        }
+      }, {
+        $count: 'Numpagos'
+      }, {
+        $project: {
+          Numpagos: 1
+        }
+      }
+    ]
+
+    const numeroMensualidadConsecutive = await new Promise((resolve) => {
+      resolve(
+        Pagos.aggregate(agg)
+      )
+    })
+      .then(res => console.log(res))
+      .catch(err => console.log(err))
+    
+    return await Promise.all([numeroMensualidadConsecutive])
+      .then(res => console.log(res))
+  },
+  settingsAppPatch: ({ _id, ...restOfdata }) => {
+    return Settings.findByIdAndUpdate(_id, restOfdata)
   }
 }

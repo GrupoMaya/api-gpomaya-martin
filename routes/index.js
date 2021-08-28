@@ -67,6 +67,11 @@ router.post('/api/v1/pdf', MayaController.createInvoice)
 // Routes de busqueda de niños
 router.get('/api/v1/search', MayaController.findUser)
 
+// Settings SaveData 
+router.post('/api/v1/settingsapp', MayaController.settingsAppSave)
+router.get('/api/v1/settingsapp/get', MayaController.settingsGetData)
+router.patch('/api/v1/settingsapp/dataInfo', MayaController.settingsAppPatch)
+
 // TODO CLERAR RUTA DE PAGOS POR CLIENTE Y PROJECTO
 // insertamos por query el id del cliente
 router.get('/api/v1/pagos/:idProject', MayaController.getPagosByProject)
