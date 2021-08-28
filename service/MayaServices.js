@@ -666,16 +666,6 @@ module.exports = {
         </span> 
       </span>
     </section>
-      <section class="observaciones">
-        <p>IMPORTE CON LETRA <br/> DOS MIL NOVECIENTOS SETENTA PESOS 00/100 M.N.</p>
-        <span>
-          <div class="linea__total"/>
-          <span class="total__numeros">
-            <p>TOTAL</p>
-            <p>$2,970.00</p>
-          </span> 
-        </span>
-      </section>
       <section class="observaciones top_border">
         <div class="secction__firmas">
           <div class="firma_cliente">
