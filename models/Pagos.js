@@ -14,7 +14,7 @@ const PagosSchema = new Schema({
     default: true,
     required: false
   },
-  numeropago: {
+  folio: {
     type: Number
   },
   status: {

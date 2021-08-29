@@ -1,4 +1,4 @@
-const { Proyecto, Clientes, Lotes, Pagos, Settings } = require('../models')
+const { Proyecto, Clientes, Lotes, Pagos, Settings, Documents } = require('../models')
 const mongoose = require('mongoose')
 const { NumerosaLetras, dateIntlRef, monyIntlRef } = require('../util/numerosLetas')
 
@@ -70,8 +70,8 @@ module.exports = {
   createCLient: async (payload) => {
     return new Clientes(payload).save()
   },
+  // añadir lote a nuevo usuario y se crean los documentos para llevar control de los consecutivos
   assignLoteToNewUser: async (payload, params) => {
-
     const { idProyecto } = params
 
     const dataUser = {
@@ -91,7 +91,8 @@ module.exports = {
         enganche: payload.enganche,
         financiamiento: payload.financiamiento,
         plazo: payload.plazo,
-        mensualidad: payload.mensualidad
+        mensualidad: payload.mensualidad,
+        inicioContrato: payload.inicioContrato
       }
 
       const res = await new Promise((resolve) => {
@@ -108,8 +109,67 @@ module.exports = {
       })
       .then(res => res)
 
+    // creamos los folios de documentos
+    const docMensualidad = async (payload) => {
+      const mutation = await new Promise((resolve) => {
+        resolve(
+          Documents({ 
+            cliente: payload.cliente.toString(),
+            proyecto: payload.proyecto.toString(),
+            lote: payload._id,
+            tipoDocumento: 'mensualidad'
+          }).save()
+        )
+      })
+        .then(res => res)
+
+      return mutation
+    }
+
+    const docExtra = async (payload) => {
+      const mutation = await new Promise((resolve) => {
+        resolve(
+          Documents({ 
+            cliente: payload.cliente.toString(),
+            proyecto: payload.proyecto.toString(),
+            lote: payload._id,
+            tipoDocumento: 'extra'
+          }).save()
+        )
+      })
+        .then(res => res)
+
+      return mutation
+    }
+
+    const docAcreditado = async (payload) => {
+      const mutation = await new Promise((resolve) => {
+        resolve(
+          Documents({ 
+            cliente: payload.cliente.toString(),
+            proyecto: payload.proyecto.toString(),
+            lote: payload._id,
+            tipoDocumento: 'acreditado'
+          }).save()
+        )
+      })
+        .then(res => res)
+
+      return mutation
+    }
+
     const data = Promise.all([dataUserPromise])
-      .then(res => res[0])
+      .then(async (res) => {
+
+        const doc = res[0]
+        
+        await docMensualidad(doc)
+        await docExtra(doc)
+        await docAcreditado(doc)
+
+        return doc
+
+      })
 
     return await data
 
@@ -381,7 +441,7 @@ module.exports = {
   },
   createInvoice: async (body, query, getSettings) => {
 
-    const { mensualidad, dataClient, fechaPago, dataLote, mes, ctaBancaria, banco, refBanco, dataProject } = body
+    const { mensualidad, dataClient, fechaPago, dataLote, mes, ctaBancaria, banco, refBanco, dataProject, folio } = body
 
     const letrasToTexto = NumerosaLetras(mensualidad)
     const precioMensualidad = monyIntlRef(+mensualidad)
@@ -391,7 +451,7 @@ module.exports = {
      * el folio y el numero de mensualidad debe salir del length de pedidos
      */
     const textoDescription = `
-    Mensualidad 28 de ${dataLote[0].plazo}
+    Mensualidad ${folio} de ${dataLote[0].plazo}
     correspondiente al mes
     de ${dateIntlRef(mes, 'medium')} / Proyecto: ${dataProject[0].title}
     / Lote: ${dataLote[0].lote} / 
@@ -717,46 +777,61 @@ module.exports = {
   },
   settingsAppSave: (body) => new Settings(body).save(),
   settingsGetData: async () => await Settings.find(),
+
+  // añadir pago con mumero consecutivo
+  // TODO añadir dentro de la logica un SALDO INICIAL
   consecutivoMensualidad: async (body) => {
 
-    console.log(body.cliente)
-
-    const agg = [
+    const filter = [
       {
         $match: {
-          cliente: mongoose.Types.ObjectId(body.cliente)
+          tipoDocumento: body.tipoPago
         }
-      }, {
-        $match: {
-          proyecto: mongoose.Types.ObjectId(body.proyecto)
-        }
-      }, {
+      }, 
+      {
         $match: {
           lote: mongoose.Types.ObjectId(body.lote)
-        }
-      }, {
-        $match: {
-          tipoPago: 'mensualidad'
-        }
-      }, {
-        $count: 'Numpagos'
-      }, {
-        $project: {
-          Numpagos: 1
         }
       }
     ]
 
-    const numeroMensualidadConsecutive = await new Promise((resolve) => {
-      resolve(
-        Pagos.aggregate(agg)
-      )
-    })
-      .then(res => console.log(res))
-      .catch(err => console.log(err))
+    const folioFunction = async () => {
+      const query = await new Promise((resolve) => {
+        resolve(
+          Documents.aggregate(filter)
+        )
+      }).then(async (res) => {
+        const id = res[0]._id
+        const folio = res[0].folio
+        return await Documents.findByIdAndUpdate(id, { folio: folio + 1 })
+
+      })
+
+      return query 
+    }
+
+    const folio = folioFunction()
+
+    const addPagoClient = async (payload) => {
+      const mutation = await new Promise((resolve) => {
+        resolve(
+          Pagos(payload).save()
+        )
+      })
+        .then(res => res)
+        .catch(error => console.log(error, '1'))
+
+      return mutation
+    }
     
-    return await Promise.all([numeroMensualidadConsecutive])
-      .then(res => console.log(res))
+    return await Promise.all([folio])
+      .then(async (res) => {
+        const folio = res[0].folio
+        return await addPagoClient({ ...body, folio })
+      })
+      .then(res => res)
+      .catch(error => console.log(error, 2))
+
   },
   settingsAppPatch: ({ _id, ...restOfdata }) => {
     return Settings.findByIdAndUpdate(_id, restOfdata)

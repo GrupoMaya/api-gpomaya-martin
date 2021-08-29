@@ -44,8 +44,7 @@ module.exports = {
     }
   },
   addCliente: async (req, res) => {
-    const { body } = req
-  
+    const { body } = req  
     try {
 
       // buscamos si existe el documento
@@ -165,15 +164,10 @@ module.exports = {
     }
 
   },
-  addPagoToLote: async ({ body }, res) => {
-    
+  addPagoToLote: async ({ body }, res) => {  
     try {
-      const numeroConsecutivo = await MayaService.consecutivoMensualidad(body)
-      console.log({ numeroConsecutivo })
-
-      const payload = await MayaService.addPagoToLote(body)  
-      if (!payload) throw new Error('no se pudo guardar el pago')
-      return res.status(200).json({ message: payload })
+      const mutation = await MayaService.consecutivoMensualidad(body)
+      return res.status(200).json({ message: mutation })
 
     } catch (error) {
       return res.status(400).json({ message: error })
@@ -252,8 +246,6 @@ module.exports = {
     try {
 
       const getSettings = await MayaService.settingsGetData()
-      console.log({ getSettings })
-
       const getPDFdata = await MayaService.createInvoice(req.body, req.query, getSettings)
       await page.setContent(getPDFdata)
 
