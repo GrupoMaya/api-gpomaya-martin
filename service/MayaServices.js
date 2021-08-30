@@ -175,6 +175,7 @@ module.exports = {
 
   },
   assignLote: async (payload, { idProyecto }) => {
+
     const datalote = {
       proyecto: idProyecto,
       cliente: payload.idUser,
@@ -187,6 +188,55 @@ module.exports = {
       mensualidad: payload.mensualidad
     }
 
+    // creamos los folios de documentos
+    const docMensualidad = async (payload) => {
+      const mutation = await new Promise((resolve) => {
+        resolve(
+          Documents({ 
+            cliente: payload.cliente.toString(),
+            proyecto: payload.proyecto.toString(),
+            lote: payload._id,
+            tipoDocumento: 'mensualidad'
+          }).save()
+        )
+      })
+        .then(res => res)
+
+      return mutation
+    }
+
+    const docExtra = async (payload) => {
+      const mutation = await new Promise((resolve) => {
+        resolve(
+          Documents({ 
+            cliente: payload.cliente.toString(),
+            proyecto: payload.proyecto.toString(),
+            lote: payload._id,
+            tipoDocumento: 'extra'
+          }).save()
+        )
+      })
+        .then(res => res)
+
+      return mutation
+    }
+
+    const docAcreditado = async (payload) => {
+      const mutation = await new Promise((resolve) => {
+        resolve(
+          Documents({ 
+            cliente: payload.cliente.toString(),
+            proyecto: payload.proyecto.toString(),
+            lote: payload._id,
+            tipoDocumento: 'acreditado'
+          }).save()
+        )
+      })
+        .then(res => res)
+
+      return mutation
+    }
+
     const newLote = new Promise((resolve) => {
       resolve(
         new Lotes(datalote).save()
@@ -194,7 +244,17 @@ module.exports = {
     })
 
     return Promise.all([newLote])
-      .then(res => res)
+      .then(async (res) => {
+        
+        const doc = res[0]
+
+        await docMensualidad(doc)
+        await docExtra(doc)
+        await docAcreditado(doc)
+
+        return doc
+
+      })
   },
   // todos los lotes con nombre de usuario del proyecto
   getAllLotesByProyectId: async (idProyecto) => {
@@ -804,7 +864,6 @@ module.exports = {
         const id = res[0]._id
         const folio = res[0].folio
         return await Documents.findByIdAndUpdate(id, { folio: folio + 1 })
-
       })
 
       return query 
