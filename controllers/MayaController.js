@@ -67,6 +67,7 @@ module.exports = {
   assignLoteToNewUser: async (req, res) => {
 
     const { body, params } = req
+
     try {
       // buscamos si existe el documento
       const isExsit = await MayaService.findMailCliente(body.email)
@@ -311,6 +312,18 @@ module.exports = {
       if (query.length === 0) throw new Error('Error servidor')
 
       return res.status(200).json({ message: query })
+    } catch (error) {
+      return res.status(400).json({ message: error })
+    }
+  },
+  getClienteDetailById: async ({ params }, res) => {
+
+    const { id } = params
+    
+    try {
+      const dataInfo = await MayaService.getClienteDetailById(id)
+      return res.status(200).json({ message: dataInfo })
+
     } catch (error) {
       return res.status(400).json({ message: error })
     }

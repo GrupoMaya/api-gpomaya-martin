@@ -894,5 +894,31 @@ module.exports = {
   },
   settingsAppPatch: ({ _id, ...restOfdata }) => {
     return Settings.findByIdAndUpdate(_id, restOfdata)
+  },
+  getClienteDetailById: async (id) => {    
+    const agg = [
+      {
+        $match: {
+          _id: mongoose.Types.ObjectId(id)
+        }
+      }, {
+        $lookup: {
+          from: 'lotes', 
+          localField: '_id', 
+          foreignField: 'cliente', 
+          as: 'Lotes'
+        }
+      }
+    ]
+
+    const cliente = await new Promise((resolve) => {
+      resolve(
+        Clientes.aggregate(agg)
+      )
+    }).then(res => res)
+
+    return Promise.all([cliente])
+      .then(res => res[0])
+    
   }
 }

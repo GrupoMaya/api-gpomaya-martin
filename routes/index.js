@@ -78,5 +78,6 @@ router.get('/api/v1/pagos/:idProject', MayaController.getPagosByProject)
 
 // ruta completa de cliente, 
 // lotes activos, pagos realizados
+router.get('/api/v1/detail/client/:id', MayaController.getClienteDetailById)
 
 module.exports = router
