@@ -30,4 +30,8 @@ cuando se crea un lote, generan sus documentos de "padre":
 <br/>
 
 Es cuando entra el endpoint de add pago, ya que busca el documento padre del tipo de pago y genera el consecutivo siguiente. 
+<br/>
+*** 
+En caso de agregar un nuevo documento padre hay que agregarlo en assignLote y assignLoteToNewUser
 
+***

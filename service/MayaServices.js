@@ -254,6 +254,22 @@ module.exports = {
       return mutation
     }
 
+    const docSaldoInicial = async (payload) => {
+      const mutation = await new Promise((resolve) => {
+        resolve(
+          Documents({ 
+            cliente: payload.cliente.toString(),
+            proyecto: payload.proyecto.toString(),
+            lote: payload._id,
+            tipoDocumento: 'saldoinicial'
+          }).save()
+        )
+      })
+        .then(res => res)
+
+      return mutation
+    }
+
     const newLote = new Promise((resolve) => {
       resolve(
         new Lotes(datalote).save()
@@ -268,6 +284,7 @@ module.exports = {
         await docMensualidad(doc)
         await docExtra(doc)
         await docAcreditado(doc)
+        await docSaldoInicial(doc)
 
         return doc
 
