@@ -874,7 +874,7 @@ module.exports = {
 
   // añadir pago con mumero consecutivo
   // TODO añadir dentro de la logica un SALDO INICIAL
-  consecutivoMensualidad: async (body) => {
+  consecutivoMensualidad: async (body) => {   
 
     const filter = [
       {
@@ -895,9 +895,20 @@ module.exports = {
           Documents.aggregate(filter)
         )
       }).then(async (res) => {
-        const id = res[0]._id
-        const folio = res[0].folio
-        return await Documents.findByIdAndUpdate(id, { folio: folio + 1 })
+        const id = res[0]?._id
+        const folio = res[0]?.folio        
+
+        if (body.folioincial) {
+          // cuando es saldo inicial buscamos el documento por lote y le sumamos el folio que tiene como inicial de lo cotrario recuperamos el folio de la ultima mensualidad y le sumamos 1
+          return await Documents.findOneAndUpdate({ lote: body.lote, tipoDocumento: 'mensualidad' }, { folio: +body.folioincial })
+            .then(res => res)
+            .catch(err => err)
+
+        } else if (!body.folioincial) {          
+          return await Documents.findByIdAndUpdate(id, { folio: folio + 1 })
+            .then(res => res)
+            .catch(err => err)
+        }
       })
 
       return query 
