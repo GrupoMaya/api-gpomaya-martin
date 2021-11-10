@@ -6,6 +6,7 @@ module.exports = {
   register: () => {},
   addProyecto: async (req, res) => {
     const { body } = req
+    console.log({ body })
     try {
 
       const proyectoExist = await MayaService.getProyectoByName(body?.title)
@@ -17,6 +18,7 @@ module.exports = {
       }
 
     } catch (error) {
+      console.log(error)
       return res.status(400).json({ error })
     }
   },
@@ -71,6 +73,7 @@ module.exports = {
     try {
       // buscamos si existe el documento
       const isExsit = await MayaService.findMailCliente(body.email)
+      console.log({ isExsit })
       if (isExsit.length > 0) throw new Error('El usuario ya existe')
  
       // creamos el usaurio

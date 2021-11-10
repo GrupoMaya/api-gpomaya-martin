@@ -366,7 +366,7 @@ module.exports = {
   findMailCliente: async ({ email }) => {
     const query = await new Promise((resolve) => {
       resolve(
-        Clientes.find({ email })
+        Clientes.findOne({ email })
       )
     }).then(res => res)
     return query 
