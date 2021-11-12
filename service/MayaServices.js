@@ -556,6 +556,8 @@ module.exports = {
     ${dateIntlRef(fechaPago, 'medium')}
     `
 
+    const hmtltextoObservaciones = textoObservaciones ? textoObservaciones : ''
+
     const webTemplate = `
     <!DOCTYPE html>
     <html lang="en">
@@ -843,7 +845,7 @@ module.exports = {
     </section>
     <div>
       <p>
-        ${textoObservaciones && textoObservaciones}
+        ${hmtltextoObservaciones}
       </p>  
     </div>
     <section class="observaciones">
