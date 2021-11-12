@@ -843,7 +843,7 @@ module.exports = {
     </section>
     <div>
       <p>
-        ${textoObservaciones}
+        ${textoObservaciones && textoObservaciones}
       </p>  
     </div>
     <section class="observaciones">
