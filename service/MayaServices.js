@@ -535,7 +535,7 @@ module.exports = {
   },
   createInvoice: async (body, query, getSettings) => {
 
-    const { mensualidad, dataClient, fechaPago, dataLote, mes, ctaBancaria, banco, refBanco, dataProject, folio } = body
+    const { mensualidad, dataClient, fechaPago, dataLote, mes, ctaBancaria, banco, refBanco, dataProject, folio, textoObservaciones } = body
 
     const letrasToTexto = NumerosaLetras(mensualidad)
     const precioMensualidad = monyIntlRef(+mensualidad)
@@ -569,16 +569,16 @@ module.exports = {
           justify-content: center;
           font-family: Arial, Helvetica, sans-serif;
         }
-
+    
         .logo{
           width: 200px;
           height: auto;
         }
-
+    
         .container{
           width: 800px;
         }
-
+    
         .header{
           padding: 10px;
           width: 100%;
@@ -586,17 +586,17 @@ module.exports = {
           flex-direction: column;
           align-items: center;
         }
-
+    
         .header *{
           margin: 0;
           padding: 0;
           line-height: normal;
         }
-
+    
         .under__line{
           text-decoration: underline;
         }
-
+    
         .header > h2{
           font-weight: normal;
           font-size: 21px;
@@ -611,47 +611,47 @@ module.exports = {
           box-sizing: border-box;
           font-size: 13px;
           line-height: 16px;
-
+    
         }
-
+    
         .datos__cliente span{
           display: flex;
           padding: 12px;
         }
-
+    
         .datos__cliente span:first-child{
           margin: 21px 20% 0 0;
           text-transform: uppercase;
         }
-
+    
         .datos__cliente > div span:first-child{
           margin: 1px;
-
+    
         }
-
+    
         .datos__cliente span p:first-child{
           font-weight: bold;
           margin-right: 10px;
           align-items: flex-start;
         }
-
+    
         .datos__invoice{
           height: fit-content;
           width: 100%;
           margin: 21px 0;
           
         }
-
+    
         .tabla__pagos{
           padding: 0;
           border-collapse: collapse;
         }
-
+    
         .tabla__pagos thead{
           background-color: #5c5c5c;
           font-size: 12px;  
         }
-
+    
         .tabla__pagos thead th{
           width: 160px;
           padding: 2px;
@@ -659,15 +659,15 @@ module.exports = {
           border: 2px solid black;
           
         }
-
+    
         .tabla__pagos tbody td{
           text-align: center;
         }
-
+    
         .tabla__pagos tbody td:nth-child(2){
           text-align: left;
         }
-
+    
         .observaciones{
           font-size: 13px;
           border: 2px solid black;
@@ -675,26 +675,26 @@ module.exports = {
           display: flex;
           justify-content: space-between;
         }
-
+    
         .observaciones p:first-child{
           font-weight: bold;
           margin: 10px;
         }
-
+    
         .top_border{
           border-top: transparent;
           border-bottom: 2px solid black;
           display: flex;
           flex-direction: column;
         }
-
+    
         .linea__total{
           margin-top: 80px;
           margin-right: 2px;
           border-top: 2px solid black;
           width: 240px;
         } 
-
+    
         .total__numeros{
           display: flex;
           justify-content: space-between;
@@ -707,53 +707,84 @@ module.exports = {
           object-fit: contain;
           margin-left: 40px;
         }
-
+    
         .comentarios{
           display: flex;
           flex-direction: column;
         }
-
+    
         .comentarios li{
           margin: 15px;
         }
-
+    
         .font_blue{
           color: blue;
           font-weight: bold;
         }
-
+    
         .font_red{
           color: red;
           font-weight: bold;
         }
-
+    
         .firma_cliente{
           display: flex;
           flex-direction: column;
         }
-
+    
         .firmas__line{
           height: 1px;
-          margin-top: 50px;
-          background-color: black;
+          margin-top: 50px;      
+          border-top: 2px solid black;
         }
-
+    
+        .firmas__line p{
+          position: absolute;
+          width: 100%;
+          bottom: -15px;
+          left: 200px;
+          padding: 20px;
+          text-decoration: underline;      
+        }
+    
         .secction__firmas{
+          position: relative;
           display: flex;
           justify-content: space-evenly;
           width: 55%;
           font-size: 12px;
         }
-
-
-
+    
+        .sello{
+          width: 100px !important;
+          height: auto;
+          position: absolute;
+          bottom: 70px;
+          left: 250px;
+          z-index: 2;
+        }
+    
+        .firmaXavier{
+          background-image: url('https://firebasestorage.googleapis.com/v0/b/gpo-maya.appspot.com/o/firmaXAVIER.jpg?alt=media&token=eff2fa13-0833-4809-bdb0-6fd0687d26fb');      
+          background-repeat: no-repeat;
+          background-position: center;
+          position: absolute;
+          bottom: 10px;
+          left: 250px;
+          width: 80px;
+          height: 80px;
+          z-index: 1;
+        }
+    
+    
+    
       </style>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>RECIBO DE PAGO</title>
     </head>
     <body>
     <div class="container">
-
+    
       <section class="header">
         <img src="https://firebasestorage.googleapis.com/v0/b/gpo-maya.appspot.com/o/logo.png?alt=media&token=31e8e01e-09ff-4d9d-a73b-688b5506743f" alt="logo de la empresa grupo maya es una piramide y el mar" class="logo">    
           <h2>${getSettings[0].razonSocial}</h2>
@@ -762,7 +793,7 @@ module.exports = {
             <p>${getSettings[0].ciudad}</p>
             <h1 class="under__line">RECIBO DE PAGO</h1>
       </section>
-
+    
       <section class="datos__cliente">
       <span>
         <p>RECIBI DE:</p>
@@ -808,8 +839,13 @@ module.exports = {
           </td>
         </tbody>
       </table>
-
+    
     </section>
+    <div>
+      <p>
+        ${textoObservaciones}
+      </p>  
+    </div>
     <section class="observaciones">
       <p>IMPORTE CON LETRA <br/>${letrasToTexto}</p>
       <span>
@@ -826,9 +862,17 @@ module.exports = {
             <span class="firmas__line"></span>
             <span>Nombre y Firma de quien aporta</span>
           </div>
-
-          <div class="firma_cliente">
-            <span class="firmas__line"></span>
+    
+          <div class="firma_cliente">        
+            <img 
+              class="sello"
+              src="https://firebasestorage.googleapis.com/v0/b/gpo-maya.appspot.com/o/pagado.jpg?alt=media&token=07847cf9-51ff-4726-8394-df95102e6649" 
+              alt="sello de pagado"
+            />
+            <span class="firmas__line">
+              <p>Xavier Juliano Nieto Vargas</p>
+            </span>
+            <span class="firmaXavier"></span>        
             <span>Nombre y firma de quien Recibe</span>
           </div>
         </div>  

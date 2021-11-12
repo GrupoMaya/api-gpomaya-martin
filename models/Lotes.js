@@ -19,7 +19,7 @@ const LotesSchema = new Schema({
   }],
   lote: {
     type: String,
-    required: true    
+    required: true
   },
   manzana: {
     type: String,

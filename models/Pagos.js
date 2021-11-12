@@ -65,6 +65,10 @@ const PagosSchema = new Schema({
   refBanco: {
     type: String,
     require: true
+  },
+  textoObservaciones: {
+    type: String,
+    require: false
   }
 
 }, { timestamps: true })
