@@ -69,6 +69,10 @@ const PagosSchema = new Schema({
   textoObservaciones: {
     type: String,
     require: false
+  },
+  extraSlug: {
+    type: String,
+    require: false
   }
 
 }, { timestamps: true })
