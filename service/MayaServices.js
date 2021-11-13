@@ -547,7 +547,7 @@ module.exports = {
     const htmlextraSlug = extraSlug || 'Mensualidad'
 
     const textoDescription = `
-    ${htmlextraSlug} ${folio} de ${dataLote[0].plazo}
+    ${htmlextraSlug} ${folio || '1'} de ${dataLote[0].plazo}
     correspondiente al mes
     de ${dateIntlRef(mes, 'medium')} / Proyecto: ${dataProject[0].title}
     / Lote: ${dataLote[0].lote} / 
