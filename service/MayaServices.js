@@ -575,11 +575,11 @@ module.exports = {
     const firmaMartin = `
     <img 
       class="sello"
-      // src="https://firebasestorage.googleapis.com/v0/b/gpo-maya.appspot.com/o/pagado.jpg?alt=media&token=07847cf9-51ff-4726-8394-df95102e6649" 
+      src="https://firebasestorage.googleapis.com/v0/b/gpo-maya.appspot.com/o/pagado.jpg?alt=media&token=07847cf9-51ff-4726-8394-df95102e6649" 
       alt="sello de pagado"
     />
     <span class="firmas__line">
-      <p>Xavier Juliano Nieto Vargas</p>
+      <p>MARTIN ERNESTO SANCHEZ MANJARREZ</p>
     </span>
     <span class="firmaXavier"></span>        
     <span>Nombre y firma de quien Recibe</span>
@@ -898,7 +898,7 @@ module.exports = {
           </div>
     
           <div class="firma_cliente">        
-            ${htmlOwnersFirma[getSettings[0].slug]}
+            ${htmlOwnersFirma[`${getSettings[0].slug}`]}
           </div>
         </div>  
         <div class="comentarios">

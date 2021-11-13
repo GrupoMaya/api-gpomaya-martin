@@ -22,6 +22,10 @@ const SettingsSchema = new Schema({
   representante: {
     type: String,
     required: false
+  },
+  slug: {
+    enum: ['xavier', 'martin'],
+    type: String  
   }
 
 }, { timestamps: true })
