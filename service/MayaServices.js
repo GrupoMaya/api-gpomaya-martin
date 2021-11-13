@@ -545,6 +545,7 @@ module.exports = {
      * el folio y el numero de mensualidad debe salir del length de pedidos
      */
     const htmlextraSlug = extraSlug || 'Mensualidad'
+    const hmtltextoObservaciones = textoObservaciones || ''
 
     const textoDescription = `
     ${htmlextraSlug} ${folio || '1'} de ${dataLote[0].plazo}
@@ -558,7 +559,36 @@ module.exports = {
     ${dateIntlRef(fechaPago, 'medium')}
     `
 
-    const hmtltextoObservaciones = textoObservaciones || ''
+    const firmaXavier = `
+    <img 
+      class="sello"
+      src="https://firebasestorage.googleapis.com/v0/b/gpo-maya.appspot.com/o/pagado.jpg?alt=media&token=07847cf9-51ff-4726-8394-df95102e6649" 
+      alt="sello de pagado"
+    />
+    <span class="firmas__line">
+      <p>Xavier Juliano Nieto Vargas</p>
+    </span>
+    <span class="firmaXavier"></span>        
+    <span>Nombre y firma de quien Recibe</span>
+    `
+
+    const firmaMartin = `
+    <img 
+      class="sello"
+      // src="https://firebasestorage.googleapis.com/v0/b/gpo-maya.appspot.com/o/pagado.jpg?alt=media&token=07847cf9-51ff-4726-8394-df95102e6649" 
+      alt="sello de pagado"
+    />
+    <span class="firmas__line">
+      <p>Xavier Juliano Nieto Vargas</p>
+    </span>
+    <span class="firmaXavier"></span>        
+    <span>Nombre y firma de quien Recibe</span>
+    `
+
+    const htmlOwnersFirma = {
+      xavier: firmaXavier,
+      martin: firmaMartin
+    }
 
     const webTemplate = `
     <!DOCTYPE html>
@@ -868,16 +898,7 @@ module.exports = {
           </div>
     
           <div class="firma_cliente">        
-            <img 
-              class="sello"
-              src="https://firebasestorage.googleapis.com/v0/b/gpo-maya.appspot.com/o/pagado.jpg?alt=media&token=07847cf9-51ff-4726-8394-df95102e6649" 
-              alt="sello de pagado"
-            />
-            <span class="firmas__line">
-              <p>Xavier Juliano Nieto Vargas</p>
-            </span>
-            <span class="firmaXavier"></span>        
-            <span>Nombre y firma de quien Recibe</span>
+            ${htmlOwnersFirma[getSettings[0].slug]}
           </div>
         </div>  
         <div class="comentarios">
