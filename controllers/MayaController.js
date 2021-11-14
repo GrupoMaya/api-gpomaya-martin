@@ -330,5 +330,17 @@ module.exports = {
     } catch (error) {
       return res.status(400).json({ message: error })
     }
+  },
+  loteById: async ({ params }, res) => {
+    const { id } = params
+
+    try {
+      const loteInfo = await MayaService.loteById(id)
+      return res.status(200).json({ message: loteInfo })
+    } catch (error) {
+      return res.status(400).json({ message: error })      
+    }
+
   }
+
 }

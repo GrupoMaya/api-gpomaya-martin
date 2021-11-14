@@ -47,7 +47,9 @@ const LotesSchema = new Schema({
   },
   inicioContrato: {
     type: Date,
-    required: false
+    required: false,
+    default: Date.now
+
   },
   // aqui se guardara la cantidad de pagos que tiene 
   total_pagos: {

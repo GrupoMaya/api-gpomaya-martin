@@ -23,6 +23,9 @@ router.post('/api/v1/add/cliente', MayaController.addCliente)
 // lotes por id de cliente
 router.get('/api/v1/lotes/cliente/:id', MayaController.lotesByIdCliente)
 
+// lote por id
+router.get('/api/v1/lote/:id', MayaController.loteById)
+
 // buscar cliente
 router.get('/api/v1/search/cliente', MayaController.findCliente)
 
@@ -79,5 +82,8 @@ router.get('/api/v1/pagos/:idProject', MayaController.getPagosByProject)
 // ruta completa de cliente, 
 // lotes activos, pagos realizados
 router.get('/api/v1/detail/client/:id', MayaController.getClienteDetailById)
+
+// UDPATES
+// router.patch('/api/v1/update/:docType/:_id', MayaController.updateLoteById)
 
 module.exports = router

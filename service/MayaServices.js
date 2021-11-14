@@ -1034,5 +1034,31 @@ module.exports = {
     return Promise.all([cliente])
       .then(res => res[0])
     
+  },
+  loteById: async (id) => {
+    console.log(id)
+    const lote = await new Promise((resolve) => {
+      resolve(
+        Lotes.aggregate()
+          .match({ _id: mongoose.Types.ObjectId(id) })
+          .project({
+            _id: 0,
+            precioTotal: 1,
+            enganche: 1,
+            mensualidad: 1,
+            plazo: 1,
+            inicioContrato: 1,
+            financiamiento: 1,
+            lote: 1,
+            manzanas: 1
+          })
+      )
+    }).then(res => res[0])
+
+    return Promise.all([lote])
+      .then(res => {
+        console.log(res[0])
+        return res[0]
+      })
   }
 }
