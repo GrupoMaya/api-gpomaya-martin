@@ -341,6 +341,17 @@ module.exports = {
       return res.status(400).json({ message: error })      
     }
 
+  },
+  updateLoteById: async ({ body }, res) => {
+    const { id } = body
+
+    try {
+      const loteInfo = await MayaService.updateLoteById(id, body)
+      return res.status(200).json({ message: loteInfo })
+    } catch (error) {
+      return res.status(400).json({ message: error })      
+    }
+
   }
 
 }

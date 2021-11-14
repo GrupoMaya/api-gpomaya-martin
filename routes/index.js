@@ -84,6 +84,6 @@ router.get('/api/v1/pagos/:idProject', MayaController.getPagosByProject)
 router.get('/api/v1/detail/client/:id', MayaController.getClienteDetailById)
 
 // UDPATES
-// router.patch('/api/v1/update/:docType/:_id', MayaController.updateLoteById)
+router.patch('/api/v1/update/lote/:_id', MayaController.updateLoteById)
 
 module.exports = router

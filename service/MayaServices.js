@@ -1060,5 +1060,15 @@ module.exports = {
         console.log(res[0])
         return res[0]
       })
+  },
+  updateLoteById: async (id, body) => {
+    const lote = await new Promise((resolve) => {
+      resolve(
+        Lotes.findByIdAndUpdate(id, body)
+      )
+    }).then(res => res)
+
+    return Promise.all([lote])
+      .then(res => res[0])
   }
 }
