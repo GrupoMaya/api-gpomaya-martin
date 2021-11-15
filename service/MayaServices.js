@@ -544,11 +544,11 @@ module.exports = {
      * TODO 
      * el folio y el numero de mensualidad debe salir del length de pedidos
      */
-    const htmlextraSlug = extraSlug || 'Mensualidad'
+    const htmlextraSlug = extraSlug || `Mensualidad ${folio || '1'}`
     const hmtltextoObservaciones = textoObservaciones || ''
 
     const textoDescription = `
-    ${htmlextraSlug} ${folio || '1'} de ${dataLote[0].plazo}
+    ${htmlextraSlug} de ${dataLote[0].plazo}
     correspondiente al mes
     de ${dateIntlRef(mes, 'medium')} / Proyecto: ${dataProject[0].title}
     / Lote: ${dataLote[0].lote} / 
