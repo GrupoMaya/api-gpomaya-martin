@@ -548,8 +548,7 @@ module.exports = {
     const hmtltextoObservaciones = textoObservaciones || refPago
 
     const textoDescription = `
-    ${htmlextraSlug}
-    correspondiente al mes
+    ${htmlextraSlug} correspondiente al mes
     de ${dateIntlRef(mes, 'medium')} / Proyecto: ${dataProject[0].title}
     / Lote: ${dataLote[0].lote} / 
     Pago recibido en la cuenta bancaria 
