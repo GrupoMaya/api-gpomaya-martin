@@ -550,7 +550,7 @@ module.exports = {
     const textoDescription = `
     ${htmlextraSlug} correspondiente al mes
     de ${dateIntlRef(mes, 'medium')} / Proyecto: ${dataProject[0].title}
-    / Lote: ${dataLote[0].lote} / 
+    / Lote / Fraccion: ${dataLote[0].lote} / 
     Pago recibido en la cuenta bancaria 
     ${ctaBancaria} del Banco
     ${banco} con número de
