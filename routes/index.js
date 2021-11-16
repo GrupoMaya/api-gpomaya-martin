@@ -57,6 +57,9 @@ router.post('/api/v1/lote/pago', MayaController.addPagoToLote)
 // todos los pagos de cliente por proyecto
 router.get('/api/v1/cliente/pagos/:clienteId', MayaController.getPagosByClienteAndProject)
 
+// todos los pagos por id
+router.get('/api/v1/get/pago/:id', MayaController.getPagosById)
+
 // generar estadisitcas de pago del cliente por proyecto
 router.get('/api/v1/status/payment/lote/:loteId', MayaController.statusPaymentByLoteId)
 
@@ -84,6 +87,10 @@ router.get('/api/v1/pagos/:idProject', MayaController.getPagosByProject)
 router.get('/api/v1/detail/client/:id', MayaController.getClienteDetailById)
 
 // UDPATES
-router.patch('/api/v1/update/lote/:_id', MayaController.updateLoteById)
+// update lote
+router.patch('/api/v1/update/lote/:id', MayaController.updateLoteById)
+
+// update pago
+router.patch('/api/v1/update/pago/:id', MayaController.updatePagoById)
 
 module.exports = router
