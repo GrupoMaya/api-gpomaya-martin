@@ -1040,8 +1040,7 @@ module.exports = {
       resolve(
         Lotes.aggregate()
           .match({ _id: mongoose.Types.ObjectId(id) })
-          .project({
-            _id: 0,
+          .project({            
             precioTotal: 1,
             enganche: 1,
             mensualidad: 1,
@@ -1055,8 +1054,7 @@ module.exports = {
     }).then(res => res[0])
 
     return Promise.all([lote])
-      .then(res => {
-        console.log(res[0])
+      .then(res => {        
         return res[0]
       })
   },
@@ -1068,6 +1066,37 @@ module.exports = {
     }).then(res => res)
 
     return Promise.all([lote])
+      .then(res => res[0])
+  },
+  getPagosById: async (id) => {
+    const pagos = await new Promise((resolve) => {
+      resolve(
+        Pagos.aggregate()
+          .match({ _id: mongoose.Types.ObjectId(id) })
+          .project({
+            _id: 1,
+            refPago: 1,
+            mensualidad: 1,
+            ctaBancaria: 1,
+            banco: 1,
+            tipoPago: 1,
+            fechaPago: 1,
+            extraSlug: 1
+          })
+      )
+    }).then(res => res[0])
+
+    return Promise.all([pagos])
+      .then(res => res[0])
+  },
+  updatePagoById: async (id, body) => {
+    const pago = await new Promise((resolve) => {
+      resolve(
+        Pagos.findByIdAndUpdate(id, body)
+      )
+    }).then(res => res)
+
+    return Promise.all([pago])
       .then(res => res[0])
   }
 }

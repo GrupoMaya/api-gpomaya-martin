@@ -342,11 +342,33 @@ module.exports = {
     }
 
   },
-  updateLoteById: async ({ body }, res) => {
-    const { id } = body
-
+  updateLoteById: async ({ params, body }, res) => {
+    const { id } = params
     try {
       const loteInfo = await MayaService.updateLoteById(id, body)
+      return res.status(200).json({ message: loteInfo })
+    } catch (error) {
+      return res.status(400).json({ message: error })      
+    }
+
+  },
+  getPagosById: async ({ params }, res) => {
+    const { id } = params
+
+    console.log(id)
+
+    try {
+      const loteInfo = await MayaService.getPagosById(id)
+      return res.status(200).json({ message: loteInfo })
+    } catch (error) {
+      return res.status(400).json({ message: error })      
+    }
+
+  },
+  updatePagoById: async (req, res) => {
+    const { id } = req.params    
+    try {
+      const loteInfo = await MayaService.updatePagoById(id, req.body)
       return res.status(200).json({ message: loteInfo })
     } catch (error) {
       return res.status(400).json({ message: error })      
