@@ -535,7 +535,7 @@ module.exports = {
   },
   createInvoice: async (body, query, getSettings) => {
 
-    const { mensualidad, dataClient, fechaPago, dataLote, mes, ctaBancaria, banco, refBanco, dataProject, folio, textoObservaciones, extraSlug } = body
+    const { mensualidad, dataClient, fechaPago, dataLote, mes, ctaBancaria, banco, refBanco, dataProject, folio, textoObservaciones, extraSlug, refPago } = body
 
     const letrasToTexto = NumerosaLetras(mensualidad)
     const precioMensualidad = monyIntlRef(+mensualidad)
@@ -545,7 +545,7 @@ module.exports = {
      * el folio y el numero de mensualidad debe salir del length de pedidos
      */
     const htmlextraSlug = extraSlug || `Mensualidad ${folio || '1'} de ${dataLote[0].plazo}`
-    const hmtltextoObservaciones = textoObservaciones || ''
+    const hmtltextoObservaciones = textoObservaciones || refPago
 
     const textoDescription = `
     ${htmlextraSlug}
