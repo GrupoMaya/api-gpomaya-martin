@@ -539,7 +539,7 @@ module.exports = {
 
     const letrasToTexto = NumerosaLetras(mensualidad)
     const precioMensualidad = monyIntlRef(+mensualidad)
-    const lafecha = dateIntlRef(fechaPago, 'full')
+    const lafecha = dateIntlRef({ date: fechaPago })
     /**
      * TODO 
      * el folio y el numero de mensualidad debe salir del length de pedidos
@@ -549,13 +549,13 @@ module.exports = {
 
     const textoDescription = `
     ${htmlextraSlug} correspondiente al mes
-    de ${dateIntlRef(mes, 'medium')} / Proyecto: ${dataProject[0].title}
+    de ${dateIntlRef({ date: fechaPago, type: 'month' }).toUpperCase()} / Proyecto: ${dataProject[0].title}
     / Lote / Fraccion: ${dataLote[0].lote} / 
     Pago recibido en la cuenta bancaria 
     ${ctaBancaria} del Banco
     ${banco} con número de
     referencia ${refBanco} en
-    ${dateIntlRef(fechaPago, 'medium')}
+    ${dateIntlRef({ date: fechaPago })}
     `
 
     const firmaXavier = `
