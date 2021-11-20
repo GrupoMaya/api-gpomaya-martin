@@ -549,7 +549,7 @@ module.exports = {
 
     const textoDescription = `
     ${htmlextraSlug} correspondiente al mes
-    de ${dateIntlRef({ date: fechaPago, type: 'month' }).toUpperCase()} / Proyecto: ${dataProject[0].title}
+    de ${dateIntlRef({ date: mes, type: 'month' }).toUpperCase()} / Proyecto: ${dataProject[0].title}
     / Lote / Fraccion: ${dataLote[0].lote} / 
     Pago recibido en la cuenta bancaria 
     ${ctaBancaria} del Banco
@@ -1081,7 +1081,8 @@ module.exports = {
             banco: 1,
             tipoPago: 1,
             fechaPago: 1,
-            extraSlug: 1
+            extraSlug: 1,
+            mes: 1
           })
       )
     }).then(res => res[0])
