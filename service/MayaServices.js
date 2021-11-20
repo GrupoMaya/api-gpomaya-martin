@@ -537,6 +537,8 @@ module.exports = {
 
     const { mensualidad, dataClient, fechaPago, dataLote, mes, ctaBancaria, banco, refBanco, dataProject, folio, textoObservaciones, extraSlug, refPago } = body
 
+    console.log(dataLote)
+
     const letrasToTexto = NumerosaLetras(mensualidad)
     const precioMensualidad = monyIntlRef(+mensualidad)
     const lafecha = dateIntlRef({ date: fechaPago })
@@ -546,11 +548,12 @@ module.exports = {
      */
     const htmlextraSlug = extraSlug || `Mensualidad ${folio || '1'} de ${dataLote[0].plazo}`
     const hmtltextoObservaciones = textoObservaciones || refPago
+    const htmlManzana = dataLote[0].manzana !== '' && dataLote[0].manzana !== null ? `Manzana ${dataLote[0].manzana}` : ''
 
     const textoDescription = `
     ${htmlextraSlug} correspondiente al mes
     de ${dateIntlRef({ date: mes, type: 'month' }).toUpperCase()} / Proyecto: ${dataProject[0].title}
-    / Lote / Fraccion: ${dataLote[0].lote} / 
+    / Lote / Fraccion: ${dataLote[0].lote} ${htmlManzana} / 
     Pago recibido en la cuenta bancaria 
     ${ctaBancaria} del Banco
     ${banco} con número de
