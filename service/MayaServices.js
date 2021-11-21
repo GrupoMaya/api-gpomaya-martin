@@ -1022,7 +1022,7 @@ module.exports = {
           from: 'lotes', 
           localField: '_id', 
           foreignField: 'cliente', 
-          as: 'Lotes'
+          as: 'lotes'
         }
       }
     ]
@@ -1033,8 +1033,8 @@ module.exports = {
       )
     }).then(res => res)
 
-    return Promise.all([cliente])
-      .then(res => res[0])
+    return Promise.all(cliente)
+      .then(async ([res]) => res)
     
   },
   loteById: async (id) => {
@@ -1102,5 +1102,30 @@ module.exports = {
 
     return Promise.all([pago])
       .then(res => res[0])
+  },
+  getNamesById: async (id, documentType) => {
+    const Model = () => {
+      switch (documentType) {
+        case 'Proyecto':
+          return Proyecto          
+        case 'Lote':
+          return Lotes
+        case 'Cliente':
+          return Clientes 
+        case 'Pagos':
+          return Pagos
+      }
+    }
+    
+    const documentInfo = new Promise((resolve) => {
+      resolve(
+        Model().findOne({ _id: mongoose.Types.ObjectId(id) })
+      )
+    })
+      .then(res => res)
+      .catch(err => err)
+
+    return Promise.all([documentInfo])
+
   }
 }

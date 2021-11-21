@@ -374,6 +374,18 @@ module.exports = {
       return res.status(400).json({ message: error })      
     }
 
-  }
+  },
+  getNamesById: async ({ params }, res) => {
+    const { id, documentType } = params
 
+    try {
+      const infoValues = await MayaService.getNamesById(id, documentType)
+      if (!infoValues) throw new Error('No hay datos con ese id')
+
+      return res.status(200).json({ message: infoValues })
+
+    } catch (error) {
+      return res.status(400).json({ message: error })
+    }
+  }
 }

@@ -17,6 +17,9 @@ router.get('/api/v1/proyectos', MayaController.getAllProyectos)
 // projecto por id
 router.get('/api/v1/proyecto/:id', MayaController.getProyectoById)
 
+// nombre proyecto por id
+router.get('/api/v1/getnames/:documentType/:id', MayaController.getNamesById)
+
 // clientes
 router.post('/api/v1/add/cliente', MayaController.addCliente)
 
