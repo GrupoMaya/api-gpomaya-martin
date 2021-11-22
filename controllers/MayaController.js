@@ -88,7 +88,7 @@ module.exports = {
 
   },
   assignLote: async (req, res) => {
-    const { body, params } = req
+    const { body, params } = req   
 
     try {
       const mutate = await MayaService.assignLote(body, params)

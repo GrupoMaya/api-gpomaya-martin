@@ -202,7 +202,8 @@ module.exports = {
       enganche: payload.enganche,
       financiamiento: payload.financiamiento,
       plazo: payload.plazo,
-      mensualidad: payload.mensualidad
+      mensualidad: payload.mensualidad,
+      inicioContrato: payload.inicioContrato
     }
 
     // creamos los folios de documentos
