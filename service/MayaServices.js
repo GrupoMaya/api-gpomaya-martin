@@ -1127,5 +1127,23 @@ module.exports = {
 
     return Promise.all([documentInfo])
 
+  },
+  masiveUpdateCliente: async (body) => {
+
+    const updateDocument = (cliente) => {
+      return new Promise((resolve) => {
+        resolve(
+          Clientes.findOneAndUpdate({ email: cliente.email }, cliente)
+        )
+      })
+        .then(res => res)
+        .catch(err => console.log(err))
+    }      
+
+    return Promise.all(body.map(async (cliente) => await updateDocument(cliente)))
+      .then(res => {
+        console.log(res)
+        return res
+      })
   }
 }
