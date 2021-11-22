@@ -387,5 +387,15 @@ module.exports = {
     } catch (error) {
       return res.status(400).json({ message: error })
     }
+  },
+  masiveUpdateCliente: async ({ body }, res) => {
+    try {
+      const response = await MayaService.masiveUpdateCliente(body)
+      if (!response) throw new Error('No se puedo actualizar')
+
+      return res.status(200).json({ message: response })
+    } catch (error) {
+      return res.status(400).json({ message: error })
+    }
   }
 }

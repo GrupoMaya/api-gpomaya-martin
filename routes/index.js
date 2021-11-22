@@ -7,6 +7,7 @@ router.use(express.json({ extended: true }))
 const { MayaController } = require('../controllers')
 
 router.post('/api/v1/login', MayaController.login)
+
 router.post('/api/v1/register', MayaController.register)
 
 router.post('/api/v1/add/proyecto', MayaController.addProyecto)
@@ -95,5 +96,8 @@ router.patch('/api/v1/update/lote/:id', MayaController.updateLoteById)
 
 // update pago
 router.patch('/api/v1/update/pago/:id', MayaController.updatePagoById)
+
+// MASIVE UPDATE CLIENTE 
+router.patch('/api/v1/masive/update/cliente', MayaController.masiveUpdateCliente)
 
 module.exports = router
