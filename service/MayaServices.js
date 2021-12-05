@@ -1147,5 +1147,15 @@ module.exports = {
         console.log(res)
         return res
       })
+  },
+  modifyCliente: async (id, body) => {
+    const cliente = await new Promise((resolve) => {
+      resolve(
+        Clientes.findByIdAndUpdate(id, body)
+      )
+    }).then(res => res)
+
+    return Promise.all([cliente])
+      .then(res => res[0])
   }
 }
