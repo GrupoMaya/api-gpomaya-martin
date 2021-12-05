@@ -6,6 +6,7 @@ module.exports = {
   addProyecto: async (payload) => {
     return new Proyecto(payload).save()
   },
+  getAllClientes: async () => Clientes.find({ isActive: true }),
   // 
   getAllProyectos: async () => {
 
