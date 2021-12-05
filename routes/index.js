@@ -39,6 +39,9 @@ router.get('/api/v1/search/email/cliente', MayaController.findMailCliente)
 // todos los clientes
 router.get('/api/v1/cliente', MayaController.getAllClientes)
 
+// modificar nombre cliente
+router.patch('/api/v1/modify/cliente/:id', MayaController.modifyCliente)
+
 // clientes por id
 router.get('/api/v1/cliente/:id', MayaController.getClienteById)
 
