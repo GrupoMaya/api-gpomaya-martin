@@ -101,7 +101,15 @@ module.exports = {
     }
 
   },
-  getAllClientes: () => {},
+  getAllClientes: async (req, res) => {
+    try {
+      const allClientes = await MayaService.getAllClientes()
+      if (!allClientes) throw new Error('Error al leer los datos de la base de datos')
+      return res.status(200).json({ message: allClientes })
+    } catch (error) {
+      return res.status(400).json({ error })
+    }
+  },
   getClienteById: async (req, res) => {
 
     try {
