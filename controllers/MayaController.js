@@ -51,15 +51,9 @@ module.exports = {
 
       // buscamos si existe el documento
       const isExsit = await MayaService.findMailCliente(body.email)
-      if (isExsit) throw new Error('El usuario ya existe')
+      if (isExsit !== null) throw new Error('El usuario ya existe')
 
       const payload = await MayaService.createCLient(body)
-        .catch(error => {
-          if (error) {
-            throw new Error('Error en la creacion del documento')
-          }
-        })
-
       return res.status(200).json({ message: payload })
 
     } catch (error) {
@@ -67,16 +61,15 @@ module.exports = {
     }
   },
   assignLoteToNewUser: async (req, res) => {
-
+    // este metodo se ocupa para guardar el nuevo cliente a un nuevo lote
     const { body, params } = req
 
     try {
       // buscamos si existe el documento
-      const isExsit = await MayaService.findMailCliente(body.email)
-      console.log({ isExsit })
-      if (isExsit.length > 0) throw new Error('El usuario ya existe')
+      const isExsit = await MayaService.findMailCliente(body)      
+      if (isExsit !== null) throw new Error('El usuario ya existe')
  
-      // creamos el usaurio
+      // creamos el usuario y lote
       const payload = await MayaService.assignLoteToNewUser(body, params)      
       if (!payload) throw new Error('Error en la asignacion del documento')
 
