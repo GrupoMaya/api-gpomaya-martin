@@ -366,11 +366,17 @@ module.exports = {
 
   },
   findMailCliente: async ({ email }) => {
+  
     const query = await new Promise((resolve) => {
       resolve(
-        Clientes.findOne({ email })
+        Clientes.aggregate().match({ email })
       )
-    }).then(res => res)
+    }).then(res => {
+      if (res.length === 0) {
+        return null
+      }
+      return res 
+    })
     return query 
   },
   getClienteById: async (id) => {
