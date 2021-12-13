@@ -103,4 +103,7 @@ router.patch('/api/v1/update/pago/:id', MayaController.updatePagoById)
 // MASIVE UPDATE CLIENTE 
 router.patch('/api/v1/masive/update/cliente', MayaController.masiveUpdateCliente)
 
+// morosos routes
+router.get('/api/v1/morosos', MayaController.getMorosos)
+
 module.exports = router
