@@ -1206,7 +1206,13 @@ module.exports = {
             foreignField: '_id', 
             as: 'lote_data'
           }
-        }, {
+        },
+        {
+          $sort: {
+            mes: -1
+          }
+        },
+        {
           $limit: 1
         }
       ]
