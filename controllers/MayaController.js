@@ -410,5 +410,15 @@ module.exports = {
     } catch (error) {
       return res.status(400).json({ message: error })
     }
+  },
+  getMorosos: async (req, res) => {
+    try {
+      const allMorososo = await MayaService.getMorosos()
+      if (!allMorososo) throw new Error('on morososo finder')
+
+      return res.status(200).json({ message: allMorososo })
+    } catch (error) {
+      return res.status(400).json({ error: 'Error get morosos' })
+    }
   }
 }

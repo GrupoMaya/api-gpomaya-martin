@@ -544,9 +544,7 @@ module.exports = {
   createInvoice: async (body, query, getSettings) => {
 
     const { mensualidad, dataClient, fechaPago, dataLote, mes, ctaBancaria, banco, refBanco, dataProject, folio, textoObservaciones, extraSlug, refPago } = body
-
-    console.log(dataLote)
-
+   
     const letrasToTexto = NumerosaLetras(mensualidad)
     const precioMensualidad = monyIntlRef(+mensualidad)
     const lafecha = dateIntlRef({ date: fechaPago })
@@ -1045,8 +1043,7 @@ module.exports = {
       .then(async ([res]) => res)
     
   },
-  loteById: async (id) => {
-    console.log(id)
+  loteById: async (id) => {    
     const lote = await new Promise((resolve) => {
       resolve(
         Lotes.aggregate()
@@ -1149,8 +1146,7 @@ module.exports = {
     }      
 
     return Promise.all(body.map(async (cliente) => await updateDocument(cliente)))
-      .then(res => {
-        console.log(res)
+      .then(res => {        
         return res
       })
   },
@@ -1163,5 +1159,85 @@ module.exports = {
 
     return Promise.all([cliente])
       .then(res => res[0])
+  },
+  getMorosos: async () => {
+
+    const today = new Date().getTime()
+
+    // todos los clientes
+    const promiseClients = Promise.resolve(
+      Clientes.find()
+    ).then(res => res)
+
+    const allClients = await promiseClients
+
+    // por cada cliete ejecutamos el ultimo pago
+    const getLastPaymenByID = async (id) => {
+
+      const agg = [
+        {
+          $match: {
+            cliente: mongoose.Types.ObjectId(id)
+          }
+        },
+        {
+          $match: {
+            tipoPago: 'mensualidad'
+          }
+        },        
+        {
+          $lookup: {
+            from: 'clientes', 
+            localField: 'cliente', 
+            foreignField: '_id', 
+            as: 'cliente_data'
+          }
+        }, {
+          $lookup: {
+            from: 'proyectos', 
+            localField: 'proyecto', 
+            foreignField: '_id', 
+            as: 'proyecto_data'
+          }
+        }, {
+          $lookup: {
+            from: 'lotes', 
+            localField: 'lote', 
+            foreignField: '_id', 
+            as: 'lote_data'
+          }
+        }, {
+          $limit: 1
+        }
+      ]
+
+      return await Promise.resolve(
+        Pagos.aggregate(agg)
+      )
+        .then(res => res)
+    }    
+
+    return Promise.all(allClients.map(async (item) => await getLastPaymenByID(item._id)))
+      .then(res => {
+        const allPayments = res.flat()
+        const pagos30 = Object.values(allPayments)
+          .filter(({ mes }) => {
+            const datePago = new Date(mes).getTime()
+            const diff = Math.ceil((today - datePago) / (24 * 3600 * 1000))
+            //  more than 30 and less 60
+            return diff > 30 && diff < 60
+          })
+
+        const pagos60 = Object.values(allPayments)
+          .filter(({ mes }) => {
+            const datePago = new Date(mes).getTime()
+            const diff = Math.ceil((today - datePago) / (24 * 3600 * 1000))            
+            return diff > 61
+          })
+        
+        return { treinta_dias: pagos30, sesenta_dias: pagos60 }
+      })
+    
   }
+   
 }
