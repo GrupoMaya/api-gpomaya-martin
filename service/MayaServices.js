@@ -1090,6 +1090,7 @@ module.exports = {
             tipoPago: 1,
             fechaPago: 1,
             extraSlug: 1,
+            refBanco: 1,
             mes: 1
           })
       )
