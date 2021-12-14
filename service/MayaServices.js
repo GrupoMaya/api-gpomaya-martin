@@ -49,6 +49,10 @@ module.exports = {
           foreignField: '_id', 
           as: 'clienteData'
         }
+      }, {
+        $sort: {
+          lote: 1
+        }
       }
     ]
 
