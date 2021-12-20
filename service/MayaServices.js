@@ -36,7 +36,8 @@ module.exports = {
   },
   // 
   getProyectoById: async (id) => {
-
+    // mongodb  skip paginate function 
+        
     const agg = [
       {
         $match: {
@@ -1249,6 +1250,32 @@ module.exports = {
         return { treinta_dias: pagos30, sesenta_dias: pagos60 }
       })
     
+  },
+  getLotesByProject: async (id) => {
+
+    console.log(id)
+
+    const agg = [
+      {
+        $match: {
+          _id: mongoose.Types.ObjectId(id)
+        }
+      }, {
+        $lookup: {
+          from: 'lotes', 
+          localField: '_id', 
+          foreignField: 'proyecto', 
+          as: 'lotes'
+        }
+      }
+    ]
+
+    return await Promise.resolve(
+      Proyecto.aggregate(agg)
+    )
+      .then(res => {
+        console.log(res)
+        return res[0].lotes
+      })
   }
-   
 }

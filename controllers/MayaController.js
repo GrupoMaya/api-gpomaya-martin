@@ -5,8 +5,7 @@ module.exports = {
   login: () => {},
   register: () => {},
   addProyecto: async (req, res) => {
-    const { body } = req
-    console.log({ body })
+    const { body } = req    
     try {
 
       const proyectoExist = await MayaService.getProyectoByName(body?.title)
@@ -17,8 +16,7 @@ module.exports = {
         return res.status(200).json({ message: payload })
       }
 
-    } catch (error) {
-      console.log(error)
+    } catch (error) {      
       return res.status(400).json({ error })
     }
   },
@@ -37,7 +35,7 @@ module.exports = {
     const { id } = req.params
     try {
       const payload = await MayaService.getProyectoById(id)
-      if (!payload) throw new Error('Id invalido')
+      if (!payload) throw new Error('Id invalido')      
       
       return res.status(200).json({ message: payload })
 
@@ -354,9 +352,7 @@ module.exports = {
 
   },
   getPagosById: async ({ params }, res) => {
-    const { id } = params
-
-    console.log(id)
+    const { id } = params   
 
     try {
       const loteInfo = await MayaService.getPagosById(id)
@@ -419,6 +415,17 @@ module.exports = {
       return res.status(200).json({ message: allMorososo })
     } catch (error) {
       return res.status(400).json({ error: 'Error get morosos' })
+    }
+  },
+  getLotesByProject: async (req, res) => {
+    try {
+      const { id } = req.params
+      const allLotes = await MayaService.getLotesByProject(id)
+      if (!allLotes) throw new Error('on lotes finder')
+
+      return res.status(200).json({ message: allLotes })
+    } catch (error) {
+      return res.status(400).json({ error: 'Error get lotes' })
     }
   }
 }

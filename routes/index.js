@@ -45,7 +45,7 @@ router.patch('/api/v1/modify/cliente/:id', MayaController.modifyCliente)
 // clientes por id
 router.get('/api/v1/cliente/:id', MayaController.getClienteById)
 
-// todos los lotes por id de proyecto
+// todos los clientes con lote por id de proyecto
 router.get('/api/v1/lotes/proyecto/:idProyecto', MayaController.getAllLotesByProyectId)
 
 // COMPUESTOS
@@ -105,5 +105,8 @@ router.patch('/api/v1/masive/update/cliente', MayaController.masiveUpdateCliente
 
 // morosos routes
 router.get('/api/v1/morosos', MayaController.getMorosos)
+
+// solo lotes por proyecto
+router.get('/api/v1/lotes/:id', MayaController.getLotesByProject)
 
 module.exports = router
