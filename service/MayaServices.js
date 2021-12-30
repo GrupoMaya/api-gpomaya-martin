@@ -598,9 +598,23 @@ module.exports = {
     <span>Nombre y firma de quien Recibe</span>
     `
 
+    const firmaIkai = `
+    <img 
+      class="sello"
+      src="https://firebasestorage.googleapis.com/v0/b/gpo-maya.appspot.com/o/pagado.jpg?alt=media&token=07847cf9-51ff-4726-8394-df95102e6649" 
+      alt="sello de pagado"
+    />
+    <span class="firmas__line">
+      <p>Nazario Tun May </p>
+    </span>
+    <span class="firmaXavier"></span>        
+    <span>Nombre y firma de quien Recibe</span>
+    `
+
     const htmlOwnersFirma = {
       xavier: firmaXavier,
-      martin: firmaMartin
+      martin: firmaMartin,
+      ikai: firmaIkai
     }
 
     const webTemplate = `
@@ -1253,8 +1267,8 @@ module.exports = {
   },
   getLotesByProject: async (id) => {
 
-    console.log(id)
-
+    // make a aggreagation mongo wihit project insisde lookup
+    
     const agg = [
       {
         $match: {
