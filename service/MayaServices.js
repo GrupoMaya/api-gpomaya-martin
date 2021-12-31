@@ -562,14 +562,18 @@ module.exports = {
     const htmlManzana = dataLote[0].manzana !== '' && dataLote[0].manzana !== null ? `Manzana ${dataLote[0].manzana}` : ''
 
     const textoDescription = `
-    ${htmlextraSlug} correspondiente al mes
-    de ${dateIntlRef({ date: mes, type: 'month' }).toUpperCase()} / Proyecto: ${dataProject[0].title}
-    / Lote / Fraccion: ${dataLote[0].lote} ${htmlManzana} / 
-    Pago recibido en la cuenta bancaria 
-    ${ctaBancaria} del Banco
-    ${banco} con número de
-    referencia ${refBanco} en
-    ${dateIntlRef({ date: fechaPago })}
+      ${htmlextraSlug} correspondiente al mes
+      de ${dateIntlRef({ date: mes, type: 'month' }).toUpperCase()}       
+      <br>
+        Proyecto: ${dataProject[0].title}
+      <br>
+        Lote o Fraccion: ${dataLote[0].lote} ${htmlManzana} 
+      <br>      
+      Pago recibido en la cuenta bancaria 
+      ${ctaBancaria} del Banco
+      ${banco} con número de
+      referencia ${refBanco} en
+      ${dateIntlRef({ date: fechaPago })}
     `
 
     const firmaXavier = `
@@ -704,8 +708,28 @@ module.exports = {
         }
     
         .tabla__pagos{
+          width: 100%;
           padding: 0;
           border-collapse: collapse;
+        }
+
+        .tabla__pagos td:first-child {
+            width: 30px;
+            overflow: hidden;
+            display: inline-block;
+            white-space: nowrap;
+        }
+
+        .tabla__pagos td:last-child {
+            width: 120px;
+            overflow: hidden;
+            display: inline-block;
+            white-space: nowrap;
+        }
+
+        .tabla_pagos td{
+          width: 10px;
+          background-color: #e6e6e6;
         }
     
         .tabla__pagos thead{
@@ -713,14 +737,14 @@ module.exports = {
           font-size: 12px;  
         }
     
-        .tabla__pagos thead th{
-          width: 160px;
+        .tabla__pagos thead th{          
           padding: 2px;
           text-align: left;
           border: 2px solid black;
-          
+          color: white;          
         }
-    
+   
+
         .tabla__pagos tbody td{
           text-align: center;
         }
@@ -867,7 +891,7 @@ module.exports = {
         </span>
         <span>
           <p>Folio:</p>
-          <p>4326</p>
+          <p>${folio}</p>
         </span>
       </div>
     </section>
@@ -875,9 +899,7 @@ module.exports = {
       <table class="tabla__pagos">
         <thead>
           <th>Cantidad</th>
-          <th>Descripción</th>
-          <th>Descuento</th>
-          <th>Precio unitario</th>
+          <th>Descripción</th>          
           <th>Importe</th>
         </thead>
         <tbody>
@@ -888,14 +910,8 @@ module.exports = {
             <p>
               ${textoDescription}
             </p>
-          </td>
-          <td>
-            <p>0.0%</p>
-          </td>
-          <td>
-            <p>${precioMensualidad}</p> 
-          </td>
-          <td>
+          </td>          
+          <td class="precio_total">
             <p>${precioMensualidad}</p> 
           </td>
         </tbody>
@@ -942,7 +958,7 @@ module.exports = {
       </div>
     </body>
     </html>
-    `
+    `    
     return webTemplate
 
   },
