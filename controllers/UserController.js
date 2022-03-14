@@ -33,6 +33,7 @@ module.exports = {
 
   login: async (req, res) => {
     const { email, password } = req.body
+    console.log({ email, password })
         
     const errors = {}
     console.log(errors)
@@ -40,6 +41,7 @@ module.exports = {
     try {
 
       const user = await UserService.findUserByEmail(email)
+      console.log(user)
       if (!user) {
         errors.userExist = 'Verifica tus credenciales'
         throw new Error('Input Error', errors)
@@ -58,7 +60,7 @@ module.exports = {
       res.status(200).json({ message: 'Login successful', login: token })
 
     } catch (errors) {
-      console.log('routes error')
+      console.log('routes error', errors)
       res.status(400).json(errors)
     }
 
