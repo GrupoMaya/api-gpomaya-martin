@@ -19,7 +19,25 @@ module.exports = {
         $lookup: {
           from: 'lotes', 
           localField: '_id', 
-          foreignField: 'proyecto', 
+          foreignField: 'proyecto',
+          pipeline: [
+            {
+              $match: { isActive: true }
+            },
+            {
+              $lookup: {
+                from: 'clientes', 
+                localField: 'cliente', 
+                foreignField: '_id',          
+                as: 'clienteData'         
+              }
+            },
+            {
+              $project: {
+                clienteData: 1
+              }
+            }
+          ],
           as: 'activos'
         }
       }
@@ -29,7 +47,7 @@ module.exports = {
       resolve(
         Proyecto.aggregate(agg)
       )
-    }).then(res => res)  
+    }).then(res => res)
 
     return await query
     
@@ -41,13 +59,14 @@ module.exports = {
     const agg = [
       {
         $match: {
-          proyecto: mongoose.Types.ObjectId(id)
+          proyecto: mongoose.Types.ObjectId(id),
+          isActive: true
         }
       }, {
         $lookup: {
           from: 'clientes', 
           localField: 'cliente', 
-          foreignField: '_id', 
+          foreignField: '_id',          
           as: 'clienteData'
         }
       }, {
@@ -64,7 +83,9 @@ module.exports = {
     }).then(res => res)
 
     const resultQuery = await Promise.all([query])
-      .then(res => res[0])
+      .then(res => {
+        return res[0].filter(item => item.clienteData.length > 0)
+      })
     return resultQuery
   },
   // 
@@ -305,7 +326,7 @@ module.exports = {
       const query = await new Promise((resolve) => {
         resolve(
           Lotes.aggregate()
-            .match({ isActive: true })
+            .match({ isActive: false })
             .match({ proyecto: mongoose.Types.ObjectId(idProyecto) })
             .project({ cliente: 1, _id: 0 })
 
