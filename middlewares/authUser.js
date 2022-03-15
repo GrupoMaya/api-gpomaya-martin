@@ -3,9 +3,7 @@ const jwt = require('jsonwebtoken')
 module.exports = {
 
   verifyToken: (req, res, next) => {
-
-    console.log('verifyToken', req, res, next)
-
+    
     try {
 
       const { authorization } = req.headers

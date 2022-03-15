@@ -12,7 +12,7 @@ module.exports = {
       id: user._id,
       email: user.email,
       name: user.name,
-      exp: Math.floor(Date.now() / 1000 + (60 * 60))
+      exp: Math.floor(Date.now() / 1000) + (60 * 60 * 24)      
     }
     try {
       const token = jwt.sign(payload, process.env.JWT_SECRET)
