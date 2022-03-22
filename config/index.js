@@ -13,6 +13,4 @@ const config = {
 
 }
 
-console.log(config[NODE_ENV])
-
 module.exports = config[NODE_ENV]

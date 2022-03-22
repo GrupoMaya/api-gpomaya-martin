@@ -73,6 +73,9 @@ const PagosSchema = new Schema({
   extraSlug: {
     type: String,
     require: false
+  },
+  mensajeRecibo: {
+    type: String
   }
 
 }, { timestamps: true })

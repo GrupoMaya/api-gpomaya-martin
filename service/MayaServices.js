@@ -33,6 +33,9 @@ module.exports = {
               }
             },
             {
+              $unwind: '$clienteData'
+            },
+            {
               $project: {
                 clienteData: 1
               }
@@ -48,7 +51,7 @@ module.exports = {
         Proyecto.aggregate(agg)
       )
     }).then(res => res)
-
+  
     return await query
     
   },
@@ -569,7 +572,8 @@ module.exports = {
   },
   createInvoice: async (body, query, getSettings) => {
 
-    const { mensualidad, dataClient, fechaPago, dataLote, mes, ctaBancaria, banco, refBanco, dataProject, folio, textoObservaciones, extraSlug, refPago } = body
+    const { mensualidad, dataClient, fechaPago, dataLote, mes, ctaBancaria, banco, refBanco, dataProject, folio, textoObservaciones, extraSlug, refPago, mensajeRecibo } = body
+    console.log({ body })
    
     const letrasToTexto = NumerosaLetras(mensualidad)
     const precioMensualidad = monyIntlRef(+mensualidad)
@@ -929,7 +933,7 @@ module.exports = {
           </td>
           <td>
             <p>
-              ${textoDescription}
+              ${mensajeRecibo || textoDescription}
             </p>
           </td>          
           <td class="precio_total">
@@ -1147,7 +1151,8 @@ module.exports = {
             fechaPago: 1,
             extraSlug: 1,
             refBanco: 1,
-            mes: 1
+            mes: 1,
+            mensajeRecibo: 1
           })
       )
     }).then(res => res[0])
