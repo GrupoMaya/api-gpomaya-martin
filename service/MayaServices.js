@@ -1333,5 +1333,9 @@ module.exports = {
         console.log(res)
         return res[0].lotes
       })
+  }, 
+  updateProyectoById: async (id, body) => {
+    const proyecto = await Proyecto.findByIdAndUpdate(id, body)
+    return proyecto
   }
 }

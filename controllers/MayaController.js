@@ -427,5 +427,18 @@ module.exports = {
     } catch (error) {
       return res.status(400).json({ error: 'Error get lotes' })
     }
+  }, 
+  updateProyectoById: async (req, res) => {
+    const { id } = req.params
+    
+    try {
+      const response = await MayaService.updateProyectoById(id, req.body)
+      if (!response) throw new Error('No se puedo actualizar')
+
+      return res.status(200).json({ message: response })
+    } catch (error) {
+      return res.status(400).json({ message: error })
+    }
   }
+    
 }

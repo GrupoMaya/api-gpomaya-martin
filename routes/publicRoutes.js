@@ -109,4 +109,7 @@ router.get('/api/v1/morosos', MayaController.getMorosos)
 // solo lotes por proyecto
 router.get('/api/v1/lotes/:id', MayaController.getLotesByProject)
 
+// editar nombre de proyecto
+router.patch('/api/v1/update/proyecto/:id', MayaController.updateProyectoById)
+
 module.exports = router

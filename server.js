@@ -14,7 +14,10 @@ app.use(express.json({ extended: true }))
 
 mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false })
   .then(() => console.log('Conectado a la base de datos'))
-  .catch(() => console.log('Error en la conexión de la base de datos'))
+  .catch((error) => {
+    console.log(error)
+    return console.log('Error en la conexión de la base de datos')
+  })
 
 //   componente de rutas
 app.use(require('./routes'))
