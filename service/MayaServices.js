@@ -1337,5 +1337,46 @@ module.exports = {
   updateProyectoById: async (id, body) => {
     const proyecto = await Proyecto.findByIdAndUpdate(id, body)
     return proyecto
+  }, 
+  searchRefPagos: async (refPago) => {
+    const agg = [
+      {
+        '$match': {
+          'refBanco': {
+            '$regex': new RegExp(refPago, 'gi')
+          }
+        }
+      },
+      {
+        '$lookup': {
+          'from': 'clientes',
+          'localField': 'cliente',
+          'foreignField': '_id',
+          'as': 'cliente_data'
+        }
+      },
+      {
+        '$lookup': {
+          'from': 'proyectos',
+          'localField': 'proyecto',
+          'foreignField': '_id',
+          'as': 'proyecto_data'          
+        }
+      },
+      {
+        '$lookup': {
+          'from': 'lotes',
+          'localField': 'lote',
+          'foreignField': '_id',
+          'as': 'lote_data'          
+      }
+      }
+    ];
+
+    const pagos = await Pagos.aggregate(agg)
+      .then(res => res)
+      .catch(err => err)
+
+    return pagos
   }
 }

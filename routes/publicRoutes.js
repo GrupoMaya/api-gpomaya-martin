@@ -112,4 +112,7 @@ router.get('/api/v1/lotes/:id', MayaController.getLotesByProject)
 // editar nombre de proyecto
 router.patch('/api/v1/update/proyecto/:id', MayaController.updateProyectoById)
 
+// busqueda de ref de pagos
+router.get('/api/v1/search/ref/pagos', MayaController.searchRefPagos)
+
 module.exports = router

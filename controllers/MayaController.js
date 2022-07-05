@@ -439,6 +439,17 @@ module.exports = {
     } catch (error) {
       return res.status(400).json({ message: error })
     }
+  },
+  searchRefPagos: async (req, res) => {
+    const { ref } = req.query
+    try {
+      const response = await MayaService.searchRefPagos(ref)
+      if (!response) throw new Error('No se puedo actualizar')
+
+      return res.status(200).json({ message: response })
+    } catch (error) {
+      return res.status(400).json({ message: error })
+    }
   }
     
 }
