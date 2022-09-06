@@ -41,10 +41,7 @@ const PagosSchema = new Schema({
     type: String,
     require: false
   },
-  mensualidad: {
-    type: Number,
-    require: true
-  },
+  mensualidad: mongoose.Decimal128,
   ctaBancaria: {
     type: String,
     require: false
