@@ -22,12 +22,16 @@ const DocumentsSchema = new Schema({
   ],
   tipoDocumento: {
     type: String,
-    required: false    
+    required: false
   },
   folio: {
     type: Number,
     default: 1
-  }
+  }, 
+    log: {
+      type: String,
+      required: false
+  },
 
 }, { timestamps: true })
 
