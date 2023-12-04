@@ -575,7 +575,7 @@ module.exports = {
     const { mensualidad, dataClient, fechaPago, dataLote, mes, ctaBancaria, banco, refBanco, dataProject, folio, textoObservaciones, extraSlug, refPago, mensajeRecibo } = body
     const monto = mensualidad.$numberDecimal ? mensualidad.$numberDecimal : mensualidad
 
-    const letrasToTexto = NumerosaLetras(monto)
+    const letrasToTexto = NumerosaLetras(1200)
     const precioMensualidad = monyIntlRef(+monto)
     const lafecha = dateIntlRef({ date: fechaPago })
     /**

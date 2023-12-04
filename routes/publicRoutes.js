@@ -1,10 +1,12 @@
 const express = require('express')
 const router = express.Router()
+const { MayaController, MayaServicesV2 } = require('../controllers')
+const { verifyToken } = require('../middlewares/authUser')
 
 router.use(express.urlencoded({ extended: true }))
 router.use(express.json({ extended: true }))
 
-const { MayaController } = require('../controllers')
+
 
 router.post('/api/v1/login', MayaController.login)
 
@@ -114,5 +116,12 @@ router.patch('/api/v1/update/proyecto/:id', MayaController.updateProyectoById)
 
 // busqueda de ref de pagos
 router.get('/api/v1/search/ref/pagos', MayaController.searchRefPagos)
+
+/// version 2.0
+router.get('/api/v2/lotes/proyecto/:idProyecto', MayaServicesV2.getAllLotesByProyectId)
+router.get('/api/v2/pagos/:idProject', MayaServicesV2.getPagosByProject)
+router.patch('/api/v2/pagos/folio/:idPago', verifyToken, MayaServicesV2.updateFolioPagoById)
+
+
 
 module.exports = router
