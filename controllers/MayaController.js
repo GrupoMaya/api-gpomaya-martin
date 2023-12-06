@@ -238,18 +238,19 @@ module.exports = {
       return res.status(200).json({ message: error })
     }
   },
-  createInvoice: async (req, res) => {
+  createInvoice: async (req, res) => {   
     
     const browser = await puppeteer.launch({
       args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu'],
       headless: true
     })
 
-    const page = await browser.newPage()
+    const page = await browser.newPage()    
     try {
 
       const getSettings = await MayaService.settingsGetData()
       const getPDFdata = await MayaService.createInvoice(req.body, req.query, getSettings)
+      console.log("🚀 ~ file: MayaController.js:253 ~ createInvoice: ~ getPDFdata:", getPDFdata)
       await page.setContent(getPDFdata)
 
       const pdf = await page.pdf({
@@ -270,6 +271,7 @@ module.exports = {
       return res.send(pdf)
       
     } catch (error) {
+      console.log({ error })
       return res.status(400).json({})
     }
   },

@@ -192,8 +192,13 @@ const dateIntlRef = ({ date, locale = 'es-MX', type = 'all' }) => {
     } 
   }
 
-  const dateIntl = new Date(date)
-  return new Intl.DateTimeFormat(locale, { ...dataInteOptions(), timeZone: 'UTC' }).format(dateIntl)
+  const dateIntl = new Date(date)  
+  if (isNaN(dateIntl)) {
+    return new Intl.DateTimeFormat(locale, { ...dataInteOptions(), timeZone: 'UTC' }).format(new Date())
+  } else {
+    return new Intl.DateTimeFormat(locale, { ...dataInteOptions(), timeZone: 'UTC' }).format(dateIntl)
+  }
+
 
 }
 

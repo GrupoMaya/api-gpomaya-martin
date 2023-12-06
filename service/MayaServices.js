@@ -572,10 +572,10 @@ module.exports = {
   },
   createInvoice: async (body, query, getSettings) => {
 
-    const { mensualidad, dataClient, fechaPago, dataLote, mes, ctaBancaria, banco, refBanco, dataProject, folio, textoObservaciones, extraSlug, refPago, mensajeRecibo } = body
-    const monto = mensualidad.$numberDecimal ? mensualidad.$numberDecimal : mensualidad
+    const { mensualidad, dataClient, fechaPago, dataLote, mes, ctaBancaria, banco, refBanco, dataProject, folio, textoObservaciones, extraSlug, refPago, mensajeRecibo } = body    
+    const monto = mensualidad?.$numberDecimal ? mensualidad.$numberDecimal : mensualidad
 
-    const letrasToTexto = NumerosaLetras(1200)
+    const letrasToTexto = NumerosaLetras(monto)
     const precioMensualidad = monyIntlRef(+monto)
     const lafecha = dateIntlRef({ date: fechaPago })
     /**
