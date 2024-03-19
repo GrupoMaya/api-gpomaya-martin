@@ -1,4 +1,6 @@
 const MayaServices = require('../service/MayaServices_v2')
+const XLSX = require('xlsx')
+const fs = require('fs')
 
 module.exports = {
   getAllLotesByProyectId: async (req, res) => {
@@ -37,6 +39,23 @@ module.exports = {
       return res.status(200).json({ message: payload })
 
     } catch (error) {      
+      return res.status(400).json({ error: JSON.stringify(error) })
+    }
+  },
+
+  getClientDetails: async (req, res) => {
+    const { idClient, idProject } = req.params
+    console.log({ idClient, idProject })
+    try {
+      const payload = await MayaServices.getClientDetails(idClient, idProject)      
+      if (!payload) throw new Error(`No se encontraron registos con el id ${idClient}`)
+      const filePath = 'Pagos.xlsx';
+      XLSX.writeFile(payload.workbook, filePath, { type: 'buffer' })
+      
+      const fileStream = fs.createReadStream(filePath)
+      fileStream.pipe(res)      
+      
+    } catch (error) {            
       return res.status(400).json({ error: JSON.stringify(error) })
     }
   }

@@ -249,8 +249,7 @@ module.exports = {
     try {
 
       const getSettings = await MayaService.settingsGetData()
-      const getPDFdata = await MayaService.createInvoice(req.body, req.query, getSettings)
-      console.log("🚀 ~ file: MayaController.js:253 ~ createInvoice: ~ getPDFdata:", getPDFdata)
+      const getPDFdata = await MayaService.createInvoice(req.body, req.query, getSettings)      
       await page.setContent(getPDFdata)
 
       const pdf = await page.pdf({

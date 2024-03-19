@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "NODE_ENV=production node server.js",
-    "dev": "NODE_ENV=production node server.js"
+    "dev": "NODE_ENV=production nodemon server.js"
   },
   "keywords": [],
   "author": "",
@@ -21,7 +21,8 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.13.5",
     "nodemon": "^2.0.12",
-    "puppeteer": "^9.1.1"
+    "puppeteer": "^9.1.1",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "eslint": "^7.32.0",
