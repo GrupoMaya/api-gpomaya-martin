@@ -206,9 +206,9 @@ module.exports = {
     .filter((f) => f.mensualidad)[0].mensualidad.map(p => {
       return {
         fecha: p.mes,
-        mensualidad: p.mensualidad || p["$numberDecimal"],
-        refPago: p.refPago,
         folio: p.folio,
+        mensualidad: p.mensualidad || p.mensualidad["$numberDecimal"],
+        refPago: p.refPago,
         refBanco: p.refBanco,
         ctaBancaria: p.ctaBancaria,
         banco: p.banco,        
