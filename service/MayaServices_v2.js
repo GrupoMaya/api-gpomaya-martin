@@ -166,28 +166,28 @@ module.exports = {
         .filter((f) => f.extra)[0]
         .extra.reduce(
           (acc, pago) =>
-            acc + parseInt(pago?.mensualidad || pago["$numberDecimal"]),
+            acc + parseInt(pago?.mensualidad || p.mensualidad["$numberDecimal"]),
           0
         ),
       mensualidades: pagosByType
         .filter((f) => f.mensualidad)[0]
         .mensualidad.reduce(
           (acc, pago) =>
-            acc + parseInt(pago?.mensualidad || pago["$numberDecimal"]),
+            acc + parseInt(pago?.mensualidad || p.mensualidad["$numberDecimal"]),
           0
         ),
       enganche: pagosByType
         .find((f) => f.saldoinicial)
         .saldoinicial.reduce(
           (acc, pago) =>
-            acc + parseInt(pago?.mensualidad || pago["$numberDecimal"]),
+            acc + parseInt(pago?.mensualidad || p.mensualidad["$numberDecimal"]),
           0
         ),
       acreditados: pagosByType
         .find((f) => f.acreditado)
         .acreditado.reduce(
           (acc, pago) =>
-            acc + parseInt(pago?.mensualidad || pago["$numberDecimal"]),
+            acc + parseInt(pago?.mensualidad || p.mensualidad["$numberDecimal"]),
           0
         ),
     };
@@ -207,7 +207,7 @@ module.exports = {
       return {
         fecha: p.mes,
         folio: p.folio,
-        mensualidad: p.mensualidad || p.mensualidad["$numberDecimal"],
+        mensualidad: p?.mensualidad || p.mensualidad["$numberDecimal"],
         refPago: p.refPago,
         refBanco: p.refBanco,
         ctaBancaria: p.ctaBancaria,
@@ -219,7 +219,7 @@ module.exports = {
     .filter((f) => f.acreditado)[0].acreditado.map(p => {
       return {
         fecha: p.mes,
-        mensualidad: p.mensualidad || p.mensualidad["$numberDecimal"],
+        mensualidad: p?.mensualidad || p.mensualidad["$numberDecimal"],
         refPago: p.refPago,
         folio: p.folio,
         refBanco: p.refBanco,
@@ -232,7 +232,7 @@ module.exports = {
     .filter((f) => f.extra)[0].extra.map(p => {
       return {
         fecha: p.mes,
-        mensualidad: p.mensualidad || p.mensualidad["$numberDecimal"],
+        mensualidad: p?.mensualidad || p.mensualidad["$numberDecimal"],
         refPago: p.refPago,
         folio: p.folio,
         refBanco: p.refBanco,
@@ -245,7 +245,7 @@ module.exports = {
     .filter((f) => f.saldoinicial)[0].saldoinicial.map(p => {
       return {
         fecha: p.mes,
-        mensualidad: p.mensualidad || p.mensualidad["$numberDecimal"],
+        mensualidad: p?.mensualidad || p.mensualidad["$numberDecimal"],
         refPago: p.refPago,
         folio: p.folio,
         refBanco: p.refBanco,
