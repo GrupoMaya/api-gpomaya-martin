@@ -206,7 +206,7 @@ module.exports = {
     .filter((f) => f.mensualidad)[0].mensualidad.map(p => {
       return {
         fecha: p.mes,
-        mensualidad: p.mensualidad,
+        mensualidad: p.mensualidad || p["$numberDecimal"],
         refPago: p.refPago,
         folio: p.folio,
         refBanco: p.refBanco,
@@ -219,7 +219,7 @@ module.exports = {
     .filter((f) => f.acreditado)[0].acreditado.map(p => {
       return {
         fecha: p.mes,
-        mensualidad: p.mensualidad,
+        mensualidad: p.mensualidad || p["$numberDecimal"],
         refPago: p.refPago,
         folio: p.folio,
         refBanco: p.refBanco,
@@ -232,7 +232,7 @@ module.exports = {
     .filter((f) => f.extra)[0].extra.map(p => {
       return {
         fecha: p.mes,
-        mensualidad: p.mensualidad,
+        mensualidad: p.mensualidad || p["$numberDecimal"],
         refPago: p.refPago,
         folio: p.folio,
         refBanco: p.refBanco,
@@ -245,7 +245,7 @@ module.exports = {
     .filter((f) => f.saldoinicial)[0].saldoinicial.map(p => {
       return {
         fecha: p.mes,
-        mensualidad: p.mensualidad,
+        mensualidad: p.mensualidad || p["$numberDecimal"],
         refPago: p.refPago,
         folio: p.folio,
         refBanco: p.refBanco,
