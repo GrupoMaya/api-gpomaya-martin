@@ -279,4 +279,44 @@ module.exports = {
     }
     
   },
+
+  getPagosByProjectAndClient: async (idProject, idClient) => {
+    const agg = [
+      {
+        $match: {
+          proyecto: ObjectId(idProject),
+          cliente: ObjectId(idClient),
+        },
+      },
+      {
+        $lookup: {
+          from: "clientes",
+          localField: "cliente",
+          foreignField: "_id",
+          as: "client",
+        },
+      },
+      {
+        $unwind: {
+          path: "$cliente",
+        },
+      },      
+      {
+        $lookup: {
+          from: "lotes",
+          localField: "lote",
+          foreignField: "_id",
+          as: "lote",
+        },
+      },
+      {
+        $unwind: {
+          path: "$lote",
+        },
+      },
+    ];
+
+    const pagos = await Pagos.aggregate(agg);
+    return pagos;
+  }
 };
