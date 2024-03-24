@@ -1,5 +1,5 @@
 // const { Proyecto, Clientes, Lotes, Pagos } = require('../models')
-const { Lotes, Pagos, Documents } = require("../models");
+const { Lotes, Pagos, Documents, Proyecto } = require("../models");
 const { ObjectId } = require("mongodb");
 const { tiposPago, getDecimalValue } = require("../util/constants");
 const XLSX = require("xlsx");
@@ -317,8 +317,10 @@ module.exports = {
     ];
 
     const pagos = await Pagos.aggregate(agg);
+    const project = await Proyecto.findById(idProject);
     return {
       cliente: pagos[0].cliente,
+      project: project,
       pagos: [...pagos],
     }
   }
