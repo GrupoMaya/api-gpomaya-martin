@@ -17,12 +17,12 @@ module.exports = {
           from: "proyectos",
           localField: "proyecto",
           foreignField: "_id",
-          as: "proyectoData",
+          as: "proyecto",
         },
       },
       {
         $unwind: {
-          path: "$proyectoData",
+          path: "$proyecto",
         },
       },
       {
@@ -30,18 +30,18 @@ module.exports = {
           from: "clientes",
           localField: "cliente",
           foreignField: "_id",
-          as: "clienteData",
+          as: "cliente",
         },
       },
       {
         $unwind: {
-          path: "$clienteData",
+          path: "$cliente",
         },
       },
     ];
 
     const lotes = await Lotes.aggregate(agg);
-    const title = lotes[0].proyectoData.title;
+    const title = lotes[0].proyecto.title;
 
     return {
       title,
