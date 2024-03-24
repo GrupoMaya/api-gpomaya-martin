@@ -285,8 +285,7 @@ module.exports = {
       {
         $match: {
           proyecto: ObjectId(idProject),
-          cliente: ObjectId(idClient),
-          status: true
+          cliente: ObjectId(idClient),          
         },
       },
       {
