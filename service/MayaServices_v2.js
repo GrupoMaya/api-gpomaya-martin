@@ -293,7 +293,7 @@ module.exports = {
           from: "clientes",
           localField: "cliente",
           foreignField: "_id",
-          as: "client",
+          as: "cliente",
         },
       },
       {
@@ -317,6 +317,9 @@ module.exports = {
     ];
 
     const pagos = await Pagos.aggregate(agg);
-    return pagos;
+    return {
+      cliente: pagos[0].cliente,
+      pagos: [...pagos],
+    }
   }
 };
