@@ -316,10 +316,22 @@ module.exports = {
       },
     ];
 
+    const agglote = [
+      {
+        $match: {
+          proyecto: ObjectId(idProject),
+          cliente: ObjectId(idClient),          
+        },
+      },      
+    ];
+    
     const pagos = await Pagos.aggregate(agg);
     const project = await Proyecto.findById(idProject);
+    const lotes = await Lotes.aggregate(agglote);
+        
     return {
       cliente: pagos[0].cliente,
+      lote: lotes[0],
       project: project,
       pagos: [...pagos],
     }
