@@ -71,6 +71,18 @@ module.exports = {
     } catch (error) {      
       return res.status(400).json({ error: JSON.stringify(error) })
     }
+  },
+
+  findClient: async (req, res) => {
+    const { query } = req    
+    try {
+      const payload = await MayaServices.findCliente(query.query)
+      if (!payload) throw new Error(`No se encontraron registos con el id ${query.query}`)
+      return res.status(200).json({ message: payload })
+
+    } catch (error) {
+      return res.status(400).json({ error: JSON.stringify(error) })
+    }
   }
 
 }

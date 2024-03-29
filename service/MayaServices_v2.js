@@ -1,5 +1,5 @@
 // const { Proyecto, Clientes, Lotes, Pagos } = require('../models')
-const { Lotes, Pagos, Documents, Proyecto } = require("../models");
+const { Lotes, Pagos, Documents, Proyecto, Clientes } = require("../models");
 const { ObjectId } = require("mongodb");
 const { tiposPago, getDecimalValue } = require("../util/constants");
 const XLSX = require("xlsx");
@@ -335,5 +335,20 @@ module.exports = {
       project: project,
       pagos: [...pagos],
     }
-  }
+  }, 
+
+  findCliente: async (query) => {    
+    const agg = [
+      {
+        $match: {
+          $or: [
+            { nombre: { $regex: query, $options: "i" } },
+          ]           
+        },
+      },
+    ];
+
+    const clientes = await Clientes.aggregate(agg);    
+    return clientes;
+  },
 };

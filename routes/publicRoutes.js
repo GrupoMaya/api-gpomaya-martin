@@ -122,7 +122,7 @@ router.get('/api/v2/lotes/proyecto/:idProyecto', MayaServicesV2.getAllLotesByPro
 router.get('/api/v2/pagos/:idProject', MayaServicesV2.getPagosByProject)
 router.patch('/api/v2/pagos/folio/:idPago', verifyToken, MayaServicesV2.updateFolioPagoById)
 router.get('/api/v2/pagos/proyecto/:idProject/cliente/:idClient', MayaServicesV2.getPagosByProjectAndClient)
-
+router.get('/api/v2/client/search', MayaServicesV2.findClient)
 
 
 module.exports = router
