@@ -351,4 +351,45 @@ module.exports = {
     const clientes = await Clientes.aggregate(agg);    
     return clientes;
   },
+
+  getLoteByClient: async (idClient) => {
+    const agg = [
+      {
+        $match: {
+          cliente: ObjectId(idClient),
+        },
+      },
+      {
+        $lookup: {
+          from: "proyectos",
+          localField: "proyecto",
+          foreignField: "_id",
+          as: "proyecto",
+        },
+      },
+      {
+        $unwind: {
+          path: "$proyecto",
+        },
+      },
+      {
+        $lookup: {
+          from: "clientes",
+          localField: "cliente",
+          foreignField: "_id",
+          as: "cliente",
+        },
+      },
+      {
+        $unwind: {
+          path: "$cliente",
+        },
+      },
+    ];
+
+    const lotes = await Lotes.aggregate(agg);
+    return {
+      lotes: [...lotes],
+    };
+  }
 };

@@ -83,6 +83,18 @@ module.exports = {
     } catch (error) {
       return res.status(400).json({ error: JSON.stringify(error) })
     }
+  },
+
+  getLoteByClient: async (req, res) => {
+    const { idClient } = req.params
+    try {
+      const payload = await MayaServices.getLoteByClient(idClient)
+      if (!payload) throw new Error(`No se encontraron registos con el id ${idClient}`)
+      return res.status(200).json({ message: payload })
+
+    } catch (error) {
+      return res.status(400).json({ error: JSON.stringify(error) })
+    }
   }
 
 }
