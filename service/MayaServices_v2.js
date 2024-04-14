@@ -392,36 +392,19 @@ module.exports = {
       lotes: [...lotes],
     };
   },
-  findOneClientByProject: async ({ clientName, projectId, lote, manzana }) => {
-    const agg = [
-      {
-        $match: {
-          proyecto: ObjectId(projectId),
-          lote,
-          manzana,          
-        },
-      },
-      {
-        $lookup: {
-          from: "clientes",
-          localField: "cliente",
-          foreignField: "_id",
-          as: "cliente",
-        },
-      },
-      {
-        $unwind: {
-          path: "$cliente",
-        },
-      },
-    ];
+  findOneClientByProject: async ({ clientName }) => {
+    const filter = {
+      nombre: {$regex: clientName, $options: "i"}
+    };
 
-    const client = await Lotes.aggregate(agg);
-    const regex = new RegExp(clientName, "i");
-    const filtered = client.filter((c) => regex.test(c.cliente.nombre));
+    const client = await Clientes.find(filter);        
+    const filtered = client.filter((c) => {
+      const nmongo = c.nombre.toLowerCase().replace(/\s/g, "")      
+      const nclient = clientName.toLowerCase().replace(/\s/g, "")
+      return nmongo === nclient;
+    });
     return {
-      lotesMatch: client,
-      clientMatch : filtered.length
+      filtered,
     }
   }
 };

@@ -108,13 +108,10 @@ module.exports = {
 
   findClientNew: async (req, res) => {
     const { query } = req;
-    const { clientName, projectId, lote, manzana } = query;
+    const { clientName } = query;
     try {
       const payload = await MayaServices.findOneClientByProject({
-        clientName,
-        projectId,
-        lote,
-        manzana,      
+        clientName,        
       });
       if (!payload)
         throw new Error(`No se encontraron registos con el id ${query.query}`);
