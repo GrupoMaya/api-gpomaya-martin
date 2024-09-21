@@ -126,5 +126,8 @@ router.get('/api/v2/client/search', MayaServicesV2.findClient)
 router.get('/api/v2/lotesbyclient/:idClient', MayaServicesV2.getLoteByClient)
 router.get('/api/v2/newClientSearch', MayaServicesV2.findClientNew)
 
+// WEBHOOKS
+//
+router.post('/api/v1/webhook/pagos-records', verifyToken, MayaController.pagosRecords)
 
 module.exports = router

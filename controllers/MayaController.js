@@ -2,10 +2,10 @@ const puppeteer = require('puppeteer')
 const { MayaService } = require('../service')
 
 module.exports = {
-  login: () => {},
-  register: () => {},
+  login: () => { },
+  register: () => { },
   addProyecto: async (req, res) => {
-    const { body } = req    
+    const { body } = req
     try {
 
       const proyectoExist = await MayaService.getProyectoByName(body?.title)
@@ -16,7 +16,7 @@ module.exports = {
         return res.status(200).json({ message: payload })
       }
 
-    } catch (error) {      
+    } catch (error) {
       return res.status(400).json({ error })
     }
   },
@@ -35,16 +35,16 @@ module.exports = {
     const { id } = req.params
     try {
       const payload = await MayaService.getProyectoById(id)
-      if (!payload) throw new Error('Id invalido')      
-      
+      if (!payload) throw new Error('Id invalido')
+
       return res.status(200).json({ message: payload })
 
-    } catch (error) {    
+    } catch (error) {
       return res.status(400).json({ error })
     }
   },
   addCliente: async (req, res) => {
-    const { body } = req  
+    const { body } = req
     try {
 
       // buscamos si existe el documento
@@ -64,11 +64,11 @@ module.exports = {
 
     try {
       // buscamos si existe el documento
-      const isExsit = await MayaService.findMailCliente(body)      
+      const isExsit = await MayaService.findMailCliente(body)
       if (isExsit !== null) throw new Error('El usuario ya existe')
- 
+
       // creamos el usuario y lote
-      const payload = await MayaService.assignLoteToNewUser(body, params)      
+      const payload = await MayaService.assignLoteToNewUser(body, params)
       if (!payload) throw new Error('Error en la asignacion del documento')
 
       return res.status(200).json({ message: payload })
@@ -79,7 +79,7 @@ module.exports = {
 
   },
   assignLote: async (req, res) => {
-    const { body, params } = req   
+    const { body, params } = req
 
     try {
       const mutate = await MayaService.assignLote(body, params)
@@ -160,14 +160,14 @@ module.exports = {
       const payload = await MayaService.lotesByIdCliente(id)
       if (!payload) throw new Error('No hay lotes para el id del usuario')
 
-      return res.status(200).json({ message: payload }) 
+      return res.status(200).json({ message: payload })
 
     } catch (error) {
       return res.status(400).json({ message: error })
     }
 
   },
-  addPagoToLote: async ({ body }, res) => {  
+  addPagoToLote: async ({ body }, res) => {
     try {
       const mutation = await MayaService.consecutivoMensualidad(body)
       return res.status(200).json({ message: mutation })
@@ -198,7 +198,7 @@ module.exports = {
       if (getPagos.lenth === 0) throw new Error('No hay pagos con la infomacion proporcionada')
 
       return res.status(200).json({ message: getPagos })
-    } catch (error) { 
+    } catch (error) {
       return res.status(400).json({ error })
     }
   },
@@ -227,7 +227,7 @@ module.exports = {
     }
   },
   PagarNota: async ({ params, body }, res) => {
-    
+
     try {
       const payload = await MayaService.PagarNota(params, body)
       if (!payload) throw new Error('No hay datos con ese id')
@@ -238,18 +238,18 @@ module.exports = {
       return res.status(200).json({ message: error })
     }
   },
-  createInvoice: async (req, res) => {   
-    
+  createInvoice: async (req, res) => {
+
     const browser = await puppeteer.launch({
       args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu'],
       headless: true
     })
 
-    const page = await browser.newPage()    
+    const page = await browser.newPage()
     try {
 
       const getSettings = await MayaService.settingsGetData()
-      const getPDFdata = await MayaService.createInvoice(req.body, req.query, getSettings)      
+      const getPDFdata = await MayaService.createInvoice(req.body, req.query, getSettings)
       await page.setContent(getPDFdata)
 
       const pdf = await page.pdf({
@@ -268,9 +268,8 @@ module.exports = {
       res.contentType('application/pdf')
 
       return res.send(pdf)
-      
+
     } catch (error) {
-      console.log({ error })
       return res.status(400).json({})
     }
   },
@@ -287,7 +286,7 @@ module.exports = {
     }
   },
   settingsAppSave: async ({ body }, res) => {
-    
+
     try {
       const mutation = await MayaService.settingsAppSave(body)
       if (!mutation) throw new Error('No se puedo guardar tu registro')
@@ -298,7 +297,7 @@ module.exports = {
     }
   },
   settingsGetData: async ({ body }, res) => {
-    
+
     try {
       const query = await MayaService.settingsGetData(body)
       if (query.length === 0) throw new Error('Error servidor')
@@ -309,7 +308,7 @@ module.exports = {
     }
   },
   settingsAppPatch: async ({ body }, res) => {
-    
+
     try {
       const query = await MayaService.settingsAppPatch(body)
       if (query.length === 0) throw new Error('Error servidor')
@@ -322,7 +321,7 @@ module.exports = {
   getClienteDetailById: async ({ params }, res) => {
 
     const { id } = params
-    
+
     try {
       const dataInfo = await MayaService.getClienteDetailById(id)
       return res.status(200).json({ message: dataInfo })
@@ -338,7 +337,7 @@ module.exports = {
       const loteInfo = await MayaService.loteById(id)
       return res.status(200).json({ message: loteInfo })
     } catch (error) {
-      return res.status(400).json({ message: error })      
+      return res.status(400).json({ message: error })
     }
 
   },
@@ -348,28 +347,28 @@ module.exports = {
       const loteInfo = await MayaService.updateLoteById(id, body)
       return res.status(200).json({ message: loteInfo })
     } catch (error) {
-      return res.status(400).json({ message: error })      
+      return res.status(400).json({ message: error })
     }
 
   },
   getPagosById: async ({ params }, res) => {
-    const { id } = params   
+    const { id } = params
 
     try {
       const loteInfo = await MayaService.getPagosById(id)
       return res.status(200).json({ message: loteInfo })
     } catch (error) {
-      return res.status(400).json({ message: error })      
+      return res.status(400).json({ message: error })
     }
 
   },
   updatePagoById: async (req, res) => {
-    const { id } = req.params    
+    const { id } = req.params
     try {
       const loteInfo = await MayaService.updatePagoById(id, req.body)
       return res.status(200).json({ message: loteInfo })
     } catch (error) {
-      return res.status(400).json({ message: error })      
+      return res.status(400).json({ message: error })
     }
 
   },
@@ -398,7 +397,7 @@ module.exports = {
   },
   modifyCliente: async (req, res) => {
     const { id } = req.params
-    
+
     try {
       const response = await MayaService.modifyCliente(id, req.body)
       if (!response) throw new Error('No se puedo actualizar')
@@ -428,10 +427,10 @@ module.exports = {
     } catch (error) {
       return res.status(400).json({ error: 'Error get lotes' })
     }
-  }, 
+  },
   updateProyectoById: async (req, res) => {
     const { id } = req.params
-    
+
     try {
       const response = await MayaService.updateProyectoById(id, req.body)
       if (!response) throw new Error('No se puedo actualizar')
@@ -451,6 +450,33 @@ module.exports = {
     } catch (error) {
       return res.status(400).json({ message: error })
     }
+  },
+  pagosRecords: async (req, res) => {
+    try {
+      const allClients = await MayaService.getAllClientes()
+      if (!allClients) throw new Error('No hay clientes')
+
+      const pagosRecords = await Promise.all(allClients.map(async (client) => MayaService.pagosRecorsByClient(client._id)))
+      if (!pagosRecords) throw new Error('No hay pagos')
+
+      const records = pagosRecords.flat(Infinity).filter((r) => r.lote_data !== null)
+
+      const allReadyPayments = records.filter((record) => MayaService.inspectPayments(record))
+      if (allReadyPayments.length > 0) {
+        await Promise.all(allReadyPayments.map(async ({ lote_data }) => MayaService.updateLoteStatusIfPaid(lote_data._id, true)))
+      }
+
+      await MayaService.insertManyPayments(records.map((record) => {
+        return {
+          ...record,
+          isPaid: MayaService.inspectPayments(record)
+        }
+      }))
+
+      return res.status(200).json({ message: records, allReadyPayments })
+
+    } catch (error) {
+      return res.status(400).json({ message: error })
+    }
   }
-    
 }
