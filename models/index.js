@@ -5,6 +5,7 @@ const { Proyecto } = require('./Proyectos')
 const { Settings } = require('./Settings')
 const { Documents } = require('./Documents')
 const { User } = require('./Users')
+const { PagosRecords } = require('./PagosRecords')
 
 module.exports = {
   Clientes,
@@ -13,5 +14,6 @@ module.exports = {
   Proyecto,
   Settings,
   Documents,
-  User
+  User,
+  PagosRecords,
 }

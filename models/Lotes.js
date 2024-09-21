@@ -9,6 +9,10 @@ const LotesSchema = new Schema({
     default: true,
     required: false
   },
+  isPaid: {
+    type: Boolean,
+    default: false,
+  },
   proyecto: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'proyecto'

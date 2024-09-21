@@ -51,7 +51,6 @@ module.exports = {
 
   getClientDetails: async (req, res) => {
     const { idClient, idProject } = req.params;
-    console.log({ idClient, idProject });
     try {
       const payload = await MayaServices.getClientDetails(idClient, idProject);
       if (!payload)

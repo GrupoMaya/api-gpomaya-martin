@@ -5,6 +5,7 @@ const {
   Pagos,
   Settings,
   Documents,
+  PagosRecords,
 } = require("../models");
 const mongoose = require("mongoose");
 const {
@@ -422,9 +423,7 @@ module.exports = {
           cliente: mongoose.Types.ObjectId(clienteId),
         }),
       );
-    })
-      .then((res) => res)
-      .catch((err) => console.log(err));
+    }).then((res) => res);
 
     const res = await Promise.all([payload]).then((res) => res[0]);
 
@@ -1026,9 +1025,7 @@ module.exports = {
     const addPagoClient = async (payload) => {
       const mutation = await new Promise((resolve) => {
         resolve(Pagos(payload).save());
-      })
-        .then((res) => res)
-        .catch((error) => console.log(error, "1"));
+      }).then((res) => res);
 
       return mutation;
     };
@@ -1038,8 +1035,7 @@ module.exports = {
         const folio = res[0].folio;
         return await addPagoClient({ ...body, folio });
       })
-      .then((res) => res)
-      .catch((error) => console.log(error, 2));
+      .then((res) => res);
   },
   settingsAppPatch: ({ _id, ...restOfdata }) => {
     return Settings.findByIdAndUpdate(_id, restOfdata);
@@ -1152,9 +1148,7 @@ module.exports = {
     const updateDocument = (cliente) => {
       return new Promise((resolve) => {
         resolve(Clientes.findOneAndUpdate({ email: cliente.email }, cliente));
-      })
-        .then((res) => res)
-        .catch((err) => console.log(err));
+      }).then((res) => res);
     };
 
     return Promise.all(
@@ -1216,6 +1210,11 @@ module.exports = {
           },
         },
         {
+          match: {
+            "lote_data.isActive": true,
+          },
+        },
+        {
           $sort: {
             mes: -1,
           },
@@ -1268,7 +1267,6 @@ module.exports = {
     ];
 
     return await Promise.resolve(Proyecto.aggregate(agg)).then((res) => {
-      console.log(res);
       return res[0].lotes;
     });
   },
@@ -1316,5 +1314,148 @@ module.exports = {
       .catch((err) => err);
 
     return pagos;
+  },
+  pagosRecorsByClient: async (id) => {
+    const agg = [
+      {
+        $match: {
+          tipoPago: {
+            $in: ["mensualidad", "saldoinicial", "acreditado", "extra"],
+          }, // Filtra los tipos de pago deseados
+        },
+      },
+      {
+        $match: {
+          cliente: mongoose.Types.ObjectId(id), // Filtra por el id del cliente
+        },
+      },
+      {
+        $unwind: "$cliente", // Descompone el array de clientes si es un array
+      },
+      {
+        $lookup: {
+          from: "clientes",
+          localField: "cliente",
+          foreignField: "_id",
+          as: "cliente_data",
+        },
+      },
+      {
+        $lookup: {
+          from: "proyectos",
+          localField: "proyecto",
+          foreignField: "_id",
+          as: "proyecto_data",
+        },
+      },
+      {
+        $lookup: {
+          from: "lotes",
+          localField: "lote",
+          foreignField: "_id",
+          as: "lote_data",
+        },
+      },
+      {
+        $group: {
+          _id: {
+            cliente: "$cliente",
+            lote: "$lote",
+          },
+          totalMensualidad: {
+            $sum: {
+              $cond: [
+                {
+                  $in: [
+                    "$tipoPago",
+                    ["mensualidad", "saldoinicial", "acreditado"],
+                  ],
+                },
+                { $toDouble: "$mensualidad" },
+                0,
+              ],
+            },
+          },
+          pagosExtra: {
+            $push: {
+              $cond: [
+                {
+                  $and: [
+                    { $eq: ["$tipoPago", "extra"] },
+                    {
+                      $not: [
+                        {
+                          $regexMatch: { input: "$extraSlug", regex: /mora/i },
+                        },
+                      ],
+                    },
+                  ],
+                },
+                {
+                  id_pago_: "$_id",
+                  tipo: "$tipoPago",
+                  extraSlug: "$extraSlug",
+                  mensualidad: { $toDouble: "$mensualidad" },
+                },
+                "$$REMOVE",
+              ],
+            },
+          },
+          pagosMoratorios: {
+            $sum: {
+              $cond: [
+                {
+                  $and: [
+                    { $eq: ["$tipoPago", "extra"] },
+                    { $regexMatch: { input: "$extraSlug", regex: /mora/i } },
+                  ],
+                },
+                { $toDouble: "$mensualidad" },
+                0,
+              ],
+            },
+          },
+          numeroDePagos: { $sum: 1 },
+          cliente_data: { $first: { $arrayElemAt: ["$cliente_data", 0] } },
+          proyecto_data: { $first: { $arrayElemAt: ["$proyecto_data", 0] } },
+          lote_data: { $first: { $arrayElemAt: ["$lote_data", 0] } },
+        },
+      },
+      {
+        $sort: {
+          totalMensualidad: -1, // Ordena por la suma total de mensualidad
+        },
+      },
+    ];
+
+    const record = await Pagos.aggregate(agg);
+    return record;
+  },
+  insertManyPayments: async (records) => {
+    const insert = await PagosRecords.insertMany(records);
+    return insert;
+  },
+  inspectPayments: (documento) => {
+    // Extraer valores relevantes del documento
+    const precioTotal = documento.lote_data.precioTotal;
+    const enganche = documento.lote_data.enganche;
+    const pagosExtra = documento.pagosExtra.reduce(
+      (acum, pago) => acum + pago.mensualidad,
+      0,
+    );
+    //const pagosMoratorios = documento.pagosMoratorios;
+    const totalMensualidad = documento.totalMensualidad;
+
+    // Calcular el total pagado
+    const totalPagado = enganche + totalMensualidad + pagosExtra;
+    // Verificar si el total pagado es igual o mayor al precio total
+    return totalPagado >= precioTotal;
+  },
+  updateLoteStatusIfPaid: async (id, status) => {
+    const update = await Lotes.findByIdAndUpdate(id, {
+      isActive: !status,
+      isPaid: status,
+    });
+    return update;
   },
 };
