@@ -1210,8 +1210,11 @@ module.exports = {
           },
         },
         {
-          match: {
-            "lote_data.isActive": true,
+          $unwind: "$lote_data", // Añadir $unwind si lote_data es un array
+        },
+        {
+          $match: {
+            "lote_data.isActive": true, // Asegurar el uso correcto de $match
           },
         },
         {
@@ -1223,7 +1226,6 @@ module.exports = {
           $limit: 1,
         },
       ];
-
       return await Promise.resolve(Pagos.aggregate(agg)).then((res) => res);
     };
 
