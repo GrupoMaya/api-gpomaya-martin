@@ -1169,10 +1169,9 @@ module.exports = {
 
     // todos los clientes
     const promiseClients = Promise.resolve(Clientes.find()).then((res) => res);
-
     const allClients = await promiseClients;
 
-    // por cada cliete ejecutamos el ultimo pago
+    // por cada cliente ejecutamos el último pago
     const getLastPaymenByID = async (id) => {
       const agg = [
         {
@@ -1210,11 +1209,11 @@ module.exports = {
           },
         },
         {
-          $unwind: "$lote_data", // Añadir $unwind si lote_data es un array
+          $unwind: "$lote_data", // Añadir $unwind para manejar array de lote_data
         },
         {
           $match: {
-            "lote_data.isActive": true, // Asegurar el uso correcto de $match
+            "lote_data.isActive": true, // Filtrar solo lotes activos
           },
         },
         {
@@ -1233,18 +1232,35 @@ module.exports = {
       allClients.map(async (item) => await getLastPaymenByID(item._id)),
     ).then((res) => {
       const allPayments = res.flat();
-      const pagos30 = Object.values(allPayments).filter(({ mes }) => {
-        const datePago = new Date(mes).getTime();
-        const diff = Math.ceil((today - datePago) / (24 * 3600 * 1000));
-        //  more than 30 and less 60
-        return diff > 30 && diff < 60;
-      });
+      const pagos30 = Object.values(allPayments).filter(
+        ({ mes, mensualidad }) => {
+          const datePago = new Date(mes).getTime();
+          const diff = Math.ceil((today - datePago) / (24 * 3600 * 1000));
 
-      const pagos60 = Object.values(allPayments).filter(({ mes }) => {
-        const datePago = new Date(mes).getTime();
-        const diff = Math.ceil((today - datePago) / (24 * 3600 * 1000));
-        return diff > 61;
-      });
+          // Convertir Decimal128 a número flotante si es necesario
+          if (mensualidad && mensualidad._bsontype === "Decimal128") {
+            mensualidad = parseFloat(mensualidad.toString());
+          }
+
+          // más de 30 días y menos de 60 días
+          return diff > 30 && diff < 60;
+        },
+      );
+
+      const pagos60 = Object.values(allPayments).filter(
+        ({ mes, mensualidad }) => {
+          const datePago = new Date(mes).getTime();
+          const diff = Math.ceil((today - datePago) / (24 * 3600 * 1000));
+
+          // Convertir Decimal128 a número flotante si es necesario
+          if (mensualidad && mensualidad._bsontype === "Decimal128") {
+            mensualidad = parseFloat(mensualidad.toString());
+          }
+
+          // más de 61 días
+          return diff > 61;
+        },
+      );
 
       return { treinta_dias: pagos30, sesenta_dias: pagos60 };
     });
