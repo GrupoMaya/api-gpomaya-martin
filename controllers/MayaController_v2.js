@@ -5,7 +5,6 @@ const fs = require("fs");
 module.exports = {
   getAllLotesByProyectId: async (req, res) => {
     const { idProyecto } = req.params;
-
     try {
       const payload = await MayaServices.getAllLotesByProyectId(idProyecto);
       if (!payload)
@@ -77,6 +76,7 @@ module.exports = {
         throw new Error(`No se encontraron registos con el id ${idProject}`);
       return res.status(200).json({ message: payload });
     } catch (error) {
+      console.log(error)
       return res.status(400).json({ error: JSON.stringify(error) });
     }
   },
