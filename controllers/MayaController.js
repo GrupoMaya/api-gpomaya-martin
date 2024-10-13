@@ -452,7 +452,7 @@ module.exports = {
       return res.status(400).json({ message: error })
     }
   },
-  pagosRecords: async (req, res) => {
+  pagosRecords: async (_req, res) => {
     try {
       const allClients = await MayaService.getAllClientes()
       if (!allClients) throw new Error('No hay clientes')

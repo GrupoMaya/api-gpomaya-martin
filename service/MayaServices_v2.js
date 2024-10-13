@@ -1,125 +1,125 @@
 // const { Proyecto, Clientes, Lotes, Pagos } = require('../models')
-const { Lotes, Pagos, Documents, Proyecto, Clientes } = require("../models");
-const { ObjectId } = require("mongodb");
-const { tiposPago, getDecimalValue } = require("../util/constants");
-const XLSX = require("xlsx");
+const { Lotes, Pagos, Documents, Proyecto, Clientes, PagosRecords } = require('../models')
+const { ObjectId } = require('mongodb')
+const { tiposPago, getDecimalValue } = require('../util/constants')
+const XLSX = require('xlsx')
 
 module.exports = {
   getAllLotesByProyectId: async (idProyecto) => {
     const agg = [
       {
         $match: {
-          proyecto: ObjectId(idProyecto),
-        },
+          proyecto: ObjectId(idProyecto)
+        }
       },
       {
         $match: {
-          isActive: true,
-        },
+          isActive: true
+        }
       },
       {
         $lookup: {
-          from: "proyectos",
-          localField: "proyecto",
-          foreignField: "_id",
-          as: "proyecto",
-        },
+          from: 'proyectos',
+          localField: 'proyecto',
+          foreignField: '_id',
+          as: 'proyecto'
+        }
       },
       {
         $unwind: {
-          path: "$proyecto",
-        },
+          path: '$proyecto'
+        }
       },
       {
         $lookup: {
-          from: "clientes",
-          localField: "cliente",
-          foreignField: "_id",
-          as: "cliente",
-        },
+          from: 'clientes',
+          localField: 'cliente',
+          foreignField: '_id',
+          as: 'cliente'
+        }
       },
       {
         $unwind: {
-          path: "$cliente",
-        },
-      },
-    ];
+          path: '$cliente'
+        }
+      }
+    ]
 
-    const lotes = await Lotes.aggregate(agg);
-    const title = lotes[0].proyecto.title;
+    const lotes = await Lotes.aggregate(agg)
+    const title = lotes[0].proyecto.title
 
     return {
       title,
-      lotes: [...lotes],
-    };
+      lotes: [...lotes]
+    }
   },
   getPagosByProject: async ({ idcliente }, { idProject }) => {
     const agg = [
       {
         $match: {
-          proyecto: ObjectId(idProject),
-        },
+          proyecto: ObjectId(idProject)
+        }
       },
       {
         $match: {
-          cliente: ObjectId(idcliente),
-        },
+          cliente: ObjectId(idcliente)
+        }
       },
       {
         $lookup: {
-          from: "clientes",
-          localField: "cliente",
-          foreignField: "_id",
-          as: "client",
-        },
+          from: 'clientes',
+          localField: 'cliente',
+          foreignField: '_id',
+          as: 'client'
+        }
       },
       {
         $unwind: {
-          path: "$client",
-        },
+          path: '$client'
+        }
       },
       {
         $lookup: {
-          from: "proyectos",
-          localField: "proyecto",
-          foreignField: "_id",
-          as: "project",
-        },
+          from: 'proyectos',
+          localField: 'proyecto',
+          foreignField: '_id',
+          as: 'project'
+        }
       },
       {
         $unwind: {
-          path: "$project",
-        },
-      },
-    ];
+          path: '$project'
+        }
+      }
+    ]
 
-    const pagos = await Pagos.aggregate(agg);
+    const pagos = await Pagos.aggregate(agg)
     return {
       pagos: [...pagos],
       client: pagos[0].client,
-      project: pagos[0].project,
-    };
+      project: pagos[0].project
+    }
   },
   updateFolioPagoById: async (idPago, folio, fixConsecutive) => {
     try {
       // get pago by id
-      const pago = await Pagos.findById(idPago);
-      const { lote, cliente, tipoPago } = pago;
+      const pago = await Pagos.findById(idPago)
+      const { lote, cliente, tipoPago } = pago
 
       const filter = {
         lote: ObjectId(lote.toString()),
         cliente: ObjectId(cliente.toString()),
-        tipoDocumento: tipoPago,
-      };
-
-      if (fixConsecutive) {
-        await Documents.findOneAndUpdate({ ...filter }, { folio }).exec();
+        tipoDocumento: tipoPago
       }
 
-      await Pagos.findByIdAndUpdate(idPago, { folio }).exec();
-      return pago;
+      if (fixConsecutive) {
+        await Documents.findOneAndUpdate({ ...filter }, { folio }).exec()
+      }
+
+      await Pagos.findByIdAndUpdate(idPago, { folio }).exec()
+      return pago
     } catch (error) {
-      return error;
+      return error
     }
   },
   getClientDetails: async (idClient, idProject) => {
@@ -127,44 +127,44 @@ module.exports = {
       {
         $match: {
           proyecto: ObjectId(idProject),
-          cliente: ObjectId(idClient),
-        },
+          cliente: ObjectId(idClient)
+        }
       },
       {
         $lookup: {
-          from: "clientes",
-          localField: "cliente",
-          foreignField: "_id",
-          as: "client",
-        },
+          from: 'clientes',
+          localField: 'cliente',
+          foreignField: '_id',
+          as: 'client'
+        }
       },
       {
         $unwind: {
-          path: "$client",
-        },
+          path: '$client'
+        }
       },
       {
         $lookup: {
-          from: "proyectos",
-          localField: "proyecto",
-          foreignField: "_id",
-          as: "project",
-        },
+          from: 'proyectos',
+          localField: 'proyecto',
+          foreignField: '_id',
+          as: 'project'
+        }
       },
       {
         $unwind: {
-          path: "$project",
-        },
-      },
-    ];
+          path: '$project'
+        }
+      }
+    ]
 
-    const dataLote = await Lotes.aggregate(agg);
-    const pagos = await Pagos.aggregate(agg);
+    const dataLote = await Lotes.aggregate(agg)
+    const pagos = await Pagos.aggregate(agg)
     const pagosByType = tiposPago.map((tipo) => {
       return {
-        [tipo]: pagos.filter((pago) => pago.tipoPago === tipo),
-      };
-    });
+        [tipo]: pagos.filter((pago) => pago.tipoPago === tipo)
+      }
+    })
 
     const sumatoria = {
       extras: pagosByType
@@ -174,31 +174,31 @@ module.exports = {
         .filter((f) => f.mensualidad)[0]
         .mensualidad.reduce(
           (acc, pago) => acc + parseInt(getDecimalValue(pago)),
-          0,
+          0
         ),
       enganche: pagosByType
         .find((f) => f.saldoinicial)
         .saldoinicial.reduce(
           (acc, pago) => acc + parseInt(getDecimalValue(pago)),
-          0,
+          0
         ),
       acreditados: pagosByType
         .find((f) => f.acreditado)
         .acreditado.reduce(
           (acc, pago) => acc + parseInt(getDecimalValue(pago)),
-          0,
-        ),
-    };
+          0
+        )
+    }
 
     sumatoria.acapital =
-      sumatoria.mensualidades + sumatoria.enganche + sumatoria.acreditados;
+      sumatoria.mensualidades + sumatoria.enganche + sumatoria.acreditados
 
     const dataToXML = {
       client: pagos[0].client,
       project: pagos[0].project,
       lote: dataLote[0],
-      sumatoria,
-    };
+      sumatoria
+    }
 
     const pagosArrayMensualidades = pagosByType
       .filter((f) => f.mensualidad)[0]
@@ -210,9 +210,9 @@ module.exports = {
           refPago: p.refPago,
           refBanco: p.refBanco,
           ctaBancaria: p.ctaBancaria,
-          banco: p.banco,
-        };
-      });
+          banco: p.banco
+        }
+      })
 
     const pagosArrayAcreditados = pagosByType
       .filter((f) => f.acreditado)[0]
@@ -224,9 +224,9 @@ module.exports = {
           folio: p.folio,
           refBanco: p.refBanco,
           ctaBancaria: p.ctaBancaria,
-          banco: p.banco,
-        };
-      });
+          banco: p.banco
+        }
+      })
 
     const pagosArrayExtra = pagosByType
       .filter((f) => f.extra)[0]
@@ -238,9 +238,9 @@ module.exports = {
           folio: p.folio,
           refBanco: p.refBanco,
           ctaBancaria: p.ctaBancaria,
-          banco: p.banco,
-        };
-      });
+          banco: p.banco
+        }
+      })
 
     const pagosArraySaldosIniciales = pagosByType
       .filter((f) => f.saldoinicial)[0]
@@ -252,38 +252,38 @@ module.exports = {
           folio: p.folio,
           refBanco: p.refBanco,
           ctaBancaria: p.ctaBancaria,
-          banco: p.banco,
-        };
-      });
+          banco: p.banco
+        }
+      })
 
-    const workbook = XLSX.utils.book_new();
-    const mensualidesShett = XLSX.utils.json_to_sheet(pagosArrayMensualidades);
-    const acreditadosShett = XLSX.utils.json_to_sheet(pagosArrayAcreditados);
-    const extraShett = XLSX.utils.json_to_sheet(pagosArrayExtra);
+    const workbook = XLSX.utils.book_new()
+    const mensualidesShett = XLSX.utils.json_to_sheet(pagosArrayMensualidades)
+    const acreditadosShett = XLSX.utils.json_to_sheet(pagosArrayAcreditados)
+    const extraShett = XLSX.utils.json_to_sheet(pagosArrayExtra)
     const saldosInicialesShett = XLSX.utils.json_to_sheet(
-      pagosArraySaldosIniciales,
-    );
-    const clientSheet = XLSX.utils.json_to_sheet([dataToXML.client]);
-    const projectSheet = XLSX.utils.json_to_sheet([dataToXML.project]);
-    const loteSheet = XLSX.utils.json_to_sheet([dataToXML.lote]);
-    const resumenPagos = XLSX.utils.json_to_sheet([dataToXML.sumatoria]);
+      pagosArraySaldosIniciales
+    )
+    const clientSheet = XLSX.utils.json_to_sheet([dataToXML.client])
+    const projectSheet = XLSX.utils.json_to_sheet([dataToXML.project])
+    const loteSheet = XLSX.utils.json_to_sheet([dataToXML.lote])
+    const resumenPagos = XLSX.utils.json_to_sheet([dataToXML.sumatoria])
 
-    XLSX.utils.book_append_sheet(workbook, mensualidesShett, "Mensualidades");
-    XLSX.utils.book_append_sheet(workbook, acreditadosShett, "Acreditados");
-    XLSX.utils.book_append_sheet(workbook, extraShett, "Extra");
+    XLSX.utils.book_append_sheet(workbook, mensualidesShett, 'Mensualidades')
+    XLSX.utils.book_append_sheet(workbook, acreditadosShett, 'Acreditados')
+    XLSX.utils.book_append_sheet(workbook, extraShett, 'Extra')
     XLSX.utils.book_append_sheet(
       workbook,
       saldosInicialesShett,
-      "Saldos Iniciales",
-    );
-    XLSX.utils.book_append_sheet(workbook, clientSheet, "Cliente");
-    XLSX.utils.book_append_sheet(workbook, projectSheet, "Proyecto");
-    XLSX.utils.book_append_sheet(workbook, loteSheet, "Lote");
-    XLSX.utils.book_append_sheet(workbook, resumenPagos, "Resumen Pagos");
+      'Saldos Iniciales'
+    )
+    XLSX.utils.book_append_sheet(workbook, clientSheet, 'Cliente')
+    XLSX.utils.book_append_sheet(workbook, projectSheet, 'Proyecto')
+    XLSX.utils.book_append_sheet(workbook, loteSheet, 'Lote')
+    XLSX.utils.book_append_sheet(workbook, resumenPagos, 'Resumen Pagos')
 
     return {
-      workbook,
-    };
+      workbook
+    }
   },
 
   getPagosByProjectAndClient: async (idProject, idClient) => {
@@ -291,124 +291,129 @@ module.exports = {
       {
         $match: {
           proyecto: ObjectId(idProject),
-          cliente: ObjectId(idClient),
-        },
+          cliente: ObjectId(idClient)
+        }
       },
       {
         $lookup: {
-          from: "clientes",
-          localField: "cliente",
-          foreignField: "_id",
-          as: "cliente",
-        },
+          from: 'clientes',
+          localField: 'cliente',
+          foreignField: '_id',
+          as: 'cliente'
+        }
       },
       {
         $unwind: {
-          path: "$cliente",
-        },
+          path: '$cliente'
+        }
       },
       {
         $lookup: {
-          from: "lotes",
-          localField: "lote",
-          foreignField: "_id",
-          as: "lote",
-        },
+          from: 'lotes',
+          localField: 'lote',
+          foreignField: '_id',
+          as: 'lote'
+        }
       },
       {
         $unwind: {
-          path: "$lote",
-        },
-      },
-    ];
+          path: '$lote'
+        }
+      }
+    ]
 
     const agglote = [
       {
         $match: {
           proyecto: ObjectId(idProject),
-          cliente: ObjectId(idClient),
-        },
-      },
-    ];
+          cliente: ObjectId(idClient)
+        }
+      }
+    ]
 
-    const pagos = await Pagos.aggregate(agg);
-    const project = await Proyecto.findById(idProject);
-    const lotes = await Lotes.aggregate(agglote);
+    const pagos = await Pagos.aggregate(agg)
+    const project = await Proyecto.findById(idProject)
+    const lotes = await Lotes.aggregate(agglote)
 
     return {
       cliente: pagos[0].cliente,
       lote: lotes[0],
       project: project,
-      pagos: [...pagos],
-    };
+      pagos: [...pagos]
+    }
   },
 
   findCliente: async (query) => {
     const agg = [
       {
         $match: {
-          $or: [{ nombre: { $regex: query, $options: "i" } }],
-        },
-      },
-    ];
+          $or: [{ nombre: { $regex: query, $options: 'i' } }]
+        }
+      }
+    ]
 
-    const clientes = await Clientes.aggregate(agg);
-    return clientes;
+    const clientes = await Clientes.aggregate(agg)
+    return clientes
   },
 
   getLoteByClient: async (idClient) => {
     const agg = [
       {
         $match: {
-          cliente: ObjectId(idClient),
-        },
+          cliente: ObjectId(idClient)
+        }
       },
       {
         $lookup: {
-          from: "proyectos",
-          localField: "proyecto",
-          foreignField: "_id",
-          as: "proyecto",
-        },
+          from: 'proyectos',
+          localField: 'proyecto',
+          foreignField: '_id',
+          as: 'proyecto'
+        }
       },
       {
         $unwind: {
-          path: "$proyecto",
-        },
+          path: '$proyecto'
+        }
       },
       {
         $lookup: {
-          from: "clientes",
-          localField: "cliente",
-          foreignField: "_id",
-          as: "cliente",
-        },
+          from: 'clientes',
+          localField: 'cliente',
+          foreignField: '_id',
+          as: 'cliente'
+        }
       },
       {
         $unwind: {
-          path: "$cliente",
-        },
-      },
-    ];
+          path: '$cliente'
+        }
+      }
+    ]
 
-    const lotes = await Lotes.aggregate(agg);
+    const lotes = await Lotes.aggregate(agg)
     return {
-      lotes: [...lotes],
-    };
+      lotes: [...lotes]
+    }
   },
   findOneClientByProject: async ({ clientName }) => {
     const filter = {
-      nombre: { $regex: clientName, $options: "i" },
-    };
+      nombre: { $regex: clientName, $options: 'i' }
+    }
 
-    const client = await Clientes.find(filter);
+    const client = await Clientes.find(filter)
     const filtered = client.filter((c) => {
-      const nmongo = c.nombre.toLowerCase().replace(/\s/g, "");
-      const nclient = clientName.toLowerCase().replace(/\s/g, "");
-      return nmongo === nclient;
-    });
+      const nmongo = c.nombre.toLowerCase().replace(/\s/g, '')
+      const nclient = clientName.toLowerCase().replace(/\s/g, '')
+      return nmongo === nclient
+    })
     return {
-      filtered,
-    };
-  },
-};
+      filtered
+    }
+  }, 
+
+  getAllPagosRecords: async () => {
+    return await PagosRecords.find()
+  }
+
+}
