@@ -1,15 +1,23 @@
 // const { Proyecto, Clientes, Lotes, Pagos } = require('../models')
-const { Lotes, Pagos, Documents, Proyecto, Clientes, PagosRecords } = require('../models')
-const { ObjectId } = require('mongodb')
+const mongoose = require('mongoose')
+const {
+  Lotes,
+  Pagos,
+  Documents,
+  Proyecto,
+  Clientes,
+  PagosRecords
+} = require('../models')
 const { tiposPago, getDecimalValue } = require('../util/constants')
 const XLSX = require('xlsx')
+const { Types } = mongoose
 
 module.exports = {
   getAllLotesByProyectId: async (idProyecto) => {
     const agg = [
       {
         $match: {
-          proyecto: ObjectId(idProyecto)
+          proyecto: Types.Types.ObjectId(idProyecto)
         }
       },
       {
@@ -57,12 +65,12 @@ module.exports = {
     const agg = [
       {
         $match: {
-          proyecto: ObjectId(idProject)
+          proyecto: Types.ObjectId(idProject)
         }
       },
       {
         $match: {
-          cliente: ObjectId(idcliente)
+          cliente: Types.ObjectId(idcliente)
         }
       },
       {
@@ -107,8 +115,8 @@ module.exports = {
       const { lote, cliente, tipoPago } = pago
 
       const filter = {
-        lote: ObjectId(lote.toString()),
-        cliente: ObjectId(cliente.toString()),
+        lote: Types.ObjectId(lote.toString()),
+        cliente: Types.ObjectId(cliente.toString()),
         tipoDocumento: tipoPago
       }
 
@@ -126,8 +134,8 @@ module.exports = {
     const agg = [
       {
         $match: {
-          proyecto: ObjectId(idProject),
-          cliente: ObjectId(idClient)
+          proyecto: Types.ObjectId(idProject),
+          cliente: Types.ObjectId(idClient)
         }
       },
       {
@@ -290,8 +298,8 @@ module.exports = {
     const agg = [
       {
         $match: {
-          proyecto: ObjectId(idProject),
-          cliente: ObjectId(idClient)
+          proyecto: Types.ObjectId(idProject),
+          cliente: Types.ObjectId(idClient)
         }
       },
       {
@@ -325,8 +333,8 @@ module.exports = {
     const agglote = [
       {
         $match: {
-          proyecto: ObjectId(idProject),
-          cliente: ObjectId(idClient)
+          proyecto: Types.ObjectId(idProject),
+          cliente: Types.ObjectId(idClient)
         }
       }
     ]
@@ -360,7 +368,7 @@ module.exports = {
     const agg = [
       {
         $match: {
-          cliente: ObjectId(idClient)
+          cliente: Types.ObjectId(idClient)
         }
       },
       {
@@ -410,10 +418,9 @@ module.exports = {
     return {
       filtered
     }
-  }, 
+  },
 
   getAllPagosRecords: async () => {
     return await PagosRecords.find()
   }
-
 }
