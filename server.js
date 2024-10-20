@@ -1,6 +1,7 @@
 require('dotenv').config()
 const express = require('express')
 const mongoose = require('mongoose')
+const morgan = require('morgan')
 const cors = require('cors')
 
 const { MONGO_URI } = require('./config')
@@ -11,6 +12,7 @@ const PORT = process.env.PORT
 app.use(cors())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json({ extended: true }))
+morgan()
 
 mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false })
   .then(() => console.log('Conectado a la base de datos'))

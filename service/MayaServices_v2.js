@@ -17,7 +17,7 @@ module.exports = {
     const agg = [
       {
         $match: {
-          proyecto: Types.Types.ObjectId(idProyecto)
+          proyecto: mongoose.Types.ObjectId(idProyecto)
         }
       },
       {
