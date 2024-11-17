@@ -15,5 +15,5 @@ module.exports = {
   Settings,
   Documents,
   User,
-  PagosRecords,
+  PagosRecords
 }

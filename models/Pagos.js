@@ -23,7 +23,7 @@ const PagosSchema = new Schema({
   },
   cliente: [{
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'cliente'
+    ref: 'Clientes'
   }],
   proyecto: [{
     type: mongoose.Schema.Types.ObjectId,
@@ -31,7 +31,7 @@ const PagosSchema = new Schema({
   }],
   lote: [{
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'lote'
+    ref: 'Lotes'
   }],
   mes: {
     type: Date,

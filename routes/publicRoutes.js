@@ -163,6 +163,8 @@ router.get(
   MayaServicesV2.findClientNew
 )
 
+router.get('/api/v2/payments/:idLote', verifyToken, MayaServicesV2.getPayments)
+
 // get all users payments
 router.get('/api/v2/pagos-records', verifyToken, MayaServicesV2.getAllPagosRecords)
 

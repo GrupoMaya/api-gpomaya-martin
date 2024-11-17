@@ -156,5 +156,25 @@ module.exports = {
     } catch (error) {
       return res.status(400).json({ error: JSON.stringify(error) })
     }
+  },
+
+  getPayments: async (req, res) => {
+    const { idLote } = req.params
+    try {
+      const payload = await MayaServices.getPayments(idLote)
+      if (!payload) {
+        throw new Error(`No se encontraron registos con el id ${idLote}`)
+      }
+
+      const sum = payload.reduce((acc, curr) => {
+        return acc + curr.mensualidad
+      }, 0)
+      return res
+        .status(200)
+        .json({ message: payload, total: payload.length, totalSum: sum })
+    } catch (error) {
+      console.log(error)
+      return res.status(400).json({ error: JSON.stringify(error) })
+    }
   }
 }

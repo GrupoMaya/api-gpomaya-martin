@@ -11,16 +11,20 @@ const LotesSchema = new Schema({
   },
   isPaid: {
     type: Boolean,
-    default: false,
+    default: false
   },
-  proyecto: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'proyecto'
-  }],
-  cliente: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'cliente'
-  }],
+  proyecto: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'proyecto'
+    }
+  ],
+  cliente: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'cliente'
+    }
+  ],
   lote: {
     type: String,
     required: true
@@ -53,12 +57,11 @@ const LotesSchema = new Schema({
     type: Date,
     required: false
   },
-  // aqui se guardara la cantidad de pagos que tiene 
+  // aqui se guardara la cantidad de pagos que tiene
   total_pagos: {
     type: Number,
     require: false
   }
-
 })
 
 const Lotes = mongoose.model('Lotes', LotesSchema)

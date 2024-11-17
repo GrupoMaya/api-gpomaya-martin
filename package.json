@@ -23,6 +23,7 @@
     "morgan": "^1.10.0",
     "nodemon": "^2.0.12",
     "puppeteer": "^9.1.1",
+    "standard": "^17.1.2",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {

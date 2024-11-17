@@ -422,5 +422,22 @@ module.exports = {
 
   getAllPagosRecords: async () => {
     return await PagosRecords.find()
+  },
+
+  getPayments: async (idLote) => {
+    const filter = { lote: Types.ObjectId(idLote) }
+    const pagos = await Pagos.find(filter).populate('lote').exec()
+    const payments = pagos.map((pago) => {
+      return {
+        ...pago._doc,
+        lote: {
+          lote: pago.lote[0].lote,
+          manzana: pago.lote[0].manzana
+        },
+        mensualidad: parseInt(pago.mensualidad.toString())
+      }
+    })
+
+    return payments
   }
 }
