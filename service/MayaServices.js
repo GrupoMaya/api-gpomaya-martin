@@ -999,42 +999,59 @@ module.exports = {
             background-color: #f4f4f4;
         }
         .container {
+            width: 216mm; /* Tamaño carta (ancho) */
+            height: auto;
             margin: 20px auto;
             background: #fff;
             padding: 20px;
             border: 1px solid #ccc;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            position: relative;
         }
         .watermark {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: url('https://ff81bc3054b58548e88a18412f9573e0ce5a4e909c787b182b33692-apidata.googleusercontent.com/download/storage/v1/b/gpo-maya.appspot.com/o/ahal_water_marker.jpeg?jk=AXN3i9rplTSVy9dznhQizbmhCDewkQzS42Lv8PoBLBv-GlBd4DAXvJlysRxrDdGeVz7eTKG1RatV9md3M5pb8ZfaOVxc-Ii7os5NuVnzSvza6Kn0IkQNtKoGRVGSTJTgtjyCwMTxeaPK_HlZgQWZatFdZ_XMYZNYilFolkR5t4Wpoj1454-Lpcp1NA0fVjArjcFpTCcdaq7RiGZwd0TaimprksmJMKOhM6bsecGROlN0chSsCRXFzP_WFx4pmEBhM_CYt8Y56GTUdB7aoexMB9u_HtJI9kZiVLFKsaR2QgOk8S-cclW0YeMQo47DJ64QyzS4H76WWtkagh230r9GuI4xtxZTTwwp8_yeS3TVgjnRbGVab06xpUcHbHnvV1IUqOVuMXAic0ctJdsaueGqYJQ4N-Td-s3SnUQoPKrGceVA9T0etT7oSbTu3TVoKWJ1yeEp4rMFUlYCV9-I1wR3ajRBaMWYLduF4c65WHS6frTObVQbk2syGAfQjv0VphbZjUwQKr-QdOBOIh0HOZXyJG7oPZiTs0pHvzJNLrN0xdD3mLN2rs8Yl3fabi2Bl7RqXO9DmIqtujMQE1m94J6PGEmFn08ynepVZNDr7WwSPV6kJBYszmcpGo5NBhfKi32MJliDuHyZLz-hvHf9wwgUk6cn2VoL7bUbehCFrAdTzTA7r3xsusAP7u1uQfKZQ2FKY-iQjZ7mfxRaF5vduv49IL8j0r7j_0oLhKrFY-LdctQlz6g5H60ItAu_U88Rbksm8a5vzz_H0wzxNOCUA0up-TybJCqOjSoh2tOUDH9YtvWPmG-fadDkYKHF0-bvA7QTuMzHDQAZZtPv9a9k1P8EZEm6Xh28Ao1yFQVFF5xvJdVALzk31bOovJGcefuFrb9_bknZnuLuy-ghL_CBeeulgX90ew5Sf_iYY49RBS7o_8kJ4bIpsSZHf-cviuovalS6mTclTRhTWQjaPm56kjQn3yZg0FHXaHI5JPvmE0YXtUH2a8M5Eu83R21YLrrmmfFKT4hsJ0c9S0Cx4qjCmcqf_vdniPgy4eSVXMgGNK2a-3s2uLpTQaEq7xIxnaklTzg5GxwI5D04hKN9OzRF_uFuM7RKQAktM6vEbIe1sk-5OEnmhjC3COjjnkT5-VoRO_lmZ8oUmU6n0w&isca=1') no-repeat center;
+                    background-size: cover;
+                    opacity: 0.1;
+                    z-index: 0;
+         }
+        .header {
+            position: relative;
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+        }
+        .header-arc {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: url('https://ff81bc3054b58548e88a18412f9573e0ce5a4e909c787b182b33692-apidata.googleusercontent.com/download/storage/v1/b/gpo-maya.appspot.com/o/ahal_water_marker.jpeg?jk=AXN3i9rplTSVy9dznhQizbmhCDewkQzS42Lv8PoBLBv-GlBd4DAXvJlysRxrDdGeVz7eTKG1RatV9md3M5pb8ZfaOVxc-Ii7os5NuVnzSvza6Kn0IkQNtKoGRVGSTJTgtjyCwMTxeaPK_HlZgQWZatFdZ_XMYZNYilFolkR5t4Wpoj1454-Lpcp1NA0fVjArjcFpTCcdaq7RiGZwd0TaimprksmJMKOhM6bsecGROlN0chSsCRXFzP_WFx4pmEBhM_CYt8Y56GTUdB7aoexMB9u_HtJI9kZiVLFKsaR2QgOk8S-cclW0YeMQo47DJ64QyzS4H76WWtkagh230r9GuI4xtxZTTwwp8_yeS3TVgjnRbGVab06xpUcHbHnvV1IUqOVuMXAic0ctJdsaueGqYJQ4N-Td-s3SnUQoPKrGceVA9T0etT7oSbTu3TVoKWJ1yeEp4rMFUlYCV9-I1wR3ajRBaMWYLduF4c65WHS6frTObVQbk2syGAfQjv0VphbZjUwQKr-QdOBOIh0HOZXyJG7oPZiTs0pHvzJNLrN0xdD3mLN2rs8Yl3fabi2Bl7RqXO9DmIqtujMQE1m94J6PGEmFn08ynepVZNDr7WwSPV6kJBYszmcpGo5NBhfKi32MJliDuHyZLz-hvHf9wwgUk6cn2VoL7bUbehCFrAdTzTA7r3xsusAP7u1uQfKZQ2FKY-iQjZ7mfxRaF5vduv49IL8j0r7j_0oLhKrFY-LdctQlz6g5H60ItAu_U88Rbksm8a5vzz_H0wzxNOCUA0up-TybJCqOjSoh2tOUDH9YtvWPmG-fadDkYKHF0-bvA7QTuMzHDQAZZtPv9a9k1P8EZEm6Xh28Ao1yFQVFF5xvJdVALzk31bOovJGcefuFrb9_bknZnuLuy-ghL_CBeeulgX90ew5Sf_iYY49RBS7o_8kJ4bIpsSZHf-cviuovalS6mTclTRhTWQjaPm56kjQn3yZg0FHXaHI5JPvmE0YXtUH2a8M5Eu83R21YLrrmmfFKT4hsJ0c9S0Cx4qjCmcqf_vdniPgy4eSVXMgGNK2a-3s2uLpTQaEq7xIxnaklTzg5GxwI5D04hKN9OzRF_uFuM7RKQAktM6vEbIe1sk-5OEnmhjC3COjjnkT5-VoRO_lmZ8oUmU6n0w&isca=1') no-repeat center;
-            background-size: cover;
-            opacity: 0.1;
-            z-index: 0;
+            background: linear-gradient(to right, #f9c908 33%, #cccccc 66%, #ffffff);
+            clip-path: ellipse(150% 75% at 50% 0%);
         }
-        .content-wrapper {
+        .header-content {
             position: relative;
-            z-index: 1;
-        }
-        .header {
-            background-color: #f9c908;
-            color: #000;
-            padding: 10px 20px;
+            z-index: 2;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: space-between;
+            justify-content: center;
+            height: 100%;
         }
-        .header img {
+        .logo {
             width: 80px;
+            height: auto;
+            margin-bottom: 10px;
         }
-        .header h1 {
+        h1 {
             margin: 0;
             font-size: 18px;
+            text-align: center;
+            color: #000;
         }
         .title {
             text-align: center;
@@ -1079,62 +1096,64 @@ module.exports = {
 </head>
 <body>
     <div class="container">
-        <div class="watermark"></div>
-        <div class="content-wrapper">
-            <div class="header">
-                <img src="https://ff0c7658f14f4e0ec86c4a3857632c7afb8d97e3e063db3547cf1f7-apidata.googleusercontent.com/download/storage/v1/b/gpo-maya.appspot.com/o/logo_ahal.jpeg?jk=AXN3i9pJoUSsVIzdz0BsCRZk5sWlyQkcIGNzm3PMNdkhTEpZQ44aYNKIQhSXG9M-Ak9SSuufNwNy22O6VbA-C5VFHVQFh07S-hX8jNC818vr6Z0RFUneaug7bV2hgtNaLqJ7cNwFACpuyWPdAullkrZhP3E02xZx8fB3J7yX4egYzHN_Yjm0HL6TG8sEArExEWc70wgmOPeLOMHlCWJEmrOHOYpOHH3HSLPSlHEzKQPszBZ0L3J91LvRPJLZYrMzU6yLuZIu2HxIjqOe2-U-7j-s3rerdcsSd2NOn3ABD3hLG0eWYPKFodKjkBRA1_FfeY6iSzgEinWiPwTOx0GylJmLSSRuWx7lBJVEigsdTkxjNe-RZ9nrTXqSV6r2IDHq58UIenSHRAoXqhThaTmh8-lCV9ERSzVgPes7Ig0OXMYRUYiDriOmfJCdhE_N0WqMuKVhUL7N5Erp_GSv6kZZBY1MxX7CcUd0iJ5pfa5MoYDiK40Qk4e7vf8RbpaRLSnreA0wD2O-ZR5EZRx2WWD6v9sVINJF5rExtgDKkEfHKOcKl5SrEJvJ-8Vm60Q9rYAHJ-tipLud14K_vF-AELcC39SXL5oGLetV8rR6WVZJVMJWN60AfoEghWFD4f3xCGucxdsq1L38NEd-Mcxsy405Z2wB3afgbLc8VjnR2FJa-fKZV33O6SdzzLODK7PJlDp7CuoMu7A0hwEpgJEyc4hfmeVIbrFC7jzyZzop_0119SbeM4_nK8lvndhuHwPtkgEWvx7ZLppRBa9IJEhz6YIvwaWdCGjkMkIApeMpvRuWP7blAbhY_ONXzbSbOGCDSpTzKFAA9akGlfKGA6WPEYag2VE0QFTTLHZ8WoL2sZtpPIMFdu13lVT2ps7Ben8m73xELQ372jHtbLfrgVdS04eGR5y8QwUl6WqqLIxD5mGaARDwO36HWlbRSf_5LEGuPlnwaHJg-6UiY_0s2zW93ZKfqRxa5S6plRynVpY1SOmXRuJlPS2RgUk3JpSUa8qpP90Xqm9DEAbQxwtdOcmpR7BNdMiYRwA3_zwQD5GJ7tOsHKxUB-pxd-kcefQ5kicjpwd5XA4KKkRtIqQfojMli5SnuKxOzjV0-tVC-eiNKNr7HqTIW8j-w_T5KP5UU7khK1Uv&isca=1" alt="Logo AHAL">
+    <div class="watermark"></div>
+        <div class="header">
+            <div class="header-arc"></div>
+            <div class="header-content">
+                <img src="https://ffd4140419b6ef6856d274dcc2ce34b02b9c7e384df8d8751ad8af4-apidata.googleusercontent.com/download/storage/v1/b/gpo-maya.appspot.com/o/logo_ahal.jpeg?jk=AXN3i9oiGwWoy_HyH4hKh-SjAFRRp3vM-ZK9UZXe0tPlEmPuKZOPHBr6fUsTHNl4Rna9UkYvBb-_bEoGQnBbFpxmljfG9lYGi3oQEFkY65lzT1DCQJoOghwDat7w7A6Q3YlkDMZU-W_MGlY3FA0coJ6JgobTCGQP98K84IzAphADhNr9AiS8cpiA3xiWqstKNTlG6z-FVsNqdKPpPltekHqJCpaYyWiKaliIl4Bf2TapvLR0frkwRdf6n9i6fvp8k87FhPUcLaEX-szvXtIKRW1zCtxyr6Qnc0Dgoub0p1hJm-9PvOuFfb7umULUY9I4NDsKUEEp_KGkKMo80Htw7Vx6_OcokrMDj6xXyh6M_M_0otfPw8yohQtGmW84sU0v373YO2oFFiBB-Ny9SdX9Q2yyzLfcyBkGp4wqGiHs_XkCod2wqTu3zVi3vwcIa5COIzujdXNYqlIvuaCLR6Xly-58EYgJ9oE9pU3fDqpZcuqVWs5kEYLbDPGuhdhWZuQpR8ncrrjO-r90Wu7KgY68nWex-_i8tJMtiNZ67T31WXVX6BEHTKbZ6g1OQvK17Bzo_E6caz37dooZ7M0liVGqVth86bBOPcVJjL4ylfZ0W4fspeZW5IgvaYO-HcDhol3nxoUGsAwnfziBVUkQ737IsE5yfu5iRrJNyOk4r_pbe0VK8_LIN0z3V_drvCmwqOqHzKWELi_diz30gfbR70OQHbzmrgc4Sfkv2dfAScGh8LdJvsOGEF4IBSqGGbHDag-xint7lX8PTp4pp4Zx6ycIPXOt4b7LnNBSx2TWmXehxJ9o8RfIgRnKKxWRpDIfYxVnUvBa-z8y7Kcb4Ob6gzjiCNAZI2Js3kBbdUDO7G54dmIFhqTs0LyV8lVcvqGGlLFamxabEslCLYBmPjp-WbWsXcrz96fzUmrh6HUM1AzW9DJkoGvE4X5xyuJxLKbD5gCRhg7JYEOo7e23lV4XXttMCYX3SBA9EXouHpAKKu3bFfJ3PiOawLAndRcG-9Mjyz1stuvWcLMSfScQ_rLJ7QRFPVkqwsdyxHriqOXs7yD7M6UcL9UdWKuYtQuw-4EE07kM8HBiNPhF40wuIQbHhjc11HlI2dM6lDhjebXdc7qSaL9QkdkMp6u2odROhhhJauI&isca=1" alt="Logo AHAL" class="logo">
                 <h1>${getSettings[0].razonSocial}</h1>
             </div>
+        </div>
 
-            <div class="title">RECIBO DE PAGO</div>
+        <div class="title">RECIBO DE PAGO</div>
 
-            <div class="details">
-                <div>
-                    <p><strong>Recibí de:</strong> ${dataClient[0].nombre}</p>
-                </div>
-                <div>
-                    <p><strong>Fecha:</strong> ${lafecha}</p>
-                    <p><strong>Folio:</strong> ${folio}</p>
-                </div>
+        <div class="details">
+            <div>
+                <p><strong>Recibí de:</strong> ${dataClient[0].nombre}</p>
             </div>
-
-            <div class="description">DESCRIPCIÓN</div>
-
-            <div class="content">
-                <p><strong>Concepto:</strong> ${extraSlug}</p>
-                <p>Del lote ${dataLote?.numero || "___"} Manzana ${dataLote?.manzana || "___"}, del desarrollo ${dataProject?.nombre || "AHAL"} ubicado en la localidad de Valladolid Nuevo, municipio de Lázaro Cárdenas, estado de Quintana Roo.</p>
-                <p><strong>Proyecto:</strong> ${dataProject?.nombre || "AHAL"}</p>
-                <p><strong>Lote:</strong> ${dataLote?.manzana || "___"}</p>
-                <p><strong>Del banco:</strong> ${banco || "___________________________"}</p>
-                <p><strong>Clave de rastreo:</strong> ${refBanco || "___________________________"}</p>
-                <p><strong>Con folio de referencia:</strong> ${refPago || "___________________________"}</p>
-                <p><strong>En fecha de:</strong> ${lafecha}</p>
-                <p class="observations">Observaciones: ${textoObservaciones || "SIN OBSERVACIONES"}</p>
+            <div>
+                <p><strong>Fecha:</strong> ${lafecha}</p>
+                <p><strong>Folio:</strong> ${folio}</p>
             </div>
+        </div>
 
-            <div class="content">
-                <p><strong>Importe con letra:</strong> ${letrasToTexto?.toUpperCase()}</p>
-                <p><strong>Total:</strong> $${precioMensualidad}</p>
-            </div>
+        <div class="description">DESCRIPCIÓN</div>
 
-            <div class="signature">
-                <p>Nombre y firma de quien recibe</p>
-                <p>_______________________________</p>
-                <p><strong>${dataClient[0].nombre}</strong></p>
-            </div>
+        <div class="content">
+            <p><strong>Concepto:</strong> ${extraSlug}</p>
+            <p>Del lote ${dataLote?.numero || '___'} Manzana ${dataLote?.manzana || '___'}, del desarrollo ${dataProject?.nombre || 'AHAL'} ubicado en la localidad de Valladolid Nuevo, municipio de Lázaro Cárdenas, estado de Quintana Roo.</p>
+            <p><strong>Proyecto:</strong> ${dataProject?.nombre || 'AHAL'}</p>
+            <p><strong>Lote:</strong> ${dataLote?.manzana || '___'}</p>
+            <p><strong>Del banco:</strong> ${banco || '___________________________'}</p>
+            <p><strong>Clave de rastreo:</strong> ${refBanco || '___________________________'}</p>
+            <p><strong>Con folio de referencia:</strong> ${refPago || '___________________________'}</p>
+            <p><strong>En fecha de:</strong> ${lafecha}</p>
+            <p class="observations">Observaciones: ${textoObservaciones || 'SIN OBSERVACIONES'}</p>
+        </div>
 
-            <div class="footer">
-                <p>ATENCIÓN A CLIENTES</p>
-                <p>9831851174 | Ventas@exos.com.mx</p>
-                <p>${getSettings[0].direccion}, ${getSettings[0].ciudad}</p>
-            </div>
+        <div class="content">
+            <p><strong>Importe con letra:</strong> ${letrasToTexto?.toUpperCase()}</p>
+            <p><strong>Total:</strong> $${precioMensualidad}</p>
+        </div>
+
+        <div class="signature">
+            <p>Nombre y firma de quien recibe</p>
+            <p>_______________________________</p>
+            <p><strong>${getSettings[0].nombre}</strong></p>
+        </div>
+
+        <div class="footer">
+            <p>ATENCIÓN A CLIENTES</p>
+            <p>9831851174 | Ventas@exos.com.mx</p>
+            <p>${getSettings[0].direccion}, ${getSettings[0].ciudad}</p>
         </div>
     </div>
 </body>
 </html>
     `;
     return webTemplate;
-  },
+  };
+,
   findUser: async (query) => {
     const araryQuery = query
       .split(" ")
