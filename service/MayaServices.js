@@ -1152,7 +1152,7 @@ module.exports = {
 </html>
     `;
     return webTemplate;
-  };
+  }
 ,
   findUser: async (query) => {
     const araryQuery = query
