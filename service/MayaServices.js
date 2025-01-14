@@ -993,10 +993,12 @@ module.exports = {
     <title>Recibo de Pago - AHAL</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
             background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            font-family: Arial, Helvetica, sans-serif;
         }
         .container {
             width: 216mm; /* Tamaño carta (ancho) */
@@ -1005,7 +1007,6 @@ module.exports = {
             background: #fff;
             padding: 20px;
             border: 1px solid #ccc;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
         .watermark {
                     position: absolute;
@@ -1119,10 +1120,10 @@ module.exports = {
         <div class="description">DESCRIPCIÓN</div>
 
         <div class="content">
-            <p><strong>Concepto:</strong> ${extraSlug}</p>
-            <p>Del lote ${dataLote?.numero || '___'} Manzana ${dataLote?.manzana || '___'}, del desarrollo ${dataProject?.nombre || 'AHAL'} ubicado en la localidad de Valladolid Nuevo, municipio de Lázaro Cárdenas, estado de Quintana Roo.</p>
+            <p><strong>Concepto:</strong> ${mensajeRecibo || textoDescription}</p>
+            <p>Del lote ${dataLote[0].lote || '___'} Manzana ${dataLote[0].manzana || '___'}, del desarrollo ${dataProject[0]?.title || 'AHAL'} ubicado en la localidad de Valladolid Nuevo, municipio de Lázaro Cárdenas, estado de Quintana Roo.</p>
             <p><strong>Proyecto:</strong> ${dataProject?.nombre || 'AHAL'}</p>
-            <p><strong>Lote:</strong> ${dataLote?.manzana || '___'}</p>
+            <p><strong>Lote:</strong> ${dataLote[0].lote || '___'}</p>
             <p><strong>Del banco:</strong> ${banco || '___________________________'}</p>
             <p><strong>Clave de rastreo:</strong> ${refBanco || '___________________________'}</p>
             <p><strong>Con folio de referencia:</strong> ${refPago || '___________________________'}</p>
