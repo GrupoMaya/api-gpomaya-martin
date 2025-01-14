@@ -999,8 +999,6 @@ module.exports = {
             background-color: #f4f4f4;
         }
         .container {
-            width: 216mm; /* Tamaño carta (ancho) */
-            height: 279mm; /* Tamaño carta (alto) */
             margin: 20px auto;
             background: #fff;
             padding: 20px;
@@ -1122,7 +1120,7 @@ module.exports = {
             <div class="signature">
                 <p>Nombre y firma de quien recibe</p>
                 <p>_______________________________</p>
-                <p><strong>${getSettings[0].nombre}</strong></p>
+                <p><strong>${dataClient[0].nombre}</strong></p>
             </div>
 
             <div class="footer">
