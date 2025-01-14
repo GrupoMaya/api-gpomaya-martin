@@ -241,7 +241,7 @@ module.exports = {
       const pdf = await page.pdf({
         format: "letter",
         printBackground: true,
-        scale: 0.8,
+        scale: 0.93,
         margin: {
           left: "0px",
           top: "0px",

@@ -1006,7 +1006,6 @@ module.exports = {
             margin: 20px auto;
             background: #fff;
             padding: 20px;
-            border: 1px solid #ccc;
         }
         .watermark {
                     position: absolute;
@@ -1014,7 +1013,7 @@ module.exports = {
                     left: 0;
                     width: 100%;
                     height: 100%;
-                    background: url('https://ff81bc3054b58548e88a18412f9573e0ce5a4e909c787b182b33692-apidata.googleusercontent.com/download/storage/v1/b/gpo-maya.appspot.com/o/ahal_water_marker.jpeg?jk=AXN3i9rplTSVy9dznhQizbmhCDewkQzS42Lv8PoBLBv-GlBd4DAXvJlysRxrDdGeVz7eTKG1RatV9md3M5pb8ZfaOVxc-Ii7os5NuVnzSvza6Kn0IkQNtKoGRVGSTJTgtjyCwMTxeaPK_HlZgQWZatFdZ_XMYZNYilFolkR5t4Wpoj1454-Lpcp1NA0fVjArjcFpTCcdaq7RiGZwd0TaimprksmJMKOhM6bsecGROlN0chSsCRXFzP_WFx4pmEBhM_CYt8Y56GTUdB7aoexMB9u_HtJI9kZiVLFKsaR2QgOk8S-cclW0YeMQo47DJ64QyzS4H76WWtkagh230r9GuI4xtxZTTwwp8_yeS3TVgjnRbGVab06xpUcHbHnvV1IUqOVuMXAic0ctJdsaueGqYJQ4N-Td-s3SnUQoPKrGceVA9T0etT7oSbTu3TVoKWJ1yeEp4rMFUlYCV9-I1wR3ajRBaMWYLduF4c65WHS6frTObVQbk2syGAfQjv0VphbZjUwQKr-QdOBOIh0HOZXyJG7oPZiTs0pHvzJNLrN0xdD3mLN2rs8Yl3fabi2Bl7RqXO9DmIqtujMQE1m94J6PGEmFn08ynepVZNDr7WwSPV6kJBYszmcpGo5NBhfKi32MJliDuHyZLz-hvHf9wwgUk6cn2VoL7bUbehCFrAdTzTA7r3xsusAP7u1uQfKZQ2FKY-iQjZ7mfxRaF5vduv49IL8j0r7j_0oLhKrFY-LdctQlz6g5H60ItAu_U88Rbksm8a5vzz_H0wzxNOCUA0up-TybJCqOjSoh2tOUDH9YtvWPmG-fadDkYKHF0-bvA7QTuMzHDQAZZtPv9a9k1P8EZEm6Xh28Ao1yFQVFF5xvJdVALzk31bOovJGcefuFrb9_bknZnuLuy-ghL_CBeeulgX90ew5Sf_iYY49RBS7o_8kJ4bIpsSZHf-cviuovalS6mTclTRhTWQjaPm56kjQn3yZg0FHXaHI5JPvmE0YXtUH2a8M5Eu83R21YLrrmmfFKT4hsJ0c9S0Cx4qjCmcqf_vdniPgy4eSVXMgGNK2a-3s2uLpTQaEq7xIxnaklTzg5GxwI5D04hKN9OzRF_uFuM7RKQAktM6vEbIe1sk-5OEnmhjC3COjjnkT5-VoRO_lmZ8oUmU6n0w&isca=1') no-repeat center;
+                    background: url('https://ffb4c5a3c992aff42f511af75549eba3683bd61ec97c6ae1d4030de-apidata.googleusercontent.com/download/storage/v1/b/gpo-maya.appspot.com/o/ahal_water_marker.jpeg?jk=AXN3i9rIStMseMwSIXPYw7dp69QNz0gvnB2l0YIM6LaRuHZbB8HNDTm_CbBU7C9jMI5cYLTLkN6GKhGfyNKYFt1OHzKsEgkFqXTu2f9awYYjp_-yo-yc8NEug1F6xHrqkRWevVrt17Muovo6-eJd-gJuQwHVgtaF-CDnmaRzJMcbCda7IvJ73OMglRYeTWq4q_oNjKGvQ9BK0sCpsa4E9YhdWT_-UMKclaZl6H4H9j_UbWcBMjJZ6RFEccB6T_08oxcdBgFqAFJltfAYLVcAaOYbyEWVehPTPq4YlrDUYjy1N4QikvJdq8-EBmfx04BnIA6eNTuDHDemf6xQ3fWsT_fFXPbKFEZvGtf0btkM2DdmOT_ZwCyqI8CHKGNpA6A4F1uIlOzb7lmlX8gl6wKBmlkCCYwuEJzwvNKEitHq90f3bkWodLMK0PUSlFE2mStHy7CArBcbciQd65BaT6lnHQvDXFuoQZNWROTELiicXtZkN9CT7Ix7hHXohZdHCM6eD2j8mt0rXWZGY6pDX-kbH04pwMRlqR934ehISvDNwyCzcMkm1Y51mdIwraAvuOEp9Z0NbRBv7km_eqK43bxtlMMA9BcUEpIpZd2C_y0uANolBYzpVSq4GQ0vVlL9sU8lcg2teU9qAmHW8Bqde8XsZ9yLZydgGS6wuh9FLIeyhkQdTs8T5RYyjXL6yqHunpDorwlHHzdo0En3U0G6fgemoiqXuxOoO1E1kvvXiHRdUujPc5FsijFzvLZOAEhHkC8bjpRuxFqhTRcNCTnrSL9D2CzTRWZEcxc6ejP4LCZZMowcGlow1X8Uyr-YN1321inSECB2CnLU4lN7KZmcnUHtB41ZJssJr2ae-KuZDRJ1GvaEkZb3Kn8Al1TsufBYK7A22J0T0FRJLviRf_HlEWflqZl3O_26pA_6HP8--PBvxM36_TsQOncgihPG1Eg80I7UMQUWJ8O_YGtNZi963sVId3gdF8XFNDV02wKvLMYJhDPUpixGRS_Hm1uPsD2HetWOFN3_jhI6bzHDE3Op9B8k5SxZHeu56GgB6fX_sQy1qbTsfbLAXtK5A9E4_pJHpukgBDLhCYil7rBp4yEK7ZCB2wMO4xKwON1QF9ZFXJwRhCW47RfWgBr_DC7LJ7Yvr8zdS-c_i7WpD_Q&isca=1') no-repeat center;
                     background-size: cover;
                     opacity: 0.1;
                     z-index: 0;
@@ -1100,7 +1099,7 @@ module.exports = {
         <div class="header">
             <div class="header-arc"></div>
             <div class="header-content">
-                <img src="https://ffd4140419b6ef6856d274dcc2ce34b02b9c7e384df8d8751ad8af4-apidata.googleusercontent.com/download/storage/v1/b/gpo-maya.appspot.com/o/logo_ahal.jpeg?jk=AXN3i9oiGwWoy_HyH4hKh-SjAFRRp3vM-ZK9UZXe0tPlEmPuKZOPHBr6fUsTHNl4Rna9UkYvBb-_bEoGQnBbFpxmljfG9lYGi3oQEFkY65lzT1DCQJoOghwDat7w7A6Q3YlkDMZU-W_MGlY3FA0coJ6JgobTCGQP98K84IzAphADhNr9AiS8cpiA3xiWqstKNTlG6z-FVsNqdKPpPltekHqJCpaYyWiKaliIl4Bf2TapvLR0frkwRdf6n9i6fvp8k87FhPUcLaEX-szvXtIKRW1zCtxyr6Qnc0Dgoub0p1hJm-9PvOuFfb7umULUY9I4NDsKUEEp_KGkKMo80Htw7Vx6_OcokrMDj6xXyh6M_M_0otfPw8yohQtGmW84sU0v373YO2oFFiBB-Ny9SdX9Q2yyzLfcyBkGp4wqGiHs_XkCod2wqTu3zVi3vwcIa5COIzujdXNYqlIvuaCLR6Xly-58EYgJ9oE9pU3fDqpZcuqVWs5kEYLbDPGuhdhWZuQpR8ncrrjO-r90Wu7KgY68nWex-_i8tJMtiNZ67T31WXVX6BEHTKbZ6g1OQvK17Bzo_E6caz37dooZ7M0liVGqVth86bBOPcVJjL4ylfZ0W4fspeZW5IgvaYO-HcDhol3nxoUGsAwnfziBVUkQ737IsE5yfu5iRrJNyOk4r_pbe0VK8_LIN0z3V_drvCmwqOqHzKWELi_diz30gfbR70OQHbzmrgc4Sfkv2dfAScGh8LdJvsOGEF4IBSqGGbHDag-xint7lX8PTp4pp4Zx6ycIPXOt4b7LnNBSx2TWmXehxJ9o8RfIgRnKKxWRpDIfYxVnUvBa-z8y7Kcb4Ob6gzjiCNAZI2Js3kBbdUDO7G54dmIFhqTs0LyV8lVcvqGGlLFamxabEslCLYBmPjp-WbWsXcrz96fzUmrh6HUM1AzW9DJkoGvE4X5xyuJxLKbD5gCRhg7JYEOo7e23lV4XXttMCYX3SBA9EXouHpAKKu3bFfJ3PiOawLAndRcG-9Mjyz1stuvWcLMSfScQ_rLJ7QRFPVkqwsdyxHriqOXs7yD7M6UcL9UdWKuYtQuw-4EE07kM8HBiNPhF40wuIQbHhjc11HlI2dM6lDhjebXdc7qSaL9QkdkMp6u2odROhhhJauI&isca=1" alt="Logo AHAL" class="logo">
+                <img src="https://ff870ad7df3fd7ecd968ef7031447a31d4032de915ee87de975f136-apidata.googleusercontent.com/download/storage/v1/b/gpo-maya.appspot.com/o/logo_ahal.jpeg?jk=AXN3i9pR225aEh_nClu57lD03pc71VIg_ss69Rotv2F56-KkRdfNkRPBaJN5lXWU94s-C0edMQE5xFIOvvcldVlSIN2Wr60Ot2rQ5aEloWVVY2TCc9J3j1dvfI4GNwgq3YU6SKnGruXcc0GNVdYXWGx5TVmfyraLIS9Lied0yqBv7u8rvzDb8I1g7dskvC3FCNHgutgYaXIWv8QfrjS5tlc3c2YUH__boT2x8c6cqc5-1-fVQvYr1pNnE9EH98nsof9p7jeufPsqD-qzpl7bCB3qxiH8n3bKZMRJ5KzYO_n9iFTwPdMTQ2g1VFFaMepTxeXeHvdn9BODYMMoFsAz1AbkQFB4FZWkRJMKuquiBD07mFv_lM7qaoxTMB_NjyiU4SoX_lIMNFn4VjCyD93dyOGjr2GzDQoMSQCI77XbTjku_m6OqSpmznDTPLgpsrPcbpgenPWcG4ngJZPN2lsPqspNExmVFHRfPwmB-_iSQuRM2qP35oe6zSwHdG-QKlvjenGhHcebyZSpa_-q-aXaZByUjtsT7OVltXnYeVsbWyBuHEJzgzM9rVKuUE6KjNvplb5FRG757gNx3eIY-Da0Ef8Kp0FBZECTkKa2kWPT1tWa7TmB8ku0mfqPlpXrhmVhuWqmvJAuYTFUQjo8clLD-d03dojtTBPgMxrjElz3zi8p5zJHpFiJDK215noGcoGAotyaILoGs0ub_QbOAHdfOX1rqYIw4_b39j59UFQTHi30wVaEC9CSILL47orL3qo27zFER1_SNGn8FVfRMSCTS_ZAV-ovDmB0tja1PxV9FoGW47oMmYWgMJdaaKjl7I-LSyXz4G8AsBWaOcD4STLXefOhi4jqgUvmBhPS-La7nBgGUjr1n4vePySKhrmzMWloJDiYs1o5FDWXYawEE6vXASFmcWrTc_hYeA1UpOxzCoxt5vMYvrDj8gSo4_3xWF_VzZ9XbWlQSA-MkoqP_YFq9UWPPLgF4pCU23oB6ORkTQL3c_lUyAQ5ZcClUnPaVwPNUOtHkt7i-Cl9l58apJy0ozOF8yRXCmhhfzYUQQnI_r1TSR2HncKLRTVx6wmXjgHqRA6USB1iOkzIKTjPPRT-rE7DcgBp_WYTfw-8ypH1KD5KAybdxgrIZMFM3lCld80E&isca=1" alt="Logo AHAL" class="logo">
                 <h1>${getSettings[0].razonSocial}</h1>
             </div>
         </div>
@@ -1120,7 +1119,7 @@ module.exports = {
         <div class="description">DESCRIPCIÓN</div>
 
         <div class="content">
-            <p><strong>Concepto:</strong> ${mensajeRecibo || textoDescription}</p>
+            <p><strong>Concepto:</strong> ${mensajeRecibo || ""}</p>
             <p>Del lote ${dataLote[0].lote || '___'} Manzana ${dataLote[0].manzana || '___'}, del desarrollo ${dataProject[0].title} ubicado en la localidad de Valladolid Nuevo, municipio de Lázaro Cárdenas, estado de Quintana Roo.</p>
             <p><strong>Proyecto:</strong> ${dataProject[0].title || 'AHAL'}</p>
             <p><strong>Lote:</strong> ${dataLote[0].lote || '___'}</p>
