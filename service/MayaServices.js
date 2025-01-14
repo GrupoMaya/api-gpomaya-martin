@@ -999,8 +999,6 @@ module.exports = {
             background-color: #f4f4f4;
         }
         .container {
-            width: 100vw;
-            height: 100vh;            
             margin: 20px auto;
             background: #fff;
             padding: 20px;
