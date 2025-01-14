@@ -255,6 +255,7 @@ module.exports = {
 
       return res.send(pdf);
     } catch (error) {
+      console.log(error)
       return res.status(400).json({});
     }
   },
