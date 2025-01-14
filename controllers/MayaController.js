@@ -223,7 +223,7 @@ module.exports = {
     try {
       let getPDFdata = null;
       const getSettings = await MayaService.settingsGetData();
-      if (getSettings[0].slug === "xavier") {
+      if (getSettings[0].slug === "martin") {
         getPDFdata = await MayaService.createInvoiceMartin(
           req.body,
           req.quert,

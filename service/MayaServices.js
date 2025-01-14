@@ -991,58 +991,145 @@ module.exports = {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recibo de Pago - AHAL</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <style>
-        body { font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 0; }
-        .container { width: 800px; margin: 20px auto; background: #fff; padding: 20px; border: 1px solid #ccc; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
-        .watermark { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: url('{{ static_files_path }}/images/marca-agua-placeholder.png') no-repeat center; background-size: cover; opacity: 0.1; z-index: 0; }
-        .header { text-align: center; }
-        .header img { width: 200px; }
-        .description { background-color: #f9c908; text-align: center; padding: 10px; font-weight: bold; }
-        .details, .content, .observations, .footer { margin: 20px 0; }
-        .table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
-        .table th, .table td { border: 1px solid #ddd; padding: 8px; }
-        .table th { background-color: #f2f2f2; text-align: left; }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 216mm; /* Tamaño carta (ancho) */
+            height: 279mm; /* Tamaño carta (alto) */
+            margin: 20px auto;
+            background: #fff;
+            padding: 20px;
+            border: 1px solid #ccc;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        .watermark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://ff81bc3054b58548e88a18412f9573e0ce5a4e909c787b182b33692-apidata.googleusercontent.com/download/storage/v1/b/gpo-maya.appspot.com/o/ahal_water_marker.jpeg?jk=AXN3i9rplTSVy9dznhQizbmhCDewkQzS42Lv8PoBLBv-GlBd4DAXvJlysRxrDdGeVz7eTKG1RatV9md3M5pb8ZfaOVxc-Ii7os5NuVnzSvza6Kn0IkQNtKoGRVGSTJTgtjyCwMTxeaPK_HlZgQWZatFdZ_XMYZNYilFolkR5t4Wpoj1454-Lpcp1NA0fVjArjcFpTCcdaq7RiGZwd0TaimprksmJMKOhM6bsecGROlN0chSsCRXFzP_WFx4pmEBhM_CYt8Y56GTUdB7aoexMB9u_HtJI9kZiVLFKsaR2QgOk8S-cclW0YeMQo47DJ64QyzS4H76WWtkagh230r9GuI4xtxZTTwwp8_yeS3TVgjnRbGVab06xpUcHbHnvV1IUqOVuMXAic0ctJdsaueGqYJQ4N-Td-s3SnUQoPKrGceVA9T0etT7oSbTu3TVoKWJ1yeEp4rMFUlYCV9-I1wR3ajRBaMWYLduF4c65WHS6frTObVQbk2syGAfQjv0VphbZjUwQKr-QdOBOIh0HOZXyJG7oPZiTs0pHvzJNLrN0xdD3mLN2rs8Yl3fabi2Bl7RqXO9DmIqtujMQE1m94J6PGEmFn08ynepVZNDr7WwSPV6kJBYszmcpGo5NBhfKi32MJliDuHyZLz-hvHf9wwgUk6cn2VoL7bUbehCFrAdTzTA7r3xsusAP7u1uQfKZQ2FKY-iQjZ7mfxRaF5vduv49IL8j0r7j_0oLhKrFY-LdctQlz6g5H60ItAu_U88Rbksm8a5vzz_H0wzxNOCUA0up-TybJCqOjSoh2tOUDH9YtvWPmG-fadDkYKHF0-bvA7QTuMzHDQAZZtPv9a9k1P8EZEm6Xh28Ao1yFQVFF5xvJdVALzk31bOovJGcefuFrb9_bknZnuLuy-ghL_CBeeulgX90ew5Sf_iYY49RBS7o_8kJ4bIpsSZHf-cviuovalS6mTclTRhTWQjaPm56kjQn3yZg0FHXaHI5JPvmE0YXtUH2a8M5Eu83R21YLrrmmfFKT4hsJ0c9S0Cx4qjCmcqf_vdniPgy4eSVXMgGNK2a-3s2uLpTQaEq7xIxnaklTzg5GxwI5D04hKN9OzRF_uFuM7RKQAktM6vEbIe1sk-5OEnmhjC3COjjnkT5-VoRO_lmZ8oUmU6n0w&isca=1') no-repeat center;
+            background-size: cover;
+            opacity: 0.1;
+            z-index: 0;
+        }
+        .content-wrapper {
+            position: relative;
+            z-index: 1;
+        }
+        .header {
+            background-color: #f9c908;
+            color: #000;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .header img {
+            width: 80px;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 18px;
+        }
+        .title {
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        .details {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .details div {
+            width: 48%;
+        }
+        .description {
+            background-color: #f9c908;
+            padding: 10px;
+            font-weight: bold;
+            color: #000;
+        }
+        .content {
+            margin: 10px 0;
+        }
+        .observations {
+            color: red;
+            font-weight: bold;
+        }
+        .signature {
+            margin-top: 30px;
+            text-align: center;
+        }
+        .footer {
+            background-color: #222;
+            color: #fff;
+            text-align: center;
+            font-size: 12px;
+            padding: 10px;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <img src="https://firebasestorage.googleapis.com/v0/b/gpo-maya.appspot.com/o/logo.png?alt=media&token=31e8e01e-09ff-4d9d-a73b-688b5506743f" alt="Logo">
-            <h1>${getSettings[0].razonSocial}</h1>
-            <p>RFC: ${getSettings[0].rfc}</p>
-            <p>${getSettings[0].direccion}</p>
-            <p>${getSettings[0].ciudad}</p>
-        </div>
-        <div class="description">RECIBO DE PAGO</div>
-        <div class="details">
-            <p><strong>Recibí de:</strong> ${dataClient[0].nombre}</p>
-            <p><strong>Fecha:</strong> ${lafecha}</p>
-            <p><strong>Folio:</strong> ${folio}</p>
-        </div>
-        <div class="content">
-            <p>${mensajeRecibo || textoObservaciones}</p>
-        </div>
-        <table class="table">
-            <thead>
-                <tr><th>Cantidad</th><th>Descripción</th><th>Importe</th></tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>1.0</td>
-                    <td>${extraSlug}</td>
-                    <td>${precioMensualidad}</td>
-                </tr>
-            </tbody>
-        </table>
-        <div class="observations">
-            <p><strong>Importe con letra:</strong> ${letrasToTexto.toUpperCase()}</p>
-            <p><strong>Total:</strong> ${precioMensualidad}</p>
-        </div>
-        <div class="footer">
-            <p>ATENCIÓN A CLIENTES</p>
-            <p>9831851174 | Ventas@exos.com.mx</p>
-            <p>Calle Aarón Merino Fernández No. 112 int A, Municipio de Othón P. Blanco, Chetumal, Quintana Roo</p>
+        <div class="watermark"></div>
+        <div class="content-wrapper">
+            <div class="header">
+                <img src="https://ff0c7658f14f4e0ec86c4a3857632c7afb8d97e3e063db3547cf1f7-apidata.googleusercontent.com/download/storage/v1/b/gpo-maya.appspot.com/o/logo_ahal.jpeg?jk=AXN3i9pJoUSsVIzdz0BsCRZk5sWlyQkcIGNzm3PMNdkhTEpZQ44aYNKIQhSXG9M-Ak9SSuufNwNy22O6VbA-C5VFHVQFh07S-hX8jNC818vr6Z0RFUneaug7bV2hgtNaLqJ7cNwFACpuyWPdAullkrZhP3E02xZx8fB3J7yX4egYzHN_Yjm0HL6TG8sEArExEWc70wgmOPeLOMHlCWJEmrOHOYpOHH3HSLPSlHEzKQPszBZ0L3J91LvRPJLZYrMzU6yLuZIu2HxIjqOe2-U-7j-s3rerdcsSd2NOn3ABD3hLG0eWYPKFodKjkBRA1_FfeY6iSzgEinWiPwTOx0GylJmLSSRuWx7lBJVEigsdTkxjNe-RZ9nrTXqSV6r2IDHq58UIenSHRAoXqhThaTmh8-lCV9ERSzVgPes7Ig0OXMYRUYiDriOmfJCdhE_N0WqMuKVhUL7N5Erp_GSv6kZZBY1MxX7CcUd0iJ5pfa5MoYDiK40Qk4e7vf8RbpaRLSnreA0wD2O-ZR5EZRx2WWD6v9sVINJF5rExtgDKkEfHKOcKl5SrEJvJ-8Vm60Q9rYAHJ-tipLud14K_vF-AELcC39SXL5oGLetV8rR6WVZJVMJWN60AfoEghWFD4f3xCGucxdsq1L38NEd-Mcxsy405Z2wB3afgbLc8VjnR2FJa-fKZV33O6SdzzLODK7PJlDp7CuoMu7A0hwEpgJEyc4hfmeVIbrFC7jzyZzop_0119SbeM4_nK8lvndhuHwPtkgEWvx7ZLppRBa9IJEhz6YIvwaWdCGjkMkIApeMpvRuWP7blAbhY_ONXzbSbOGCDSpTzKFAA9akGlfKGA6WPEYag2VE0QFTTLHZ8WoL2sZtpPIMFdu13lVT2ps7Ben8m73xELQ372jHtbLfrgVdS04eGR5y8QwUl6WqqLIxD5mGaARDwO36HWlbRSf_5LEGuPlnwaHJg-6UiY_0s2zW93ZKfqRxa5S6plRynVpY1SOmXRuJlPS2RgUk3JpSUa8qpP90Xqm9DEAbQxwtdOcmpR7BNdMiYRwA3_zwQD5GJ7tOsHKxUB-pxd-kcefQ5kicjpwd5XA4KKkRtIqQfojMli5SnuKxOzjV0-tVC-eiNKNr7HqTIW8j-w_T5KP5UU7khK1Uv&isca=1" alt="Logo AHAL">
+                <h1>${getSettings[0].razonSocial}</h1>
+            </div>
+
+            <div class="title">RECIBO DE PAGO</div>
+
+            <div class="details">
+                <div>
+                    <p><strong>Recibí de:</strong> ${dataClient[0].nombre}</p>
+                </div>
+                <div>
+                    <p><strong>Fecha:</strong> ${lafecha}</p>
+                    <p><strong>Folio:</strong> ${folio}</p>
+                </div>
+            </div>
+
+            <div class="description">DESCRIPCIÓN</div>
+
+            <div class="content">
+                <p><strong>Concepto:</strong> ${extraSlug}</p>
+                <p>Del lote ${dataLote?.numero || "___"} Manzana ${dataLote?.manzana || "___"}, del desarrollo ${dataProject?.nombre || "AHAL"} ubicado en la localidad de Valladolid Nuevo, municipio de Lázaro Cárdenas, estado de Quintana Roo.</p>
+                <p><strong>Proyecto:</strong> ${dataProject?.nombre || "AHAL"}</p>
+                <p><strong>Lote:</strong> ${dataLote?.manzana || "___"}</p>
+                <p><strong>Del banco:</strong> ${banco || "___________________________"}</p>
+                <p><strong>Clave de rastreo:</strong> ${refBanco || "___________________________"}</p>
+                <p><strong>Con folio de referencia:</strong> ${refPago || "___________________________"}</p>
+                <p><strong>En fecha de:</strong> ${lafecha}</p>
+                <p class="observations">Observaciones: ${textoObservaciones || "SIN OBSERVACIONES"}</p>
+            </div>
+
+            <div class="content">
+                <p><strong>Importe con letra:</strong> ${letrasToTexto?.toUpperCase()}</p>
+                <p><strong>Total:</strong> $${precioMensualidad}</p>
+            </div>
+
+            <div class="signature">
+                <p>Nombre y firma de quien recibe</p>
+                <p>_______________________________</p>
+                <p><strong>${getSettings[0].nombre}</strong></p>
+            </div>
+
+            <div class="footer">
+                <p>ATENCIÓN A CLIENTES</p>
+                <p>9831851174 | Ventas@exos.com.mx</p>
+                <p>${getSettings[0].direccion}, ${getSettings[0].ciudad}</p>
+            </div>
         </div>
     </div>
 </body>
