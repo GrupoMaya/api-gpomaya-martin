@@ -1121,8 +1121,8 @@ module.exports = {
 
         <div class="content">
             <p><strong>Concepto:</strong> ${mensajeRecibo || textoDescription}</p>
-            <p>Del lote ${dataLote[0].lote || '___'} Manzana ${dataLote[0].manzana || '___'}, del desarrollo ${dataProject[0]?.title || 'AHAL'} ubicado en la localidad de Valladolid Nuevo, municipio de Lázaro Cárdenas, estado de Quintana Roo.</p>
-            <p><strong>Proyecto:</strong> ${dataProject?.nombre || 'AHAL'}</p>
+            <p>Del lote ${dataLote[0].lote || '___'} Manzana ${dataLote[0].manzana || '___'}, del desarrollo ${dataProject[0].title} ubicado en la localidad de Valladolid Nuevo, municipio de Lázaro Cárdenas, estado de Quintana Roo.</p>
+            <p><strong>Proyecto:</strong> ${dataProject[0].title || 'AHAL'}</p>
             <p><strong>Lote:</strong> ${dataLote[0].lote || '___'}</p>
             <p><strong>Del banco:</strong> ${banco || '___________________________'}</p>
             <p><strong>Clave de rastreo:</strong> ${refBanco || '___________________________'}</p>
