@@ -5,18 +5,18 @@ const {
   Pagos,
   Settings,
   Documents,
-  PagosRecords
-} = require('../models')
-const mongoose = require('mongoose')
+  PagosRecords,
+} = require("../models");
+const mongoose = require("mongoose");
 const {
   NumerosaLetras,
   dateIntlRef,
-  monyIntlRef
-} = require('../util/numerosLetas')
+  monyIntlRef,
+} = require("../util/numerosLetas");
 
 module.exports = {
   addProyecto: async (payload) => {
-    return new Proyecto(payload).save()
+    return new Proyecto(payload).save();
   },
   getAllClientes: async () =>
     Clientes.aggregate().match({}).project({ nombre: 1 }),
@@ -25,45 +25,45 @@ module.exports = {
     const agg = [
       {
         $match: {
-          isActive: true
-        }
+          isActive: true,
+        },
       },
       {
         $lookup: {
-          from: 'lotes',
-          localField: '_id',
-          foreignField: 'proyecto',
+          from: "lotes",
+          localField: "_id",
+          foreignField: "proyecto",
           pipeline: [
             {
-              $match: { isActive: true }
+              $match: { isActive: true },
             },
             {
               $lookup: {
-                from: 'clientes',
-                localField: 'cliente',
-                foreignField: '_id',
-                as: 'clienteData'
-              }
+                from: "clientes",
+                localField: "cliente",
+                foreignField: "_id",
+                as: "clienteData",
+              },
             },
             {
-              $unwind: '$clienteData'
+              $unwind: "$clienteData",
             },
             {
               $project: {
-                clienteData: 1
-              }
-            }
+                clienteData: 1,
+              },
+            },
           ],
-          as: 'activos'
-        }
-      }
-    ]
+          as: "activos",
+        },
+      },
+    ];
 
     const query = new Promise((resolve) => {
-      resolve(Proyecto.aggregate(agg))
-    }).then((res) => res)
+      resolve(Proyecto.aggregate(agg));
+    }).then((res) => res);
 
-    return await query
+    return await query;
   },
   //
   getProyectoById: async (id) => {
@@ -73,52 +73,52 @@ module.exports = {
       {
         $match: {
           proyecto: mongoose.Types.ObjectId(id),
-          isActive: true
-        }
+          isActive: true,
+        },
       },
       {
         $lookup: {
-          from: 'clientes',
-          localField: 'cliente',
-          foreignField: '_id',
-          as: 'clienteData'
-        }
+          from: "clientes",
+          localField: "cliente",
+          foreignField: "_id",
+          as: "clienteData",
+        },
       },
       {
         $sort: {
-          lote: 1
-        }
-      }
-    ]
+          lote: 1,
+        },
+      },
+    ];
 
     const query = new Promise((resolve) => {
-      resolve(Lotes.aggregate(agg))
-    }).then((res) => res)
+      resolve(Lotes.aggregate(agg));
+    }).then((res) => res);
 
     const resultQuery = await Promise.all([query]).then((res) => {
-      return res[0].filter((item) => item.clienteData.length > 0)
-    })
-    return resultQuery
+      return res[0].filter((item) => item.clienteData.length > 0);
+    });
+    return resultQuery;
   },
   //
   getProyectoByName: (name) => {
-    const proyectos = Proyecto.find({ title: name })
-    return proyectos
+    const proyectos = Proyecto.find({ title: name });
+    return proyectos;
   },
   //
   createCLient: async (payload) => {
-    return new Clientes(payload).save()
+    return new Clientes(payload).save();
   },
   // añadir lote a nuevo usuario y se crean los documentos para llevar control de los consecutivos
   assignLoteToNewUser: async (payload, params) => {
-    const { idProyecto } = params
+    const { idProyecto } = params;
 
     const dataUser = {
       nombre: payload.nombre,
       phone: payload.phone,
       address: payload.address,
-      email: payload.email
-    }
+      email: payload.email,
+    };
 
     const saveLote = async (idCliente) => {
       const datalote = {
@@ -131,22 +131,22 @@ module.exports = {
         financiamiento: payload.financiamiento,
         plazo: payload.plazo,
         mensualidad: payload.mensualidad,
-        inicioContrato: payload.inicioContrato
-      }
+        inicioContrato: payload.inicioContrato,
+      };
 
       const res = await new Promise((resolve) => {
-        resolve(new Lotes(datalote).save())
-      })
-      return res
-    }
+        resolve(new Lotes(datalote).save());
+      });
+      return res;
+    };
 
     const dataUserPromise = new Promise((resolve) => {
-      resolve(new Clientes(dataUser).save())
+      resolve(new Clientes(dataUser).save());
     })
       .then((res) => {
-        return saveLote(res._id)
+        return saveLote(res._id);
       })
-      .then((res) => res)
+      .then((res) => res);
 
     // creamos los folios de documentos
     const docMensualidad = async (payload) => {
@@ -156,13 +156,13 @@ module.exports = {
             cliente: payload.cliente.toString(),
             proyecto: payload.proyecto.toString(),
             lote: payload._id,
-            tipoDocumento: 'mensualidad'
-          }).save()
-        )
-      }).then((res) => res)
+            tipoDocumento: "mensualidad",
+          }).save(),
+        );
+      }).then((res) => res);
 
-      return mutation
-    }
+      return mutation;
+    };
 
     const docSaldoInicial = async (payload) => {
       const mutation = await new Promise((resolve) => {
@@ -171,13 +171,13 @@ module.exports = {
             cliente: payload.cliente.toString(),
             proyecto: payload.proyecto.toString(),
             lote: payload._id,
-            tipoDocumento: 'saldoinicial'
-          }).save()
-        )
-      }).then((res) => res)
+            tipoDocumento: "saldoinicial",
+          }).save(),
+        );
+      }).then((res) => res);
 
-      return mutation
-    }
+      return mutation;
+    };
 
     const docExtra = async (payload) => {
       const mutation = await new Promise((resolve) => {
@@ -186,13 +186,13 @@ module.exports = {
             cliente: payload.cliente.toString(),
             proyecto: payload.proyecto.toString(),
             lote: payload._id,
-            tipoDocumento: 'extra'
-          }).save()
-        )
-      }).then((res) => res)
+            tipoDocumento: "extra",
+          }).save(),
+        );
+      }).then((res) => res);
 
-      return mutation
-    }
+      return mutation;
+    };
 
     const docAcreditado = async (payload) => {
       const mutation = await new Promise((resolve) => {
@@ -201,26 +201,26 @@ module.exports = {
             cliente: payload.cliente.toString(),
             proyecto: payload.proyecto.toString(),
             lote: payload._id,
-            tipoDocumento: 'acreditado'
-          }).save()
-        )
-      }).then((res) => res)
+            tipoDocumento: "acreditado",
+          }).save(),
+        );
+      }).then((res) => res);
 
-      return mutation
-    }
+      return mutation;
+    };
 
     const data = Promise.all([dataUserPromise]).then(async (res) => {
-      const doc = res[0]
+      const doc = res[0];
 
-      await docMensualidad(doc)
-      await docExtra(doc)
-      await docAcreditado(doc)
-      await docSaldoInicial(doc)
+      await docMensualidad(doc);
+      await docExtra(doc);
+      await docAcreditado(doc);
+      await docSaldoInicial(doc);
 
-      return doc
-    })
+      return doc;
+    });
 
-    return await data
+    return await data;
   },
   assignLote: async (payload, { idProyecto }) => {
     const datalote = {
@@ -233,8 +233,8 @@ module.exports = {
       financiamiento: payload.financiamiento,
       plazo: payload.plazo,
       mensualidad: payload.mensualidad,
-      inicioContrato: payload.inicioContrato
-    }
+      inicioContrato: payload.inicioContrato,
+    };
 
     // creamos los folios de documentos
     const docMensualidad = async (payload) => {
@@ -244,13 +244,13 @@ module.exports = {
             cliente: payload.cliente.toString(),
             proyecto: payload.proyecto.toString(),
             lote: payload._id,
-            tipoDocumento: 'mensualidad'
-          }).save()
-        )
-      }).then((res) => res)
+            tipoDocumento: "mensualidad",
+          }).save(),
+        );
+      }).then((res) => res);
 
-      return mutation
-    }
+      return mutation;
+    };
 
     const docExtra = async (payload) => {
       const mutation = await new Promise((resolve) => {
@@ -259,13 +259,13 @@ module.exports = {
             cliente: payload.cliente.toString(),
             proyecto: payload.proyecto.toString(),
             lote: payload._id,
-            tipoDocumento: 'extra'
-          }).save()
-        )
-      }).then((res) => res)
+            tipoDocumento: "extra",
+          }).save(),
+        );
+      }).then((res) => res);
 
-      return mutation
-    }
+      return mutation;
+    };
 
     const docAcreditado = async (payload) => {
       const mutation = await new Promise((resolve) => {
@@ -274,13 +274,13 @@ module.exports = {
             cliente: payload.cliente.toString(),
             proyecto: payload.proyecto.toString(),
             lote: payload._id,
-            tipoDocumento: 'acreditado'
-          }).save()
-        )
-      }).then((res) => res)
+            tipoDocumento: "acreditado",
+          }).save(),
+        );
+      }).then((res) => res);
 
-      return mutation
-    }
+      return mutation;
+    };
 
     const docSaldoInicial = async (payload) => {
       const mutation = await new Promise((resolve) => {
@@ -289,28 +289,28 @@ module.exports = {
             cliente: payload.cliente.toString(),
             proyecto: payload.proyecto.toString(),
             lote: payload._id,
-            tipoDocumento: 'saldoinicial'
-          }).save()
-        )
-      }).then((res) => res)
+            tipoDocumento: "saldoinicial",
+          }).save(),
+        );
+      }).then((res) => res);
 
-      return mutation
-    }
+      return mutation;
+    };
 
     const newLote = new Promise((resolve) => {
-      resolve(new Lotes(datalote).save())
-    })
+      resolve(new Lotes(datalote).save());
+    });
 
     return Promise.all([newLote]).then(async (res) => {
-      const doc = res[0]
+      const doc = res[0];
 
-      await docMensualidad(doc)
-      await docExtra(doc)
-      await docAcreditado(doc)
-      await docSaldoInicial(doc)
+      await docMensualidad(doc);
+      await docExtra(doc);
+      await docAcreditado(doc);
+      await docSaldoInicial(doc);
 
-      return doc
-    })
+      return doc;
+    });
   },
   // todos los lotes con nombre de usuario del proyecto
   getAllLotesByProyectId: async (idProyecto) => {
@@ -321,12 +321,12 @@ module.exports = {
           Lotes.aggregate()
             .match({ isActive: false })
             .match({ proyecto: mongoose.Types.ObjectId(idProyecto) })
-            .project({ cliente: 1, _id: 0 })
-        )
-      }).then((res) => res)
+            .project({ cliente: 1, _id: 0 }),
+        );
+      }).then((res) => res);
 
-      return query
-    }
+      return query;
+    };
 
     // CON EL ID DE CLIENTE BUSCAMOS LOS NOMBRES Y HACEMOS UN "JOIN"
     const fletchClienteID = async (idcliente) => {
@@ -335,70 +335,70 @@ module.exports = {
           Clientes.aggregate()
             .match({ _id: mongoose.Types.ObjectId(idcliente) })
             .lookup({
-              from: 'lotes',
-              localField: '_id',
-              foreignField: 'cliente',
-              as: 'lotes'
-            })
-        )
-      }).then((res) => res)
+              from: "lotes",
+              localField: "_id",
+              foreignField: "cliente",
+              as: "lotes",
+            }),
+        );
+      }).then((res) => res);
 
-      return query
-    }
+      return query;
+    };
 
     // RESOLVEMOS LAS PETICIONES
     const getDataLoteClientName = async () => {
-      const lotes = await fletchLotesById()
-      const lotesIds = Object.values(lotes).map(({ cliente }) => cliente[0])
+      const lotes = await fletchLotesById();
+      const lotesIds = Object.values(lotes).map(({ cliente }) => cliente[0]);
 
       const querysArray = Object.values(lotesIds).map((item) =>
-        fletchClienteID(item)
-      )
+        fletchClienteID(item),
+      );
 
-      const resolvePromise = Promise.all(querysArray).then((res) => res)
+      const resolvePromise = Promise.all(querysArray).then((res) => res);
 
-      return resolvePromise
-    }
+      return resolvePromise;
+    };
 
-    return getDataLoteClientName()
+    return getDataLoteClientName();
   },
   findCliente: async ({ text }) => {
     const regText = text
-      ?.split(' ')
-      .map((item) => new RegExp(`${item}.*`, 'i'))
+      ?.split(" ")
+      .map((item) => new RegExp(`${item}.*`, "i"));
 
     const queryName = await new Promise((resolve) => {
-      resolve(Clientes.aggregate().match({ nombre: { $all: regText } }))
-    }).then((res) => res)
+      resolve(Clientes.aggregate().match({ nombre: { $all: regText } }));
+    }).then((res) => res);
 
-    return Promise.all([queryName]).then((res) => res)
+    return Promise.all([queryName]).then((res) => res);
   },
   findMailCliente: async ({ email }) => {
     const query = await new Promise((resolve) => {
-      resolve(Clientes.aggregate().match({ email }))
+      resolve(Clientes.aggregate().match({ email }));
     }).then((res) => {
       if (res.length === 0) {
-        return null
+        return null;
       }
-      return res
-    })
-    return query
+      return res;
+    });
+    return query;
   },
   getClienteById: async (id) => {
     const query = await new Promise((resolve) => {
-      resolve(Clientes.findById(id))
-    }).then((res) => res)
+      resolve(Clientes.findById(id));
+    }).then((res) => res);
 
-    return query
+    return query;
   },
   lotesByIdCliente: async (id) => {
     const lotesQuery = await new Promise((resolve) => {
       resolve(
-        Lotes.aggregate().match({ cliente: mongoose.Types.ObjectId(id) })
-      )
-    }).then((res) => res)
+        Lotes.aggregate().match({ cliente: mongoose.Types.ObjectId(id) }),
+      );
+    }).then((res) => res);
 
-    return lotesQuery
+    return lotesQuery;
   },
   addPagoToLote: async (body) => {
     /**
@@ -414,42 +414,42 @@ module.exports = {
      *
      */
 
-    return await Pagos(body).save()
+    return await Pagos(body).save();
   },
   getPagosByClienteAndProject: async (clienteId, proyectoId) => {
     const payload = new Promise((resolve) => {
       resolve(
         Pagos.aggregate().match({
-          cliente: mongoose.Types.ObjectId(clienteId)
-        })
-      )
-    }).then((res) => res)
+          cliente: mongoose.Types.ObjectId(clienteId),
+        }),
+      );
+    }).then((res) => res);
 
-    const res = await Promise.all([payload]).then((res) => res[0])
+    const res = await Promise.all([payload]).then((res) => res[0]);
 
-    return res
+    return res;
   },
   getPagosByProject: async ({ idcliente }, { idProject }) => {
     const agg = [
       [
         {
           $match: {
-            proyecto: mongoose.Types.ObjectId(idProject)
-          }
+            proyecto: mongoose.Types.ObjectId(idProject),
+          },
         },
         {
           $match: {
-            cliente: mongoose.Types.ObjectId(idcliente)
-          }
-        }
-      ]
-    ]
+            cliente: mongoose.Types.ObjectId(idcliente),
+          },
+        },
+      ],
+    ];
 
     const pagos = new Promise((resolve) => {
-      resolve(Pagos.aggregate(agg))
-    }).then((res) => res)
+      resolve(Pagos.aggregate(agg));
+    }).then((res) => res);
 
-    return await Promise.all([pagos]).then((res) => res[0])
+    return await Promise.all([pagos]).then((res) => res[0]);
   },
   infoToInvoiceById: async ({ idPago }) => {
     // traer la informacion del pago
@@ -458,41 +458,41 @@ module.exports = {
         Pagos.aggregate()
           .match({ _id: mongoose.Types.ObjectId(idPago) })
           .lookup({
-            from: 'proyectos',
-            localField: 'proyecto',
-            foreignField: '_id',
-            as: 'dataProject'
+            from: "proyectos",
+            localField: "proyecto",
+            foreignField: "_id",
+            as: "dataProject",
           })
           .lookup({
-            from: 'clientes',
-            localField: 'cliente',
-            foreignField: '_id',
-            as: 'dataClient'
+            from: "clientes",
+            localField: "cliente",
+            foreignField: "_id",
+            as: "dataClient",
           })
           .lookup({
-            from: 'lotes',
-            localField: 'lote',
-            foreignField: '_id',
-            as: 'dataLote'
-          })
-      )
-    }).then((res) => res)
+            from: "lotes",
+            localField: "lote",
+            foreignField: "_id",
+            as: "dataLote",
+          }),
+      );
+    }).then((res) => res);
 
-    return loteInfo
+    return loteInfo;
   },
   statusPaymentByLoteId: async ({ loteId }) => {
     const agg = [
       {
         $match: {
-          _id: mongoose.Types.ObjectId(loteId)
-        }
+          _id: mongoose.Types.ObjectId(loteId),
+        },
       },
       {
         $lookup: {
-          from: 'pagos',
+          from: "pagos",
           let: {
-            cliente: '$cliente',
-            proyecto: '$proyecto'
+            cliente: "$cliente",
+            proyecto: "$proyecto",
           },
           pipeline: [
             {
@@ -500,30 +500,30 @@ module.exports = {
                 $expr: {
                   $and: [
                     {
-                      $eq: ['$proyecto', '$$proyecto']
+                      $eq: ["$proyecto", "$$proyecto"],
                     },
                     {
-                      $eq: ['$cliente', '$$cliente']
-                    }
-                  ]
-                }
-              }
-            }
+                      $eq: ["$cliente", "$$cliente"],
+                    },
+                  ],
+                },
+              },
+            },
           ],
-          as: 'pagos'
-        }
-      }
-    ]
+          as: "pagos",
+        },
+      },
+    ];
 
     const loteInfo = await new Promise((resolve) => {
-      resolve(Lotes.aggregate(agg))
-    }).then((res) => res)
+      resolve(Lotes.aggregate(agg));
+    }).then((res) => res);
 
-    return loteInfo
+    return loteInfo;
   },
   PagarNota: async ({ idPago }, body) => {
-    const query = await Pagos.findByIdAndUpdate(idPago, body)
-    return query
+    const query = await Pagos.findByIdAndUpdate(idPago, body);
+    return query;
   },
   createInvoice: async (body, query, getSettings) => {
     const {
@@ -540,30 +540,30 @@ module.exports = {
       textoObservaciones,
       extraSlug,
       refPago,
-      mensajeRecibo
-    } = body
+      mensajeRecibo,
+    } = body;
     const monto = mensualidad?.$numberDecimal
       ? mensualidad.$numberDecimal
-      : mensualidad
+      : mensualidad;
 
-    const letrasToTexto = NumerosaLetras(monto)
-    const precioMensualidad = monyIntlRef(+monto)
-    const lafecha = dateIntlRef({ date: fechaPago })
+    const letrasToTexto = NumerosaLetras(monto);
+    const precioMensualidad = monyIntlRef(+monto);
+    const lafecha = dateIntlRef({ date: fechaPago });
     /**
      * TODO
      * el folio y el numero de mensualidad debe salir del length de pedidos
      */
     const htmlextraSlug =
-      extraSlug || `Mensualidad ${folio || '1'} de ${dataLote[0].plazo}`
-    const hmtltextoObservaciones = textoObservaciones || refPago
+      extraSlug || `Mensualidad ${folio || "1"} de ${dataLote[0].plazo}`;
+    const hmtltextoObservaciones = textoObservaciones || refPago;
     const htmlManzana =
-      dataLote[0].manzana !== '' && dataLote[0].manzana !== null
+      dataLote[0].manzana !== "" && dataLote[0].manzana !== null
         ? `Manzana ${dataLote[0].manzana}`
-        : ''
+        : "";
 
     const textoDescription = `
       ${htmlextraSlug} correspondiente al mes
-      de ${dateIntlRef({ date: mes, type: 'month' }).toUpperCase()}
+      de ${dateIntlRef({ date: mes, type: "month" }).toUpperCase()}
       <br>
         Proyecto: ${dataProject[0].title}
       <br>
@@ -574,7 +574,7 @@ module.exports = {
       ${banco} con número de
       referencia ${refBanco} en
       ${dateIntlRef({ date: fechaPago })}
-    `
+    `;
 
     const firmaXavier = `
     <img
@@ -587,7 +587,7 @@ module.exports = {
     </span>
     <span class="firmaXavier"></span>
     <span>Nombre y firma de quien Recibe</span>
-    `
+    `;
 
     const firmaMartin = `
     <img
@@ -600,7 +600,7 @@ module.exports = {
     </span>
     <span class="firmaXavier"></span>
     <span>Nombre y firma de quien Recibe</span>
-    `
+    `;
 
     const firmaIkai = `
     <img
@@ -613,13 +613,13 @@ module.exports = {
     </span>
     <span class="firmaXavier"></span>
     <span>Nombre y firma de quien Recibe</span>
-    `
+    `;
 
     const htmlOwnersFirma = {
       xavier: firmaXavier,
       martin: firmaMartin,
-      ikai: firmaIkai
-    }
+      ikai: firmaIkai,
+    };
 
     const webTemplate = `
     <!DOCTYPE html>
@@ -924,7 +924,7 @@ module.exports = {
       </p>
     </div>
     <section class="observaciones">
-      <p>IMPORTE CON LETRA <br/>${letrasToTexto?.toUpperCase() || ''}</p>
+      <p>IMPORTE CON LETRA <br/>${letrasToTexto?.toUpperCase() || ""}</p>
       <span>
         <div class="linea__total"/>
         <span class="total__numeros">
@@ -958,23 +958,112 @@ module.exports = {
       </div>
     </body>
     </html>
-    `
-    return webTemplate
+    `;
+    return webTemplate;
+  },
+  createInvoiceMartin: async (body, query, getSettings) => {
+    const {
+      mensualidad,
+      dataClient,
+      fechaPago,
+      dataLote,
+      mes,
+      ctaBancaria,
+      banco,
+      refBanco,
+      dataProject,
+      folio,
+      textoObservaciones,
+      extraSlug,
+      refPago,
+      mensajeRecibo,
+    } = body;
+
+    const monto = mensualidad?.$numberDecimal || mensualidad;
+    const letrasToTexto = NumerosaLetras(monto);
+    const precioMensualidad = monyIntlRef(+monto);
+    const lafecha = dateIntlRef({ date: fechaPago });
+
+    const webTemplate = `
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recibo de Pago - AHAL</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 0; }
+        .container { width: 800px; margin: 20px auto; background: #fff; padding: 20px; border: 1px solid #ccc; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
+        .watermark { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: url('{{ static_files_path }}/images/marca-agua-placeholder.png') no-repeat center; background-size: cover; opacity: 0.1; z-index: 0; }
+        .header { text-align: center; }
+        .header img { width: 200px; }
+        .description { background-color: #f9c908; text-align: center; padding: 10px; font-weight: bold; }
+        .details, .content, .observations, .footer { margin: 20px 0; }
+        .table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        .table th, .table td { border: 1px solid #ddd; padding: 8px; }
+        .table th { background-color: #f2f2f2; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="https://firebasestorage.googleapis.com/v0/b/gpo-maya.appspot.com/o/logo.png?alt=media&token=31e8e01e-09ff-4d9d-a73b-688b5506743f" alt="Logo">
+            <h1>${getSettings[0].razonSocial}</h1>
+            <p>RFC: ${getSettings[0].rfc}</p>
+            <p>${getSettings[0].direccion}</p>
+            <p>${getSettings[0].ciudad}</p>
+        </div>
+        <div class="description">RECIBO DE PAGO</div>
+        <div class="details">
+            <p><strong>Recibí de:</strong> ${dataClient[0].nombre}</p>
+            <p><strong>Fecha:</strong> ${lafecha}</p>
+            <p><strong>Folio:</strong> ${folio}</p>
+        </div>
+        <div class="content">
+            <p>${mensajeRecibo || textoObservaciones}</p>
+        </div>
+        <table class="table">
+            <thead>
+                <tr><th>Cantidad</th><th>Descripción</th><th>Importe</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1.0</td>
+                    <td>${extraSlug}</td>
+                    <td>${precioMensualidad}</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="observations">
+            <p><strong>Importe con letra:</strong> ${letrasToTexto.toUpperCase()}</p>
+            <p><strong>Total:</strong> ${precioMensualidad}</p>
+        </div>
+        <div class="footer">
+            <p>ATENCIÓN A CLIENTES</p>
+            <p>9831851174 | Ventas@exos.com.mx</p>
+            <p>Calle Aarón Merino Fernández No. 112 int A, Municipio de Othón P. Blanco, Chetumal, Quintana Roo</p>
+        </div>
+    </div>
+</body>
+</html>
+    `;
+    return webTemplate;
   },
   findUser: async (query) => {
     const araryQuery = query
-      .split(' ')
-      .map((query) => new RegExp(`${query}.*`, 'i'))
+      .split(" ")
+      .map((query) => new RegExp(`${query}.*`, "i"));
 
     const userList = new Promise((resolve) => {
-      resolve(Clientes.aggregate().match({ nombre: { $all: araryQuery } }))
-    }).then((res) => res)
+      resolve(Clientes.aggregate().match({ nombre: { $all: araryQuery } }));
+    }).then((res) => res);
 
     const responseQuery = await Promise.all([userList]).then((res) => {
-      return res[0]
-    })
+      return res[0];
+    });
 
-    return responseQuery
+    return responseQuery;
   },
   settingsAppSave: (body) => new Settings(body).save(),
   settingsGetData: async () => await Settings.find(),
@@ -985,83 +1074,83 @@ module.exports = {
     const filter = [
       {
         $match: {
-          tipoDocumento: body.tipoPago
-        }
+          tipoDocumento: body.tipoPago,
+        },
       },
       {
         $match: {
-          lote: mongoose.Types.ObjectId(body.lote)
-        }
-      }
-    ]
+          lote: mongoose.Types.ObjectId(body.lote),
+        },
+      },
+    ];
 
     const folioFunction = async () => {
       const query = await new Promise((resolve) => {
-        resolve(Documents.aggregate(filter))
+        resolve(Documents.aggregate(filter));
       }).then(async (res) => {
-        const id = res[0]?._id
-        const folio = res[0]?.folio
+        const id = res[0]?._id;
+        const folio = res[0]?.folio;
 
         if (body.folioincial) {
           // cuando es saldo inicial buscamos el documento por lote y le sumamos el folio que tiene como inicial de lo cotrario recuperamos el folio de la ultima mensualidad y le sumamos 1
           return await Documents.findOneAndUpdate(
-            { lote: body.lote, tipoDocumento: 'mensualidad' },
-            { folio: +body.folioincial }
+            { lote: body.lote, tipoDocumento: "mensualidad" },
+            { folio: +body.folioincial },
           )
             .then((res) => res)
-            .catch((err) => err)
+            .catch((err) => err);
         } else if (!body.folioincial) {
           return await Documents.findByIdAndUpdate(id, { folio: folio + 1 })
             .then((res) => res)
-            .catch((err) => err)
+            .catch((err) => err);
         }
-      })
+      });
 
-      return query
-    }
+      return query;
+    };
 
-    const folio = folioFunction()
+    const folio = folioFunction();
 
     const addPagoClient = async (payload) => {
       const mutation = await new Promise((resolve) => {
-        resolve(Pagos(payload).save())
-      }).then((res) => res)
+        resolve(Pagos(payload).save());
+      }).then((res) => res);
 
-      return mutation
-    }
+      return mutation;
+    };
 
     return await Promise.all([folio])
       .then(async (res) => {
-        const folio = res[0].folio
-        return await addPagoClient({ ...body, folio })
+        const folio = res[0].folio;
+        return await addPagoClient({ ...body, folio });
       })
-      .then((res) => res)
+      .then((res) => res);
   },
   settingsAppPatch: ({ _id, ...restOfdata }) => {
-    return Settings.findByIdAndUpdate(_id, restOfdata)
+    return Settings.findByIdAndUpdate(_id, restOfdata);
   },
   getClienteDetailById: async (id) => {
     const agg = [
       {
         $match: {
-          _id: mongoose.Types.ObjectId(id)
-        }
+          _id: mongoose.Types.ObjectId(id),
+        },
       },
       {
         $lookup: {
-          from: 'lotes',
-          localField: '_id',
-          foreignField: 'cliente',
-          as: 'lotes'
-        }
-      }
-    ]
+          from: "lotes",
+          localField: "_id",
+          foreignField: "cliente",
+          as: "lotes",
+        },
+      },
+    ];
 
     const cliente = await new Promise((resolve) => {
-      resolve(Clientes.aggregate(agg))
-    }).then((res) => res)
+      resolve(Clientes.aggregate(agg));
+    }).then((res) => res);
 
-    return Promise.all(cliente).then(async ([res]) => res)
+    return Promise.all(cliente).then(async ([res]) => res);
   },
   loteById: async (id) => {
     const lote = await new Promise((resolve) => {
@@ -1076,21 +1165,21 @@ module.exports = {
             inicioContrato: 1,
             financiamiento: 1,
             lote: 1,
-            manzanas: 1
-          })
-      )
-    }).then((res) => res[0])
+            manzanas: 1,
+          }),
+      );
+    }).then((res) => res[0]);
 
     return Promise.all([lote]).then((res) => {
-      return res[0]
-    })
+      return res[0];
+    });
   },
   updateLoteById: async (id, body) => {
     const lote = await new Promise((resolve) => {
-      resolve(Lotes.findByIdAndUpdate(id, body))
-    }).then((res) => res)
+      resolve(Lotes.findByIdAndUpdate(id, body));
+    }).then((res) => res);
 
-    return Promise.all([lote]).then((res) => res[0])
+    return Promise.all([lote]).then((res) => res[0]);
   },
   getPagosById: async (id) => {
     const pagos = await new Promise((resolve) => {
@@ -1108,162 +1197,162 @@ module.exports = {
             extraSlug: 1,
             refBanco: 1,
             mes: 1,
-            mensajeRecibo: 1
-          })
-      )
-    }).then((res) => res[0])
+            mensajeRecibo: 1,
+          }),
+      );
+    }).then((res) => res[0]);
 
-    return Promise.all([pagos]).then((res) => res[0])
+    return Promise.all([pagos]).then((res) => res[0]);
   },
   updatePagoById: async (id, body) => {
     const pago = await new Promise((resolve) => {
-      resolve(Pagos.findByIdAndUpdate(id, body))
-    }).then((res) => res)
+      resolve(Pagos.findByIdAndUpdate(id, body));
+    }).then((res) => res);
 
-    return Promise.all([pago]).then((res) => res[0])
+    return Promise.all([pago]).then((res) => res[0]);
   },
   getNamesById: async (id, documentType) => {
     const Model = () => {
       switch (documentType) {
-        case 'Proyecto':
-          return Proyecto
-        case 'Lote':
-          return Lotes
-        case 'Cliente':
-          return Clientes
-        case 'Pagos':
-          return Pagos
+        case "Proyecto":
+          return Proyecto;
+        case "Lote":
+          return Lotes;
+        case "Cliente":
+          return Clientes;
+        case "Pagos":
+          return Pagos;
       }
-    }
+    };
 
     const documentInfo = new Promise((resolve) => {
-      resolve(Model().findOne({ _id: mongoose.Types.ObjectId(id) }))
+      resolve(Model().findOne({ _id: mongoose.Types.ObjectId(id) }));
     })
       .then((res) => res)
-      .catch((err) => err)
+      .catch((err) => err);
 
-    return Promise.all([documentInfo])
+    return Promise.all([documentInfo]);
   },
   masiveUpdateCliente: async (body) => {
     const updateDocument = (cliente) => {
       return new Promise((resolve) => {
-        resolve(Clientes.findOneAndUpdate({ email: cliente.email }, cliente))
-      }).then((res) => res)
-    }
+        resolve(Clientes.findOneAndUpdate({ email: cliente.email }, cliente));
+      }).then((res) => res);
+    };
 
     return Promise.all(
-      body.map(async (cliente) => await updateDocument(cliente))
+      body.map(async (cliente) => await updateDocument(cliente)),
     ).then((res) => {
-      return res
-    })
+      return res;
+    });
   },
   modifyCliente: async (id, body) => {
     const cliente = await new Promise((resolve) => {
-      resolve(Clientes.findByIdAndUpdate(id, body))
-    }).then((res) => res)
+      resolve(Clientes.findByIdAndUpdate(id, body));
+    }).then((res) => res);
 
-    return Promise.all([cliente]).then((res) => res[0])
+    return Promise.all([cliente]).then((res) => res[0]);
   },
   getMorosos: async () => {
-    const today = new Date().getTime()
+    const today = new Date().getTime();
 
     // todos los clientes
-    const promiseClients = Promise.resolve(Clientes.find()).then((res) => res)
-    const allClients = await promiseClients
+    const promiseClients = Promise.resolve(Clientes.find()).then((res) => res);
+    const allClients = await promiseClients;
 
     // por cada cliente ejecutamos el último pago
     const getLastPaymenByID = async (id) => {
       const agg = [
         {
           $match: {
-            cliente: mongoose.Types.ObjectId(id)
-          }
+            cliente: mongoose.Types.ObjectId(id),
+          },
         },
         {
           $match: {
-            tipoPago: 'mensualidad'
-          }
+            tipoPago: "mensualidad",
+          },
         },
         {
           $lookup: {
-            from: 'clientes',
-            localField: 'cliente',
-            foreignField: '_id',
-            as: 'cliente_data'
-          }
+            from: "clientes",
+            localField: "cliente",
+            foreignField: "_id",
+            as: "cliente_data",
+          },
         },
         {
           $lookup: {
-            from: 'proyectos',
-            localField: 'proyecto',
-            foreignField: '_id',
-            as: 'proyecto_data'
-          }
+            from: "proyectos",
+            localField: "proyecto",
+            foreignField: "_id",
+            as: "proyecto_data",
+          },
         },
         {
           $lookup: {
-            from: 'lotes',
-            localField: 'lote',
-            foreignField: '_id',
-            as: 'lote_data'
-          }
+            from: "lotes",
+            localField: "lote",
+            foreignField: "_id",
+            as: "lote_data",
+          },
         },
         {
-          $unwind: '$lote_data' // Añadir $unwind para manejar array de lote_data
+          $unwind: "$lote_data", // Añadir $unwind para manejar array de lote_data
         },
         {
           $match: {
-            'lote_data.isActive': true // Filtrar solo lotes activos
-          }
+            "lote_data.isActive": true, // Filtrar solo lotes activos
+          },
         },
         {
           $sort: {
-            mes: -1
-          }
+            mes: -1,
+          },
         },
         {
-          $limit: 1
-        }
-      ]
-      return await Promise.resolve(Pagos.aggregate(agg)).then((res) => res)
-    }
+          $limit: 1,
+        },
+      ];
+      return await Promise.resolve(Pagos.aggregate(agg)).then((res) => res);
+    };
 
     return Promise.all(
-      allClients.map(async (item) => await getLastPaymenByID(item._id))
+      allClients.map(async (item) => await getLastPaymenByID(item._id)),
     ).then((res) => {
-      const allPayments = res.flat()
+      const allPayments = res.flat();
       const pagos30 = Object.values(allPayments).filter(
         ({ mes, mensualidad }) => {
-          const datePago = new Date(mes).getTime()
-          const diff = Math.ceil((today - datePago) / (24 * 3600 * 1000))
+          const datePago = new Date(mes).getTime();
+          const diff = Math.ceil((today - datePago) / (24 * 3600 * 1000));
 
           // Convertir Decimal128 a número flotante si es necesario
-          if (mensualidad && mensualidad._bsontype === 'Decimal128') {
-            mensualidad = parseFloat(mensualidad.toString())
+          if (mensualidad && mensualidad._bsontype === "Decimal128") {
+            mensualidad = parseFloat(mensualidad.toString());
           }
 
           // más de 30 días y menos de 60 días
-          return diff > 30 && diff < 60
-        }
-      )
+          return diff > 30 && diff < 60;
+        },
+      );
 
       const pagos60 = Object.values(allPayments).filter(
         ({ mes, mensualidad }) => {
-          const datePago = new Date(mes).getTime()
-          const diff = Math.ceil((today - datePago) / (24 * 3600 * 1000))
+          const datePago = new Date(mes).getTime();
+          const diff = Math.ceil((today - datePago) / (24 * 3600 * 1000));
 
           // Convertir Decimal128 a número flotante si es necesario
-          if (mensualidad && mensualidad._bsontype === 'Decimal128') {
-            mensualidad = parseFloat(mensualidad.toString())
+          if (mensualidad && mensualidad._bsontype === "Decimal128") {
+            mensualidad = parseFloat(mensualidad.toString());
           }
 
           // más de 61 días
-          return diff > 61
-        }
-      )
+          return diff > 61;
+        },
+      );
 
-      return { treinta_dias: pagos30, sesenta_dias: pagos60 }
-    })
+      return { treinta_dias: pagos30, sesenta_dias: pagos60 };
+    });
   },
   getLotesByProject: async (id) => {
     // make a aggreagation mongo wihit project insisde lookup
@@ -1271,210 +1360,210 @@ module.exports = {
     const agg = [
       {
         $match: {
-          _id: mongoose.Types.ObjectId(id)
-        }
+          _id: mongoose.Types.ObjectId(id),
+        },
       },
       {
         $lookup: {
-          from: 'lotes',
-          localField: '_id',
-          foreignField: 'proyecto',
-          as: 'lotes'
-        }
-      }
-    ]
+          from: "lotes",
+          localField: "_id",
+          foreignField: "proyecto",
+          as: "lotes",
+        },
+      },
+    ];
 
     return await Promise.resolve(Proyecto.aggregate(agg)).then((res) => {
-      return res[0].lotes
-    })
+      return res[0].lotes;
+    });
   },
   updateProyectoById: async (id, body) => {
-    const proyecto = await Proyecto.findByIdAndUpdate(id, body)
-    return proyecto
+    const proyecto = await Proyecto.findByIdAndUpdate(id, body);
+    return proyecto;
   },
   searchRefPagos: async (refPago) => {
     const agg = [
       {
         $match: {
           refBanco: {
-            $regex: new RegExp(refPago, 'gi')
-          }
-        }
+            $regex: new RegExp(refPago, "gi"),
+          },
+        },
       },
       {
         $lookup: {
-          from: 'clientes',
-          localField: 'cliente',
-          foreignField: '_id',
-          as: 'cliente_data'
-        }
+          from: "clientes",
+          localField: "cliente",
+          foreignField: "_id",
+          as: "cliente_data",
+        },
       },
       {
         $lookup: {
-          from: 'proyectos',
-          localField: 'proyecto',
-          foreignField: '_id',
-          as: 'proyecto_data'
-        }
+          from: "proyectos",
+          localField: "proyecto",
+          foreignField: "_id",
+          as: "proyecto_data",
+        },
       },
       {
         $lookup: {
-          from: 'lotes',
-          localField: 'lote',
-          foreignField: '_id',
-          as: 'lote_data'
-        }
-      }
-    ]
+          from: "lotes",
+          localField: "lote",
+          foreignField: "_id",
+          as: "lote_data",
+        },
+      },
+    ];
 
     const pagos = await Pagos.aggregate(agg)
       .then((res) => res)
-      .catch((err) => err)
+      .catch((err) => err);
 
-    return pagos
+    return pagos;
   },
   pagosRecorsByClient: async (id) => {
     const agg = [
       {
         $match: {
           tipoPago: {
-            $in: ['mensualidad', 'saldoinicial', 'acreditado', 'extra']
-          } // Filtra los tipos de pago deseados
-        }
+            $in: ["mensualidad", "saldoinicial", "acreditado", "extra"],
+          }, // Filtra los tipos de pago deseados
+        },
       },
       {
         $match: {
-          cliente: mongoose.Types.ObjectId(id) // Filtra por el id del cliente
-        }
+          cliente: mongoose.Types.ObjectId(id), // Filtra por el id del cliente
+        },
       },
       {
-        $unwind: '$cliente' // Descompone el array de clientes si es un array
-      },
-      {
-        $lookup: {
-          from: 'clientes',
-          localField: 'cliente',
-          foreignField: '_id',
-          as: 'cliente_data'
-        }
+        $unwind: "$cliente", // Descompone el array de clientes si es un array
       },
       {
         $lookup: {
-          from: 'proyectos',
-          localField: 'proyecto',
-          foreignField: '_id',
-          as: 'proyecto_data'
-        }
+          from: "clientes",
+          localField: "cliente",
+          foreignField: "_id",
+          as: "cliente_data",
+        },
       },
       {
         $lookup: {
-          from: 'lotes',
-          localField: 'lote',
-          foreignField: '_id',
-          as: 'lote_data'
-        }
+          from: "proyectos",
+          localField: "proyecto",
+          foreignField: "_id",
+          as: "proyecto_data",
+        },
+      },
+      {
+        $lookup: {
+          from: "lotes",
+          localField: "lote",
+          foreignField: "_id",
+          as: "lote_data",
+        },
       },
       {
         $group: {
           _id: {
-            cliente: '$cliente',
-            lote: '$lote'
+            cliente: "$cliente",
+            lote: "$lote",
           },
           totalMensualidad: {
             $sum: {
               $cond: [
                 {
                   $in: [
-                    '$tipoPago',
-                    ['mensualidad', 'saldoinicial', 'acreditado']
-                  ]
+                    "$tipoPago",
+                    ["mensualidad", "saldoinicial", "acreditado"],
+                  ],
                 },
-                { $toDouble: '$mensualidad' },
-                0
-              ]
-            }
+                { $toDouble: "$mensualidad" },
+                0,
+              ],
+            },
           },
           pagosExtra: {
             $push: {
               $cond: [
                 {
                   $and: [
-                    { $eq: ['$tipoPago', 'extra'] },
+                    { $eq: ["$tipoPago", "extra"] },
                     {
                       $not: [
                         {
-                          $regexMatch: { input: '$extraSlug', regex: /mora/i }
-                        }
-                      ]
-                    }
-                  ]
+                          $regexMatch: { input: "$extraSlug", regex: /mora/i },
+                        },
+                      ],
+                    },
+                  ],
                 },
                 {
-                  id_pago_: '$_id',
-                  tipo: '$tipoPago',
-                  extraSlug: '$extraSlug',
-                  mensualidad: { $toDouble: '$mensualidad' }
+                  id_pago_: "$_id",
+                  tipo: "$tipoPago",
+                  extraSlug: "$extraSlug",
+                  mensualidad: { $toDouble: "$mensualidad" },
                 },
-                '$$REMOVE'
-              ]
-            }
+                "$$REMOVE",
+              ],
+            },
           },
           pagosMoratorios: {
             $sum: {
               $cond: [
                 {
                   $and: [
-                    { $eq: ['$tipoPago', 'extra'] },
-                    { $regexMatch: { input: '$extraSlug', regex: /mora/i } }
-                  ]
+                    { $eq: ["$tipoPago", "extra"] },
+                    { $regexMatch: { input: "$extraSlug", regex: /mora/i } },
+                  ],
                 },
-                { $toDouble: '$mensualidad' },
-                0
-              ]
-            }
+                { $toDouble: "$mensualidad" },
+                0,
+              ],
+            },
           },
           numeroDePagos: { $sum: 1 },
-          cliente_data: { $first: { $arrayElemAt: ['$cliente_data', 0] } },
-          proyecto_data: { $first: { $arrayElemAt: ['$proyecto_data', 0] } },
-          lote_data: { $first: { $arrayElemAt: ['$lote_data', 0] } }
-        }
+          cliente_data: { $first: { $arrayElemAt: ["$cliente_data", 0] } },
+          proyecto_data: { $first: { $arrayElemAt: ["$proyecto_data", 0] } },
+          lote_data: { $first: { $arrayElemAt: ["$lote_data", 0] } },
+        },
       },
       {
         $sort: {
-          totalMensualidad: -1 // Ordena por la suma total de mensualidad
-        }
-      }
-    ]
+          totalMensualidad: -1, // Ordena por la suma total de mensualidad
+        },
+      },
+    ];
 
-    const record = await Pagos.aggregate(agg)
-    return record
+    const record = await Pagos.aggregate(agg);
+    return record;
   },
   insertManyPayments: async (records) => {
-    await PagosRecords.deleteMany({})
-    const insert = await PagosRecords.insertMany(records)
-    return insert
+    await PagosRecords.deleteMany({});
+    const insert = await PagosRecords.insertMany(records);
+    return insert;
   },
   inspectPayments: (documento) => {
     // Extraer valores relevantes del documento
-    const precioTotal = documento.lote_data.precioTotal
-    const enganche = documento.lote_data.enganche
+    const precioTotal = documento.lote_data.precioTotal;
+    const enganche = documento.lote_data.enganche;
     const pagosExtra = documento.pagosExtra.reduce(
       (acum, pago) => acum + pago.mensualidad,
-      0
-    )
+      0,
+    );
     // const pagosMoratorios = documento.pagosMoratorios;
-    const totalMensualidad = documento.totalMensualidad
+    const totalMensualidad = documento.totalMensualidad;
 
     // Calcular el total pagado
-    const totalPagado = enganche + totalMensualidad + pagosExtra
+    const totalPagado = enganche + totalMensualidad + pagosExtra;
     // Verificar si el total pagado es igual o mayor al precio total
-    return totalPagado >= precioTotal
+    return totalPagado >= precioTotal;
   },
   updateLoteStatusIfPaid: async (id, status) => {
     const update = await Lotes.findByIdAndUpdate(id, {
       isActive: !status,
-      isPaid: status
-    })
-    return update
-  }
-}
+      isPaid: status,
+    });
+    return update;
+  },
+};
