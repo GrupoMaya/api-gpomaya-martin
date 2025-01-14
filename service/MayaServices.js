@@ -1013,7 +1013,7 @@ module.exports = {
                     left: 0;
                     width: 100%;
                     height: 100%;
-                    background: url('https://ffb4c5a3c992aff42f511af75549eba3683bd61ec97c6ae1d4030de-apidata.googleusercontent.com/download/storage/v1/b/gpo-maya.appspot.com/o/ahal_water_marker.jpeg?jk=AXN3i9rIStMseMwSIXPYw7dp69QNz0gvnB2l0YIM6LaRuHZbB8HNDTm_CbBU7C9jMI5cYLTLkN6GKhGfyNKYFt1OHzKsEgkFqXTu2f9awYYjp_-yo-yc8NEug1F6xHrqkRWevVrt17Muovo6-eJd-gJuQwHVgtaF-CDnmaRzJMcbCda7IvJ73OMglRYeTWq4q_oNjKGvQ9BK0sCpsa4E9YhdWT_-UMKclaZl6H4H9j_UbWcBMjJZ6RFEccB6T_08oxcdBgFqAFJltfAYLVcAaOYbyEWVehPTPq4YlrDUYjy1N4QikvJdq8-EBmfx04BnIA6eNTuDHDemf6xQ3fWsT_fFXPbKFEZvGtf0btkM2DdmOT_ZwCyqI8CHKGNpA6A4F1uIlOzb7lmlX8gl6wKBmlkCCYwuEJzwvNKEitHq90f3bkWodLMK0PUSlFE2mStHy7CArBcbciQd65BaT6lnHQvDXFuoQZNWROTELiicXtZkN9CT7Ix7hHXohZdHCM6eD2j8mt0rXWZGY6pDX-kbH04pwMRlqR934ehISvDNwyCzcMkm1Y51mdIwraAvuOEp9Z0NbRBv7km_eqK43bxtlMMA9BcUEpIpZd2C_y0uANolBYzpVSq4GQ0vVlL9sU8lcg2teU9qAmHW8Bqde8XsZ9yLZydgGS6wuh9FLIeyhkQdTs8T5RYyjXL6yqHunpDorwlHHzdo0En3U0G6fgemoiqXuxOoO1E1kvvXiHRdUujPc5FsijFzvLZOAEhHkC8bjpRuxFqhTRcNCTnrSL9D2CzTRWZEcxc6ejP4LCZZMowcGlow1X8Uyr-YN1321inSECB2CnLU4lN7KZmcnUHtB41ZJssJr2ae-KuZDRJ1GvaEkZb3Kn8Al1TsufBYK7A22J0T0FRJLviRf_HlEWflqZl3O_26pA_6HP8--PBvxM36_TsQOncgihPG1Eg80I7UMQUWJ8O_YGtNZi963sVId3gdF8XFNDV02wKvLMYJhDPUpixGRS_Hm1uPsD2HetWOFN3_jhI6bzHDE3Op9B8k5SxZHeu56GgB6fX_sQy1qbTsfbLAXtK5A9E4_pJHpukgBDLhCYil7rBp4yEK7ZCB2wMO4xKwON1QF9ZFXJwRhCW47RfWgBr_DC7LJ7Yvr8zdS-c_i7WpD_Q&isca=1') no-repeat center;
+                    background: url('https://storage.googleapis.com/gpo-maya.appspot.com/ahal_water_marker.jpeg') no-repeat center;
                     background-size: cover;
                     opacity: 0.1;
                     z-index: 0;
@@ -1099,7 +1099,7 @@ module.exports = {
         <div class="header">
             <div class="header-arc"></div>
             <div class="header-content">
-                <img src="https://ff870ad7df3fd7ecd968ef7031447a31d4032de915ee87de975f136-apidata.googleusercontent.com/download/storage/v1/b/gpo-maya.appspot.com/o/logo_ahal.jpeg?jk=AXN3i9pR225aEh_nClu57lD03pc71VIg_ss69Rotv2F56-KkRdfNkRPBaJN5lXWU94s-C0edMQE5xFIOvvcldVlSIN2Wr60Ot2rQ5aEloWVVY2TCc9J3j1dvfI4GNwgq3YU6SKnGruXcc0GNVdYXWGx5TVmfyraLIS9Lied0yqBv7u8rvzDb8I1g7dskvC3FCNHgutgYaXIWv8QfrjS5tlc3c2YUH__boT2x8c6cqc5-1-fVQvYr1pNnE9EH98nsof9p7jeufPsqD-qzpl7bCB3qxiH8n3bKZMRJ5KzYO_n9iFTwPdMTQ2g1VFFaMepTxeXeHvdn9BODYMMoFsAz1AbkQFB4FZWkRJMKuquiBD07mFv_lM7qaoxTMB_NjyiU4SoX_lIMNFn4VjCyD93dyOGjr2GzDQoMSQCI77XbTjku_m6OqSpmznDTPLgpsrPcbpgenPWcG4ngJZPN2lsPqspNExmVFHRfPwmB-_iSQuRM2qP35oe6zSwHdG-QKlvjenGhHcebyZSpa_-q-aXaZByUjtsT7OVltXnYeVsbWyBuHEJzgzM9rVKuUE6KjNvplb5FRG757gNx3eIY-Da0Ef8Kp0FBZECTkKa2kWPT1tWa7TmB8ku0mfqPlpXrhmVhuWqmvJAuYTFUQjo8clLD-d03dojtTBPgMxrjElz3zi8p5zJHpFiJDK215noGcoGAotyaILoGs0ub_QbOAHdfOX1rqYIw4_b39j59UFQTHi30wVaEC9CSILL47orL3qo27zFER1_SNGn8FVfRMSCTS_ZAV-ovDmB0tja1PxV9FoGW47oMmYWgMJdaaKjl7I-LSyXz4G8AsBWaOcD4STLXefOhi4jqgUvmBhPS-La7nBgGUjr1n4vePySKhrmzMWloJDiYs1o5FDWXYawEE6vXASFmcWrTc_hYeA1UpOxzCoxt5vMYvrDj8gSo4_3xWF_VzZ9XbWlQSA-MkoqP_YFq9UWPPLgF4pCU23oB6ORkTQL3c_lUyAQ5ZcClUnPaVwPNUOtHkt7i-Cl9l58apJy0ozOF8yRXCmhhfzYUQQnI_r1TSR2HncKLRTVx6wmXjgHqRA6USB1iOkzIKTjPPRT-rE7DcgBp_WYTfw-8ypH1KD5KAybdxgrIZMFM3lCld80E&isca=1" alt="Logo AHAL" class="logo">
+                <img src="https://storage.googleapis.com/gpo-maya.appspot.com/logo_ahal.jpeg" alt="Logo AHAL" class="logo">
                 <h1>${getSettings[0].razonSocial}</h1>
             </div>
         </div>
