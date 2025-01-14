@@ -1030,7 +1030,6 @@ module.exports = {
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(to right, #f9c908 33%, #cccccc 66%, #ffffff);
             clip-path: ellipse(150% 75% at 50% 0%);
         }
         .header-content {
@@ -1139,7 +1138,7 @@ module.exports = {
         <div class="signature">
             <p>Nombre y firma de quien recibe</p>
             <p>_______________________________</p>
-            <p><strong>${getSettings[0].nombre}</strong></p>
+            <p><strong>${dataClient[0].nombre}</strong></p>
         </div>
 
         <div class="footer">
