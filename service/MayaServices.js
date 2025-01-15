@@ -1164,7 +1164,7 @@ module.exports = {
 
             <div class="footer">
                 <p>ATENCIÓN A CLIENTES</p>
-                <p>9831851174 | Ventas@exos.com.mx</p>
+                <p>9831851174 | areaadministrativa@exos.com.mx</p>
                 <p>${getSettings[0].direccion}, ${getSettings[0].ciudad}</p>
             </div>
         </div>
