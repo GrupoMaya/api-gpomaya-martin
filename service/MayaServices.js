@@ -982,7 +982,7 @@ module.exports = {
     const monto = mensualidad?.$numberDecimal || mensualidad
     const letrasToTexto = NumerosaLetras(monto)
     const precioMensualidad = monyIntlRef(+monto)
-    const lafecha = dateIntlRef({ date: fechaPago })
+    const lafecha = dateIntlRef({ date: mes })
 
     const webTemplate = `
 <!DOCTYPE html>
@@ -1152,7 +1152,7 @@ module.exports = {
         <div class="signature_squere">
             <div class="content">
                 <p><strong>Importe con letra:</strong> ${letrasToTexto?.toUpperCase()}</p>
-                <p><strong>Total:</strong> $${precioMensualidad}</p>
+                <p><strong>Total:</strong> ${precioMensualidad}</p>
             </div>
 
             <div class="signature">
