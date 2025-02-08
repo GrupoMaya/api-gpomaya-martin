@@ -1118,7 +1118,7 @@ module.exports = {
         <div class="header">
             <div class="header-arc"></div>
             <div class="header-content">
-                <img src="https://storage.googleapis.com/gpo-maya.appspot.com/logo_ahal.jpeg" alt="Logo AHAL" class="logo">
+                <img src="https://storage.googleapis.com/gpo-maya.appspot.com/ikal_logo_ok.jpeg" alt="Logo AHAL" class="logo">
                 <h1>${getSettings[0].razonSocial}</h1>
             </div>
         </div>
@@ -1139,7 +1139,7 @@ module.exports = {
 
         <div class="content">
             <p><strong>Concepto:</strong> ${mensajeRecibo || ''}</p>
-            <p>Del lote ${dataLote[0].lote || '___'} Manzana ${dataLote[0].manzana || '___'}, del desarrollo ${dataProject[0].title} ubicado en la localidad de Valladolid Nuevo, municipio de Lázaro Cárdenas, estado de Quintana Roo.</p>
+            <p>Del lote ${dataLote[0].lote || '___'} Manzana ${dataLote[0].manzana || '___'}, del desarrollo ${dataProject[0].title} Ubicado en el Ejido de Macario Gómez, Municipio de Tulum, estado de Quintana Roo</p>
             <p><strong>Proyecto:</strong> ${dataProject[0].title || 'AHAL'}</p>
             <p><strong>Lote:</strong> ${dataLote[0].lote || '___'}</p>
             <p><strong>Del banco:</strong> ${banco || '___________________________'}</p>
