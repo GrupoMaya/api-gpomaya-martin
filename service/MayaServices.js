@@ -979,6 +979,25 @@ module.exports = {
       mensajeRecibo
     } = body
 
+    const projectName = dataProject[0]?.title?.toLowerCase() || 'undefined'
+    const BRAND = {
+      ikal: {
+        logo: 'https://storage.googleapis.com/gpo-maya.appspot.com/ikal_logo_ok.jpeg',
+        address:
+          'Ejido de Macario Gómez, Municipio de Tulum, estado de Quintana Roo'
+      },
+      ahal: {
+        logo: 'https://storage.googleapis.com/gpo-maya.appspot.com/logo_ahal.jpeg',
+        address:
+          'Valladolid Nuevo. municipio de Lázaro Cárdenas, estado de Quintana Roo'
+      },
+      undefined: {
+        logo: '',
+        address:
+          ''
+      }
+    }
+
     const monto = mensualidad?.$numberDecimal || mensualidad
     const letrasToTexto = NumerosaLetras(monto)
     const precioMensualidad = monyIntlRef(+monto)
@@ -1118,7 +1137,7 @@ module.exports = {
         <div class="header">
             <div class="header-arc"></div>
             <div class="header-content">
-                <img src="https://storage.googleapis.com/gpo-maya.appspot.com/ikal_logo_ok.jpeg" alt="Logo AHAL" class="logo">
+                <img src="${BRAND[projectName]?.logo}" alt="Logo AHAL" class="logo">
                 <h1>${getSettings[0].razonSocial}</h1>
             </div>
         </div>
@@ -1139,7 +1158,7 @@ module.exports = {
 
         <div class="content">
             <p><strong>Concepto:</strong> ${mensajeRecibo || ''}</p>
-            <p>Del lote ${dataLote[0].lote || '___'} Manzana ${dataLote[0].manzana || '___'}, del desarrollo ${dataProject[0].title} Ubicado en el Ejido de Macario Gómez, Municipio de Tulum, estado de Quintana Roo</p>
+            <p>Del lote ${dataLote[0].lote || '___'} Manzana ${dataLote[0].manzana || '___'}, del desarrollo ${BRAND[projectName]?.address} Ubicado en el 545454</p>
             <p><strong>Proyecto:</strong> ${dataProject[0].title || 'AHAL'}</p>
             <p><strong>Lote:</strong> ${dataLote[0].lote || '___'}</p>
             <p><strong>Del banco:</strong> ${banco || '___________________________'}</p>
