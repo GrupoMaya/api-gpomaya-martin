@@ -992,9 +992,9 @@ module.exports = {
           'Valladolid Nuevo. municipio de Lázaro Cárdenas, estado de Quintana Roo'
       },
       ahal2: {
-        logo: 'https://storage.googleapis.com/gpo-maya.appspot.com/ikal_logo_ok.jpeg',
+        logo: 'https://storage.googleapis.com/gpo-maya.appspot.com/logo_ahal.jpeg',
         address:
-          'Ejido de Macario Gómez, Municipio de Tulum, estado de Quintana Roo'
+          'Valladolid Nuevo. municipio de Lázaro Cárdenas, estado de Quintana Roo'
 
       },
       undefined: {
