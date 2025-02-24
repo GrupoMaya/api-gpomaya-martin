@@ -994,7 +994,7 @@ module.exports = {
       ahal2: {
         logo: 'https://storage.googleapis.com/gpo-maya.appspot.com/logo_ahal.jpeg',
         address:
-          'Calle Aaron Merino Fernandez, No. 12 int A, Municipio de Othón P. Blanco, Chetumal Quintana Roo'
+          'Valladolid Nuevo. municipio de Lázaro Cárdenas, estado de Quintana Roo'
 
       },
       undefined: {
