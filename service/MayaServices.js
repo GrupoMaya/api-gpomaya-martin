@@ -1164,7 +1164,7 @@ module.exports = {
 
         <div class="content">
             <p><strong>Concepto:</strong> ${mensajeRecibo || ''}</p>
-            <p>Del lote ${dataLote[0].lote || '___'} Manzana ${dataLote[0].manzana || '___'}, del desarrollo ${BRAND[projectName]?.address} Ubicado en el 545454</p>
+            <p>Del lote ${dataLote[0].lote || '___'} Manzana ${dataLote[0].manzana || '___'}, del desarrollo Ubicado en el ${BRAND[projectName]?.address}</p>
             <p><strong>Proyecto:</strong> ${dataProject[0].title || 'AHAL'}</p>
             <p><strong>Lote:</strong> ${dataLote[0].lote || '___'}</p>
             <p><strong>Del banco:</strong> ${banco || '___________________________'}</p>
