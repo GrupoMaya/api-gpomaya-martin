@@ -965,42 +965,40 @@ module.exports = {
     const {
       mensualidad,
       dataClient,
-      fechaPago,
+      // fechaPago,
       dataLote,
       mes,
-      ctaBancaria,
+      // ctaBancaria,
       banco,
       refBanco,
       dataProject,
       folio,
       textoObservaciones,
-      extraSlug,
+      // extraSlug,
       refPago,
       mensajeRecibo
     } = body
 
-    const projectName = dataProject[0]?.title?.replace(' ', '')?.toLowerCase() || 'undefined'
+    const projectName =
+      dataProject[0]?.title?.replace(' ', '')?.toLowerCase() || 'undefined'
+
+    const addressProject = await Proyecto.findOne({ slug: projectName })
+    if (!addressProject) {
+      return 'No se encontro el proyecto'
+    }
+
     const BRAND = {
       ikal: {
-        logo: 'https://storage.googleapis.com/gpo-maya.appspot.com/ikal_logo_ok.jpeg',
-        address:
-          'Ejido de Macario Gómez, Municipio de Tulum, estado de Quintana Roo'
+        logo: 'https://storage.googleapis.com/gpo-maya.appspot.com/ikal_logo_ok.jpeg'
       },
       ahal: {
-        logo: 'https://storage.googleapis.com/gpo-maya.appspot.com/logo_ahal.jpeg',
-        address:
-          'Valladolid Nuevo. municipio de Lázaro Cárdenas, estado de Quintana Roo'
+        logo: 'https://storage.googleapis.com/gpo-maya.appspot.com/logo_ahal.jpeg'
       },
       ahal2: {
-        logo: 'https://storage.googleapis.com/gpo-maya.appspot.com/logo_ahal.jpeg',
-        address:
-          'Valladolid Nuevo. municipio de Lázaro Cárdenas, estado de Quintana Roo'
-
+        logo: 'https://storage.googleapis.com/gpo-maya.appspot.com/logo_ahal.jpeg'
       },
       undefined: {
-        logo: '',
-        address:
-          ''
+        logo: ''
       }
     }
 
@@ -1164,7 +1162,7 @@ module.exports = {
 
         <div class="content">
             <p><strong>Concepto:</strong> ${mensajeRecibo || ''}</p>
-            <p>Del lote ${dataLote[0].lote || '___'} Manzana ${dataLote[0].manzana || '___'}, del desarrollo Ubicado en el ${BRAND[projectName]?.address}</p>
+            <p>Del lote ${dataLote[0].lote || '___'} Manzana ${dataLote[0].manzana || '___'}, del desarrollo Ubicado en el ${addressProject?.address || ''}</p>
             <p><strong>Proyecto:</strong> ${dataProject[0].title || 'AHAL'}</p>
             <p><strong>Lote:</strong> ${dataLote[0].lote || '___'}</p>
             <p><strong>Del banco:</strong> ${banco || '___________________________'}</p>

@@ -234,7 +234,7 @@ module.exports = {
       if (getSettings[0].slug === 'martin') {
         getPDFdata = await MayaService.createInvoiceMartin(
           req.body,
-          req.quert,
+          req.query,
           getSettings
         )
       } else {
