@@ -1162,7 +1162,7 @@ module.exports = {
 
         <div class="content">
             <p><strong>Concepto:</strong> ${mensajeRecibo || ''}</p>
-            <p>Del lote ${dataLote[0].lote || '___'} Manzana ${dataLote[0].manzana || '___'}, del desarrollo Ubicado en el ${addressProject?.address || ''}</p>
+            <p>Del lote ${dataLote[0].lote || '___'} Manzana ${dataLote[0].manzana || '___'}, del desarrollo Ubicado en ${addressProject?.address || ''}</p>
             <p><strong>Proyecto:</strong> ${dataProject[0].title || 'AHAL'}</p>
             <p><strong>Lote:</strong> ${dataLote[0].lote || '___'}</p>
             <p><strong>Del banco:</strong> ${banco || '___________________________'}</p>
