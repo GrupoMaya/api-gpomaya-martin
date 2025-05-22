@@ -429,8 +429,8 @@ module.exports = {
 
     return res
   },
-  getPagosByProject: async ({ idcliente }, { idProject }) => {
-    const agg = [
+  getPagosByProject: async ({ idcliente }, { idProject, idlote }) => {
+      const agg = [
       [
         {
           $match: {
@@ -444,6 +444,14 @@ module.exports = {
         }
       ]
     ]
+
+    if (idlote) {
+      agg.push({
+        $match: {
+          lote: mongoose.Types.ObjectId(idlote)
+        }
+      })
+    }
 
     const pagos = new Promise((resolve) => {
       resolve(Pagos.aggregate(agg))
